@@ -4,56 +4,45 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050505">
-<title>FORMU1A — Intro Prototype</title>
+<title>FORMU1A — Intro Prototype v0.8</title>
 <style>
-:root{--red:#ed1c2e;--black:#050505;--white:#f5f5f5}
+:root{--red:#c8102e;--accent:#ed1c2e;--black:#050505;--white:#f5f5f5}
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--black);color:var(--white);font-family:Arial,Helvetica,sans-serif}
-button{font:inherit}
-.stage{position:relative;width:100%;height:100svh;min-height:480px;overflow:hidden;background:#050505;isolation:isolate}
+.stage{position:relative;width:100%;height:100svh;min-height:480px;overflow:hidden;background:var(--black);isolation:isolate}
 #ripCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:4;display:block}
-.logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;white-space:nowrap;font-size:clamp(48px,11vw,110px);font-weight:1000;letter-spacing:.045em;line-height:1;color:#f7f7f7;opacity:0;transition:opacity .7s}
-.logo .one{color:#f7f7f7;transition:color .55s}
-.logo.revealed{opacity:1}
-.logo.final .one{color:var(--red)}
-.micro{position:absolute;left:22px;top:22px;z-index:8;color:#777781;font-size:10px;letter-spacing:.22em;text-transform:uppercase}
-.sound{position:absolute;right:18px;top:16px;z-index:10;border:1px solid #393940;background:#09090dcc;color:#c6c6cc;padding:11px 13px;font-size:10px;letter-spacing:.12em;cursor:pointer}
-.sound:active{transform:scale(.98)}
-.hint{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);z-index:8;color:#777781;font-size:10px;letter-spacing:.14em;text-align:center;white-space:nowrap}
-.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 45%,#151515,#050505 68%);z-index:6;opacity:0;visibility:hidden;transition:opacity .65s}
+.logo{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);z-index:2;white-space:nowrap;font-size:clamp(46px,10.5vw,104px);font-weight:1000;letter-spacing:.045em;line-height:1;color:#f7f7f7;opacity:0;transition:opacity .55s}
+.logo.revealed{opacity:1}.logo .one{color:#f7f7f7;transition:color .55s}.logo.final .one{color:var(--accent)}
+.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 43%,#171717,#050505 70%);z-index:6;opacity:0;visibility:hidden;transition:opacity .65s}
 .loading.show{opacity:1;visibility:visible}
 .load-inner{position:absolute;left:clamp(24px,7vw,100px);right:clamp(24px,7vw,100px);bottom:clamp(30px,7vh,76px)}
 .load-logo{font-size:clamp(36px,8vw,72px);font-weight:1000;letter-spacing:.035em;margin:0 0 24px}
-.load-logo .one{color:var(--red)}
+.load-logo .one{color:var(--accent)}
 .load-row{display:flex;justify-content:space-between;color:#92929b;font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px}
-.track{height:3px;background:#29292e;overflow:hidden}.fill{height:100%;width:0;background:var(--red);box-shadow:0 0 12px #ed1c2e88}
-.tip{color:#686873;font-size:12px;margin-top:12px}
+.track{height:3px;background:#29292e;overflow:hidden}.fill{height:100%;width:0;background:var(--accent);box-shadow:0 0 12px #ed1c2e88}
 .title{position:absolute;inset:0;z-index:1;display:flex;align-items:flex-start;justify-content:center;padding-top:clamp(42px,9vh,90px);opacity:0;transition:opacity .7s;pointer-events:none}
-.title.show{opacity:1}.title h1{margin:0;font-size:clamp(44px,9vw,100px);font-weight:1000;letter-spacing:.035em}.title .one{color:var(--red)}.tag{margin-top:12px;text-align:center;font-size:10px;letter-spacing:.28em;color:#a7a7b0}
-.menu{position:absolute;z-index:7;left:clamp(22px,7vw,96px);bottom:clamp(24px,7vh,76px);width:min(340px,calc(100% - 44px));display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(15px);pointer-events:none;transition:opacity .7s,transform .7s}
-.menu.show{opacity:1;transform:translateY(0)}.menu button{display:flex;gap:14px;align-items:center;min-height:47px;padding:12px 14px;text-align:left;border:1px solid #ffffff20;background:#101014dd;color:#777;cursor:not-allowed}.menu button:first-child{min-height:55px;background:#ed1c2e18;border-color:#ed1c2e66}.num{color:var(--red);font-size:11px;font-weight:800}.label{flex:1;font-size:12px;font-weight:800;letter-spacing:.12em}.lock{font-size:12px;color:#555}
-.footer{position:absolute;right:22px;bottom:26px;color:#595961;font-size:9px;letter-spacing:.13em;text-align:right;z-index:7}
-@media(max-width:600px){.menu{bottom:clamp(24px,6vh,52px)}.menu button{min-height:43px;padding:10px 12px}.menu button:first-child{min-height:49px}.footer{display:none}.micro{font-size:9px}}
+.title.show{opacity:1}.title h1{margin:0;font-size:clamp(44px,9vw,100px);font-weight:1000;letter-spacing:.035em}.title .one{color:var(--accent)}
+.menu{position:absolute;z-index:7;left:clamp(22px,7vw,96px);right:clamp(22px,7vw,96px);bottom:clamp(24px,7vh,76px);display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(15px);pointer-events:none;transition:opacity .7s,transform .7s}
+.menu.show{opacity:1;transform:translateY(0)}
+.menu button{display:flex;gap:14px;align-items:center;min-height:47px;padding:12px 14px;text-align:left;border:1px solid #ffffff20;background:#101014dd;color:#777;cursor:not-allowed}
+.menu button:first-child{min-height:55px;background:#ed1c2e18;border-color:#ed1c2e66}
+.num{color:var(--accent);font-size:11px;font-weight:800}.label{flex:1;font-size:12px;font-weight:800;letter-spacing:.12em}.lock{font-size:12px;color:#555}
+@media(max-width:600px){.menu{left:22px;right:22px;bottom:clamp(22px,5vh,46px);gap:6px}.menu button{min-height:41px;padding:9px 12px}.menu button:first-child{min-height:46px}}
 @media(prefers-reduced-motion:reduce){.loading,.title,.menu,.logo,.logo .one{transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 <main class="stage" id="stage">
-  <div class="micro" id="micro">FORMU1A · TITLE SEQUENCE</div>
-  <button class="sound" id="soundBtn" type="button">SOUND · OFF</button>
   <div class="logo" id="logo" aria-label="FORMU1A">FORMU<span class="one" id="one">1</span>A</div>
   <canvas id="ripCanvas" aria-hidden="true"></canvas>
-  <div class="hint" id="hint">RACING IS ABOUT TO BREAK THROUGH</div>
-
   <section class="loading" id="loading" aria-label="Loading game">
     <div class="load-inner">
       <h1 class="load-logo">FORMU<span class="one">1</span>A</h1>
       <div class="load-row"><span id="loadText">INITIALIZING PADDOCK</span><span id="percent">0%</span></div>
       <div class="track"><div class="fill" id="fill"></div></div>
-      <div class="tip" id="tip">Preparing your racing world...</div>
     </div>
   </section>
-  <section class="title" id="title"><div><h1>FORMU<span class="one">1</span>A</h1><div class="tag">YOUR CAREER. YOUR LEGACY.</div></div></section>
+  <section class="title" id="title"><h1>FORMU<span class="one">1</span>A</h1></section>
   <nav class="menu" id="menu" aria-label="Main menu">
     <button disabled><span class="num">01</span><span class="label">START</span><span class="lock">🔒</span></button>
     <button disabled><span class="num">02</span><span class="label">LOAD CAREER</span><span class="lock">🔒</span></button>
@@ -61,139 +50,176 @@ button{font:inherit}
     <button disabled><span class="num">04</span><span class="label">SETTINGS</span><span class="lock">🔒</span></button>
     <button disabled><span class="num">05</span><span class="label">QUIT</span><span class="lock">🔒</span></button>
   </nav>
-  <div class="footer">FOUNDATION BUILD · V0.7<br>MENU FEATURES NOT YET AVAILABLE</div>
 </main>
 <script>
 (()=> {
 const canvas=document.getElementById('ripCanvas'),ctx=canvas.getContext('2d');
-const stage=document.getElementById('stage'),logo=document.getElementById('logo'),one=document.getElementById('one');
-const soundBtn=document.getElementById('soundBtn'),hint=document.getElementById('hint'),micro=document.getElementById('micro');
+const stage=document.getElementById('stage'),logo=document.getElementById('logo');
 const loading=document.getElementById('loading'),title=document.getElementById('title'),menu=document.getElementById('menu');
-const fill=document.getElementById('fill'),percent=document.getElementById('percent'),loadText=document.getElementById('loadText'),tip=document.getElementById('tip');
+const fill=document.getElementById('fill'),percent=document.getElementById('percent'),loadText=document.getElementById('loadText');
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-let W=0,H=0,dpr=1,start=0,raf=0,done=false,audioOn=false,audioCtx=null,master=null,scheduled=[];
-const RED='#c8102e', BLACK='#050505';
+let W=0,H=0,dpr=1,start=0,raf=0,done=false,audioCtx=null,master=null,audioStarted=false;
+const RED='#c8102e',BLACK='#050505';
+const cars=[
+ {name:'KART',x:.14,color:'#ff9c39',speed:.48,delay:.25,pitch:145,type:'kart'},
+ {name:'F4',x:.29,color:'#24d36d',speed:.67,delay:.55,pitch:105,type:'formula'},
+ {name:'F3',x:.44,color:'#f3f3f3',speed:.82,delay:.82,pitch:82,type:'formula'},
+ {name:'F2',x:.60,color:'#2d69ff',speed:.98,delay:1.08,pitch:66,type:'formula'},
+ {name:'F1',x:.76,color:'#ff2438',speed:1.18,delay:1.32,pitch:52,type:'formula'},
+ {name:'F1',x:.88,color:'#ffd84a',speed:1.26,delay:1.56,pitch:48,type:'formula'}
+];
+const mask=document.createElement('canvas'),mctx=mask.getContext('2d');
 function resize(){
-  const r=stage.getBoundingClientRect();W=r.width;H=r.height;dpr=Math.min(devicePixelRatio||1,2);
-  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);canvas.style.width=W+'px';canvas.style.height=H+'px';
-  ctx.setTransform(dpr,0,0,dpr,0,0);
+ const r=stage.getBoundingClientRect();W=r.width;H=r.height;dpr=Math.min(devicePixelRatio||1,2);
+ canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);canvas.style.width=W+'px';canvas.style.height=H+'px';
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+ mask.width=canvas.width;mask.height=canvas.height;mctx.setTransform(dpr,0,0,dpr,0,0);
 }
 addEventListener('resize',resize);resize();
-
-const cars=[
- {name:'KART',x:.17,color:'#ff9c39',w:.035,len:.10,speed:.76,delay:.08,pitch:112},
- {name:'F4',x:.25,color:'#24d36d',w:.040,len:.12,speed:.82,delay:.16,pitch:82},
- {name:'F3',x:.34,color:'#f3f3f3',w:.043,len:.13,speed:.90,delay:.23,pitch:68},
- {name:'F2',x:.43,color:'#2d69ff',w:.045,len:.14,speed:.95,delay:.31,pitch:57},
- {name:'F1',x:.52,color:'#ff2438',w:.048,len:.15,speed:1.02,delay:.38,pitch:48},
- {name:'F2',x:.61,color:'#c77dff',w:.045,len:.14,speed:.92,delay:.45,pitch:61},
- {name:'F3',x:.70,color:'#55e8e5',w:.043,len:.13,speed:.88,delay:.52,pitch:72},
- {name:'F4',x:.79,color:'#ffd84a',w:.040,len:.12,speed:.84,delay:.59,pitch:88},
- {name:'F1',x:.87,color:'#ff2939',w:.048,len:.15,speed:1.04,delay:.66,pitch:51}
-];
-function roundRect(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r);c.fill();}
-function drawCar(c,x,y,w,h,color){
-  c.save();c.translate(x,y);
-  // Long coloured speed trail above each car.
-  c.globalAlpha=.88;c.fillStyle=color;roundRect(c,-w*.20,h*.55,w*.40,h*2.9,w*.08);
-  c.globalAlpha=1;
-  // overhead open-wheel silhouette
-  c.fillStyle='#111116';roundRect(c,-w*.52,-h*.05,w*1.04,h*.20,w*.12);
-  c.fillStyle=color;roundRect(c,-w*.29,-h*.25,w*.58,h*.70,w*.17);
-  c.fillStyle='#16161a';roundRect(c,-w*.18,-h*.08,w*.36,h*.34,w*.12);
-  c.fillStyle='#d9e0e8';roundRect(c,-w*.10,-h*.02,w*.20,h*.18,w*.06);
-  c.fillStyle=color;roundRect(c,-w*.62,h*.55,w*1.24,h*.13,w*.06);
-  c.fillStyle='#0b0b0e';
-  roundRect(c,-w*.55,h*.04,w*.20,h*.24,w*.06);roundRect(c,w*.35,h*.04,w*.20,h*.24,w*.06);
-  roundRect(c,-w*.55,h*.49,w*.20,h*.24,w*.06);roundRect(c,w*.35,h*.49,w*.20,h*.24,w*.06);
-  c.restore();
+function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r);c.fill()}
+function drawCar(c,x,y,scale,color,type){
+ c.save();c.translate(x,y); // top-down vehicle points down-screen
+ const w=scale, l=scale*(type==='kart'?1.08:1.72);
+ c.fillStyle='#08090c';
+ if(type==='kart'){
+   // open chassis, exposed four wheels, driver/helmet
+   rounded(c,-w*.48,-l*.27,w*.23,l*.35,w*.07);rounded(c,w*.25,-l*.27,w*.23,l*.35,w*.07);
+   rounded(c,-w*.48,l*.04,w*.23,l*.35,w*.07);rounded(c,w*.25,l*.04,w*.23,l*.35,w*.07);
+   c.fillStyle='#777';rounded(c,-w*.10,-l*.40,w*.20,l*.78,w*.08);
+   c.fillStyle=color;rounded(c,-w*.18,-l*.28,w*.36,l*.52,w*.09);
+   c.fillStyle='#f1c7a0';c.beginPath();c.arc(0,-l*.12,w*.13,0,Math.PI*2);c.fill();
+   c.fillStyle='#20232b';c.beginPath();c.arc(0,-l*.12,w*.105,0,Math.PI*2);c.fill();
+   c.fillStyle='#aeb7c4';rounded(c,-w*.10,l*.26,w*.20,l*.10,w*.04);
+ }else{
+   // four exposed tyres
+   rounded(c,-w*.56,-l*.30,w*.24,l*.28,w*.07);rounded(c,w*.32,-l*.30,w*.24,l*.28,w*.07);
+   rounded(c,-w*.56,l*.05,w*.24,l*.28,w*.07);rounded(c,w*.32,l*.05,w*.24,l*.28,w*.07);
+   // front wing, tapered body, rear wing
+   c.fillStyle=color;rounded(c,-w*.66,-l*.37,w*1.32,l*.10,w*.04);
+   c.beginPath();c.moveTo(-w*.28,-l*.32);c.lineTo(w*.28,-l*.32);c.lineTo(w*.21,l*.28);c.lineTo(-w*.21,l*.28);c.closePath();c.fill();
+   c.fillStyle='#171a20';c.beginPath();c.moveTo(-w*.18,-l*.22);c.lineTo(w*.18,-l*.22);c.lineTo(w*.12,l*.22);c.lineTo(-w*.12,l*.22);c.closePath();c.fill();
+   c.fillStyle='#bfc8d3';rounded(c,-w*.105,-l*.08,w*.21,l*.22,w*.08);
+   c.fillStyle='#111318';rounded(c,-w*.17,l*.26,w*.34,l*.12,w*.04);
+   c.fillStyle=color;rounded(c,-w*.62,l*.33,w*1.24,l*.09,w*.03);
+   // category-specific aero hints
+   if(scale>22){c.fillStyle='#0b0d11';rounded(c,-w*.45,-l*.03,w*.90,l*.055,w*.02)}
+ }
+ c.restore();
+}
+function initRedSheet(){
+ mctx.clearRect(0,0,W,H);mctx.fillStyle=RED;mctx.fillRect(0,0,W,H);
+ // subtle red paper grain
+ mctx.globalAlpha=.13;mctx.fillStyle='#ff5369';
+ for(let i=0;i<12;i++)mctx.fillRect(0,(i/12)*H,W,1);
+ mctx.globalAlpha=1;
+}
+function cutTrail(x,y,width,top){
+ // A broad, jagged rip behind the car. The erased path remains in the persistent mask.
+ const edge=Math.max(8,width*.42), wobble=Math.max(4,width*.20);
+ mctx.save();mctx.globalCompositeOperation='destination-out';
+ mctx.beginPath();mctx.moveTo(x-edge,top);
+ const steps=12;
+ for(let i=0;i<=steps;i++){
+   const yy=top+(y-top)*i/steps;
+   const side=(i%2===0?-1:1);
+   mctx.lineTo(x+side*(edge+Math.sin(i*2.1)*wobble),yy);
+ }
+ for(let i=steps;i>=0;i--){
+   const yy=top+(y-top)*i/steps;
+   const side=(i%2===0?1:-1);
+   mctx.lineTo(x+side*(edge+Math.cos(i*1.7)*wobble),yy);
+ }
+ mctx.closePath();mctx.fill();
+ // tiny side tears near the moving vehicle, rather than full-height straight stripes
+ mctx.beginPath();mctx.moveTo(x-width*.55,y-width*.65);mctx.lineTo(x-width*1.1,y-width*.95);mctx.lineTo(x-width*.72,y-width*.25);mctx.closePath();mctx.fill();
+ mctx.beginPath();mctx.moveTo(x+width*.55,y-width*.45);mctx.lineTo(x+width*1.05,y-width*.85);mctx.lineTo(x+width*.70,y-width*.12);mctx.closePath();mctx.fill();
+ mctx.restore();
 }
 function paint(now){
-  const elapsed=(now-start)/1000;
-  ctx.clearRect(0,0,W,H);
-  // The red top layer covers the title until cars tear it away.
-  ctx.fillStyle=RED;ctx.fillRect(0,0,W,H);
-  // faint red paper texture / racing streaks
-  ctx.globalAlpha=.10;ctx.fillStyle='#ff6875';
-  for(let i=0;i<14;i++){const y=((i*137+elapsed*90)% (H+80))-40;ctx.fillRect(0,y,W,1)}
-  ctx.globalAlpha=1;
-  // Erase torn channels from the red overlay, exposing black and the white title below.
-  ctx.save();ctx.globalCompositeOperation='destination-out';
-  for(const car of cars){
-    const t=elapsed-car.delay;if(t<0)continue;
-    const progress=Math.min(1,t*car.speed/Math.max(.6,H/900));
-    const y=H+80-progress*(H+180);
-    const x=car.x*W+Math.sin(t*1.25+car.x*8)*W*.006;
-    const ww=Math.max(9,car.w*W),hh=Math.max(30,car.len*H);
-    // The rip widens and has tiny side tears as the car passes.
-    ctx.beginPath();ctx.moveTo(x-ww*.42,H);ctx.lineTo(x-ww*.20,y+hh*.35);ctx.lineTo(x-ww*.34,y+hh*.02);
-    ctx.lineTo(x-ww*.16,y-hh*.5);ctx.lineTo(x+ww*.10,y-hh*.18);ctx.lineTo(x+ww*.32,y-hh*.7);
-    ctx.lineTo(x+ww*.45,y+hh*.20);ctx.lineTo(x+ww*.22,y+hh*.5);ctx.lineTo(x+ww*.42,H);ctx.closePath();ctx.fill();
-    // small lateral cracks around the moving car make the opening feel torn, not geometric.
-    for(let k=-1;k<=1;k+=2){
-      ctx.beginPath();ctx.moveTo(x+k*ww*.28,y+hh*.18);ctx.lineTo(x+k*ww*.78,y-hh*.12);ctx.lineTo(x+k*ww*.55,y+hh*.42);ctx.closePath();ctx.fill();
-    }
-  }
-  ctx.restore();
-  // Cars are visible on top of the red sheet while passing.
-  for(const car of cars){
-    const t=elapsed-car.delay;if(t<0)continue;
-    const progress=Math.min(1,t*car.speed/Math.max(.6,H/900));
-    const y=H+80-progress*(H+180);
-    const x=car.x*W+Math.sin(t*1.25+car.x*8)*W*.006;
-    drawCar(ctx,x,y,Math.max(10,car.w*W),Math.max(26,car.len*H*.42),car.color);
-  }
-  if(elapsed>2.6){logo.classList.add('revealed')}
-  if(elapsed>4.2){logo.classList.add('final');hint.textContent='FORMU1A';micro.textContent='FORMU1A · RACING REVEALED'}
-  if(elapsed>6.4&&!done){done=true;finishIntro();return}
-  raf=requestAnimationFrame(paint);
+ const elapsed=(now-start)/1000;
+ ctx.clearRect(0,0,W,H);
+ // Cars travel from the top down; the opening they leave behind remains torn open.
+ for(const car of cars){
+   const t=elapsed-car.delay;if(t<0)continue;
+   const duration=2.35/car.speed;
+   const p=Math.min(1,t/duration);
+   const y=-90+p*(H+180);
+   const x=car.x*W+Math.sin(t*2+car.x*9)*W*.004;
+   const scale=Math.max(12,Math.min(W*.075,car.name==='KART'?W*.047:W*.066));
+   cutTrail(x,y,scale*.74,0);
+ }
+ // Draw the still-intact red layer from the persistent mask.
+ ctx.save();ctx.drawImage(mask,0,0,mask.width,mask.height,0,0,W,H);ctx.restore();
+ // Cars draw above the red screen, with restrained speed lines behind them.
+ for(const car of cars){
+   const t=elapsed-car.delay;if(t<0)continue;
+   const duration=2.35/car.speed,p=Math.min(1,t/duration),y=-90+p*(H+180);
+   const x=car.x*W+Math.sin(t*2+car.x*9)*W*.004;
+   const scale=Math.max(12,Math.min(W*.075,car.name==='KART'?W*.047:W*.066));
+   ctx.save();ctx.globalAlpha=.55;ctx.strokeStyle=car.color;ctx.lineWidth=Math.max(1,scale*.045);
+   ctx.beginPath();ctx.moveTo(x,y-scale*1.1);ctx.lineTo(x,y-scale*2.0);ctx.stroke();ctx.restore();
+   drawCar(ctx,x,y,scale,car.color,car.type);
+ }
+ if(elapsed>2.0)logo.classList.add('revealed');
+ if(elapsed>3.3)logo.classList.add('final');
+ // Let the logo settle, then tear away every remaining red fragment before the loading UI.
+ if(elapsed>4.45){
+   const fade=Math.min(1,(elapsed-4.45)/.75);
+   ctx.save();ctx.globalAlpha=1-fade;ctx.drawImage(mask,0,0,mask.width,mask.height,0,0,W,H);ctx.restore();
+   if(fade>=1&&!done){done=true;finishIntro();return}
+ }
+ raf=requestAnimationFrame(paint);
 }
 function finishIntro(){
-  cancelAnimationFrame(raf);
-  canvas.style.display='none';logo.classList.remove('revealed','final');hint.style.display='none';micro.textContent='SYSTEM BOOT · FORMU1A';
-  loading.classList.add('show');
-  const duration=reduce?400:3600,startTime=performance.now();
-  function load(now){
-    const p=Math.min(1,(now-startTime)/duration),n=Math.round(p*100);
-    fill.style.width=n+'%';percent.textContent=n+'%';
-    if(p>.32)tip.textContent='Calibrating the grid...';
-    if(p>.7){tip.textContent='Welcome to the paddock.';loadText.textContent='READY FOR LIGHTS OUT'}
-    if(p<1)requestAnimationFrame(load);
-    else setTimeout(()=>{loading.classList.remove('show');loading.style.display='none';title.classList.add('show');setTimeout(()=>menu.classList.add('show'),450);},250);
-  }requestAnimationFrame(load);
+ cancelAnimationFrame(raf);
+ canvas.style.display='none';
+ logo.classList.remove('revealed','final');
+ loading.classList.add('show');
+ const duration=reduce?400:3600,startTime=performance.now();
+ function load(now){
+   const p=Math.min(1,(now-startTime)/duration),n=Math.round(p*100);
+   fill.style.width=n+'%';percent.textContent=n+'%';
+   if(p>.7)loadText.textContent='READY FOR LIGHTS OUT';
+   if(p<1)requestAnimationFrame(load);
+   else setTimeout(()=>{loading.classList.remove('show');loading.style.display='none';title.classList.add('show');setTimeout(()=>menu.classList.add('show'),450)},250);
+ }
+ requestAnimationFrame(load);
 }
-// Audio is generated locally with Web Audio: distinct synthesized engine tones for kart/F4/F3/F2/F1 pass-bys.
-// It is intentionally started only after tapping the sound button, because mobile browsers block autoplay audio.
+// Best-effort automatic engine ambience. No sound toggle is shown.
+// Browsers that block autoplay will resume audio on the first normal touch/click.
 function startAudio(){
-  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;
-  audioCtx=new AC();master=audioCtx.createGain();master.gain.value=.20;master.connect(audioCtx.destination);
+ if(audioStarted)return;
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+ try{
+  audioCtx=new AC();master=audioCtx.createGain();master.gain.value=.16;master.connect(audioCtx.destination);
   const now=audioCtx.currentTime;
   cars.forEach((car,i)=>{
-    const when=now+car.delay*1.1;
-    const osc=audioCtx.createOscillator(),sub=audioCtx.createOscillator(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain(),pan=audioCtx.createStereoPanner();
-    const base=car.pitch;
-    osc.type=car.name==='KART'?'sawtooth':(car.name==='F1'?'sawtooth':'triangle');
-    sub.type='sine';osc.frequency.setValueAtTime(base*2.8,when);osc.frequency.exponentialRampToValueAtTime(base*7.5,when+1.15);osc.frequency.exponentialRampToValueAtTime(base*2.1,when+2.35);
-    sub.frequency.setValueAtTime(base*.8,when);sub.frequency.exponentialRampToValueAtTime(base*1.8,when+1.1);sub.frequency.exponentialRampToValueAtTime(base*.65,when+2.35);
-    filter.type='lowpass';filter.frequency.setValueAtTime(car.name==='F1'?1800:car.name==='KART'?3200:2300,when);filter.frequency.exponentialRampToValueAtTime(650,when+2.3);
-    gain.gain.setValueAtTime(.0001,when);gain.gain.exponentialRampToValueAtTime(car.name==='F1'?.20:.105,when+.18);gain.gain.setValueAtTime(car.name==='F1'?.20:.105,when+1.0);gain.gain.exponentialRampToValueAtTime(.0001,when+2.4);
-    pan.pan.setValueAtTime(-.85+(i/(cars.length-1))*1.7,when);pan.pan.linearRampToValueAtTime(.85-(i/(cars.length-1))*1.7,when+2.3);
-    osc.connect(filter);sub.connect(filter);filter.connect(gain);gain.connect(pan);pan.connect(master);
-    osc.start(when);sub.start(when);osc.stop(when+2.45);sub.stop(when+2.45);
+   const when=now+car.delay;
+   const osc=audioCtx.createOscillator(),harm=audioCtx.createOscillator(),noise=audioCtx.createOscillator();
+   const filter=audioCtx.createBiquadFilter(),noiseFilter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain(),pan=audioCtx.createStereoPanner();
+   const base=car.pitch;
+   osc.type='sawtooth';harm.type='triangle';noise.type='sawtooth';
+   // Rising then falling RPM sweep, with extra high-frequency character for karts.
+   osc.frequency.setValueAtTime(base,when);osc.frequency.exponentialRampToValueAtTime(base*(car.name==='F1'?4.8:car.name==='KART'?3.4:4),when+.8/car.speed);osc.frequency.exponentialRampToValueAtTime(base*1.2,when+2.25/car.speed);
+   harm.frequency.setValueAtTime(base*1.98,when);harm.frequency.exponentialRampToValueAtTime(base*5.2,when+.8/car.speed);harm.frequency.exponentialRampToValueAtTime(base*1.5,when+2.25/car.speed);
+   noise.frequency.setValueAtTime(32,when);noise.frequency.linearRampToValueAtTime(95,when+1);noise.frequency.linearRampToValueAtTime(38,when+2.25/car.speed);
+   filter.type='lowpass';filter.frequency.setValueAtTime(car.name==='KART'?2800:car.name==='F1'?2100:2400,when);filter.frequency.exponentialRampToValueAtTime(520,when+2.2/car.speed);
+   noiseFilter.type='lowpass';noiseFilter.frequency.value=car.name==='KART'?1800:1000;
+   gain.gain.setValueAtTime(.0001,when);gain.gain.exponentialRampToValueAtTime(car.name==='F1'?.075:car.name==='KART'?.055:.06,when+.18);gain.gain.setValueAtTime(car.name==='F1'?.075:car.name==='KART'?.055:.06,when+.8);gain.gain.exponentialRampToValueAtTime(.0001,when+2.3/car.speed);
+   pan.pan.setValueAtTime(-.8+(i/(cars.length-1))*1.6,when);pan.pan.linearRampToValueAtTime(.8-(i/(cars.length-1))*1.6,when+2.2/car.speed);
+   osc.connect(filter);harm.connect(filter);noise.connect(noiseFilter);
+   const mix=audioCtx.createGain();mix.gain.value=.55;filter.connect(mix);noiseFilter.connect(mix);mix.connect(gain);gain.connect(pan);pan.connect(master);
+   osc.start(when);harm.start(when);noise.start(when);
+   osc.stop(when+2.4/car.speed);harm.stop(when+2.4/car.speed);noise.stop(when+2.4/car.speed);
   });
-  return true;
+  audioStarted=true;
+  if(audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});
+ }catch(e){/* Audio is non-blocking; the intro continues if audio is unavailable. */}
 }
-soundBtn.addEventListener('click',async()=>{
-  if(!audioOn){
-    const ok=startAudio();if(!ok){soundBtn.textContent='AUDIO NOT SUPPORTED';return}
-    audioOn=true;soundBtn.textContent='SOUND · ON';
-    if(master)master.gain.setTargetAtTime(.20,audioCtx.currentTime,.04);
-    if(audioCtx.state==='suspended')await audioCtx.resume();
-  }else{
-    audioOn=false;if(master)master.gain.setTargetAtTime(0,audioCtx.currentTime,.04);soundBtn.textContent='SOUND · OFF';
-  }
-});
-function begin(){start=performance.now();if(reduce){hint.textContent='FORMU1A';}raf=requestAnimationFrame(paint)}
+function resumeAudio(){if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});}
+document.addEventListener('pointerdown',resumeAudio,{passive:true});
+document.addEventListener('keydown',resumeAudio);
+function begin(){initRedSheet();startAudio();start=performance.now();raf=requestAnimationFrame(paint)}
 begin();
 })();
 </script>
