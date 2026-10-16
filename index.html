@@ -1,117 +1,36 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#050505"><title>FORMU1A — Foundation</title>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#050505">
+<title>FORMU1A — Foundation</title>
 <style>
-:root{--red:#ed1c2e;--white:#f5f5f5;--muted:#92929a;--bg:#050505}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif;overflow:hidden}
-.scene{position:relative;width:100%;height:100svh;min-height:480px;background:#050505;overflow:hidden;isolation:isolate}
-.scene:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,#141414 0%,#050505 58%,#000 100%);z-index:-2}
-.status{position:absolute;top:24px;left:24px;color:#55555e;font-size:9px;letter-spacing:.2em}
-.sound{position:absolute;right:20px;top:18px;padding:10px 12px;border:1px solid #303036;background:#09090c;color:#aaa;font-size:10px;letter-spacing:.1em}
-.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .7s ease}
-.loading.fade{opacity:0;pointer-events:none}
-.loading-inner{position:absolute;left:clamp(24px,7vw,100px);right:clamp(24px,7vw,100px);bottom:clamp(28px,7vh,74px)}
-.wordmark{font-size:clamp(30px,7vw,64px);font-weight:1000;letter-spacing:-.075em;margin:0 0 20px}
-.red{color:var(--red)}
-.loadrow{display:flex;justify-content:space-between;color:#9696a0;font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px}
-.track{height:3px;background:#25252b;overflow:hidden}.fill{height:100%;width:0;background:var(--red);box-shadow:0 0 12px #ed1c2e99}
-.tip{color:#656570;font-size:12px;margin-top:12px}
-.intro{position:absolute;inset:0;display:none;align-items:center;justify-content:center;overflow:hidden;z-index:3}
-.intro.play{display:flex}
-.brand{position:absolute;top:88%;transform:translateY(-50%);font-size:clamp(42px,10vw,96px);font-weight:1000;letter-spacing:-.08em;white-space:nowrap;animation:brandJourney 2.55s cubic-bezier(.55,0,.3,1) forwards;z-index:2}
+:root{--red:#ed1c2e;--white:#f5f5f5}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#050505;color:var(--white);font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+.scene{position:relative;width:100%;height:100svh;min-height:480px;background:#050505;overflow:hidden;isolation:isolate}.scene:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,#141414 0%,#050505 58%,#000 100%);z-index:-2}
+.status{position:absolute;top:24px;left:24px;color:#55555e;font-size:9px;letter-spacing:.2em;z-index:10}.sound{position:absolute;right:20px;top:18px;padding:10px 12px;border:1px solid #303036;background:#09090c;color:#aaa;font-size:10px;letter-spacing:.1em;z-index:10}
+.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .6s;z-index:5}.loading.show{opacity:1;visibility:visible}.loading-inner{position:absolute;left:clamp(24px,7vw,100px);right:clamp(24px,7vw,100px);bottom:clamp(28px,7vh,74px)}
+.wordmark{font-size:clamp(30px,7vw,64px);font-weight:1000;letter-spacing:-.075em;margin:0 0 20px}.red{color:var(--red)}.loadrow{display:flex;justify-content:space-between;color:#9696a0;font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px}.track{height:3px;background:#25252b;overflow:hidden}.fill{height:100%;width:0;background:var(--red);box-shadow:0 0 12px #ed1c2e99}.tip{color:#656570;font-size:12px;margin-top:12px}
+.intro{position:absolute;inset:0;display:none;overflow:hidden;z-index:3}.intro.play{display:block}
+.brand{position:absolute;left:50%;top:100%;transform:translate(-50%,0);font-size:clamp(42px,10vw,96px);font-weight:1000;letter-spacing:-.08em;white-space:nowrap;opacity:0;animation:brandRise 2.8s cubic-bezier(.22,.75,.25,1) forwards;z-index:2}
 .bars{position:absolute;bottom:0;left:50%;width:clamp(120px,27vw,220px);height:0;transform:translateX(-50%);display:flex;justify-content:space-between;align-items:flex-end;z-index:1}
-.bars i{display:block;width:clamp(13px,3vw,25px);height:0;background:#f4f4f4;animation:barsUp 3.25s cubic-bezier(.2,.8,.2,1) forwards}
-.bars i:nth-child(2){animation-delay:.12s}.bars i:nth-child(3){animation-delay:.24s}
-.thegame{position:absolute;left:50%;top:76%;transform:translate(-50%,-50%);font-size:clamp(22px,5vw,44px);font-weight:900;letter-spacing:.18em;white-space:nowrap;opacity:0;animation:gameJourney 2.2s ease 1.35s forwards;z-index:2;background:#050505;padding:8px 12px}
-.intro.vanish .thegame{animation:gameAway .65s ease forwards}
-@keyframes brandJourney{0%{top:90%;opacity:0;transform:translate(-50%,-50%)}12%{opacity:1}42%{top:50%;opacity:1;transform:translate(-50%,-50%)}100%{top:8%;opacity:0;transform:translate(-50%,-50%)}}
-@keyframes barsUp{0%{height:0}100%{height:83vh}}
-@keyframes gameJourney{0%{top:76%;opacity:0}18%{top:76%;opacity:1}65%{top:50%;opacity:1}100%{top:8%;opacity:0}}
-@keyframes gameAway{from{opacity:1;top:50%}to{opacity:0;top:5%}}
-.title{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding-top:clamp(34px,8vh,85px);opacity:0;transition:opacity .8s}
-.title.show{opacity:1}
-.title h1{margin:0;font-size:clamp(44px,9vw,100px);font-weight:1000;letter-spacing:-.085em}
-.tagline{font-size:10px;letter-spacing:.28em;text-align:center;color:#c0c0c6;margin-top:16px}
-.menu{position:absolute;left:clamp(20px,7vw,96px);bottom:clamp(24px,7vh,76px);width:min(340px,calc(100% - 40px));display:flex;flex-direction:column;gap:9px;opacity:0;transform:translateY(18px);pointer-events:none;transition:opacity .8s,transform .8s}
-.menu.show{opacity:1;transform:translateY(0)}
-.menu button{display:flex;align-items:center;gap:14px;width:100%;min-height:49px;text-align:left;padding:12px 15px;border:1px solid #ffffff20;border-radius:3px;background:#101014dd;color:#777;cursor:not-allowed}
-.menu button:first-child{min-height:58px;background:#ed1c2e18;border-color:#ed1c2e66}
-.num{color:var(--red);font-size:11px;font-weight:800}.label{flex:1;font-size:12px;font-weight:800;letter-spacing:.11em}.lock{color:#555;font-size:12px}
-.footer{position:absolute;right:24px;bottom:30px;color:#595961;font-size:9px;letter-spacing:.13em;text-align:right}
-@media(max-width:600px){.menu{bottom:clamp(22px,6vh,52px);gap:7px}.menu button{min-height:44px;padding:10px 12px}.menu button:first-child{min-height:50px}.footer{display:none}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-</style>
-</head>
-<body>
-<main class="scene">
-<div class="status" id="status">SYSTEM BOOT · FORMU1A</div>
-<button class="sound" id="sound">SOUND · PENDING</button>
-<section class="loading" id="loading">
- <div class="loading-inner">
-  <h1 class="wordmark">FORMU<span class="red">1</span>A</h1>
-  <div class="loadrow"><span id="loadtext">Initializing paddock</span><span id="percent">0%</span></div>
-  <div class="track"><div class="fill" id="fill"></div></div>
-  <div class="tip" id="tip">Preparing your racing world...</div>
- </div>
-</section>
-<section class="intro" id="intro" aria-hidden="true">
- <div class="brand">FORMU<span>1</span>A</div>
- <div class="bars"><i></i><i></i><i></i></div>
- <div class="thegame">THE GAME</div>
-</section>
+.bars i{display:block;width:clamp(13px,3vw,25px);height:0;background:#f4f4f4;animation:barsUp 5.2s cubic-bezier(.2,.65,.2,1) forwards}.bars i:nth-child(2){animation-delay:.2s}.bars i:nth-child(3){animation-delay:.4s}
+.thegame{position:absolute;left:50%;top:100%;transform:translate(-50%,0);font-size:clamp(22px,5vw,44px);font-weight:900;letter-spacing:.18em;white-space:nowrap;opacity:0;z-index:2;animation:gameRise 3.2s cubic-bezier(.22,.75,.25,1) 1.9s forwards}
+@keyframes brandRise{0%{top:100%;opacity:0;transform:translate(-50%,0)}12%{opacity:1}52%{top:9%;opacity:1}100%{top:-20%;opacity:0}}
+@keyframes barsUp{0%{height:0}100%{height:88vh}}
+@keyframes gameRise{0%{top:100%;opacity:0;transform:translate(-50%,0)}12%{opacity:1}60%{top:50%;opacity:1;transform:translate(-50%,-50%)}100%{top:-18%;opacity:0;transform:translate(-50%,-50%)}}
+.title{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding-top:clamp(34px,8vh,85px);opacity:0;transition:opacity .8s;z-index:1}.title.show{opacity:1}.title h1{margin:0;font-size:clamp(44px,9vw,100px);font-weight:1000;letter-spacing:-.085em}.tagline{font-size:10px;letter-spacing:.28em;text-align:center;color:#c0c0c6;margin-top:16px}
+.menu{position:absolute;left:clamp(20px,7vw,96px);bottom:clamp(24px,7vh,76px);width:min(340px,calc(100% - 40px));display:flex;flex-direction:column;gap:9px;opacity:0;transform:translateY(18px);pointer-events:none;transition:opacity .8s,transform .8s;z-index:6}.menu.show{opacity:1;transform:translateY(0)}.menu button{display:flex;align-items:center;gap:14px;width:100%;min-height:49px;text-align:left;padding:12px 15px;border:1px solid #ffffff20;border-radius:3px;background:#101014dd;color:#777;cursor:not-allowed}.menu button:first-child{min-height:58px;background:#ed1c2e18;border-color:#ed1c2e66}.num{color:var(--red);font-size:11px;font-weight:800}.label{flex:1;font-size:12px;font-weight:800;letter-spacing:.11em}.lock{color:#555;font-size:12px}.footer{position:absolute;right:24px;bottom:30px;color:#595961;font-size:9px;letter-spacing:.13em;text-align:right;z-index:6}
+@media(max-width:600px){.menu{bottom:clamp(22px,6vh,52px);gap:7px}.menu button{min-height:44px;padding:10px 12px}.menu button:first-child{min-height:50px}.footer{display:none}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style></head><body><main class="scene">
+<div class="status" id="status">SYSTEM BOOT · FORMU1A</div><button class="sound" id="sound" type="button">SOUND · PENDING</button>
+<section class="intro" id="intro" aria-hidden="true"><div class="brand">FORMU<span>1</span>A</div><div class="bars"><i></i><i></i><i></i></div><div class="thegame">THE GAME</div></section>
+<section class="loading" id="loading" aria-label="Loading game"><div class="loading-inner"><h1 class="wordmark">FORMU<span class="red">1</span>A</h1><div class="loadrow"><span id="loadtext">Initializing paddock</span><span id="percent">0%</span></div><div class="track"><div class="fill" id="fill"></div></div><div class="tip" id="tip">Preparing your racing world...</div></div></section>
 <section class="title" id="title"><div><h1>FORMU<span class="red">1</span>A</h1><div class="tagline">YOUR CAREER. YOUR LEGACY.</div></div></section>
-<nav class="menu" id="menu" aria-label="Main menu">
- <button disabled><span class="num">01</span><span class="label">START</span><span class="lock">🔒</span></button>
- <button disabled><span class="num">02</span><span class="label">LOAD CAREER</span><span class="lock">🔒</span></button>
- <button disabled><span class="num">03</span><span class="label">EDIT DRIVER &amp; LIVERY</span><span class="lock">🔒</span></button>
- <button disabled><span class="num">04</span><span class="label">SETTINGS</span><span class="lock">🔒</span></button>
- <button disabled><span class="num">05</span><span class="label">QUIT</span><span class="lock">🔒</span></button>
-</nav>
-<div class="footer">FOUNDATION BUILD · V0.1<br>MENU FEATURES NOT YET AVAILABLE</div>
-</main>
+<nav class="menu" id="menu" aria-label="Main menu"><button disabled><span class="num">01</span><span class="label">START</span><span class="lock">🔒</span></button><button disabled><span class="num">02</span><span class="label">LOAD CAREER</span><span class="lock">🔒</span></button><button disabled><span class="num">03</span><span class="label">EDIT DRIVER &amp; LIVERY</span><span class="lock">🔒</span></button><button disabled><span class="num">04</span><span class="label">SETTINGS</span><span class="lock">🔒</span></button><button disabled><span class="num">05</span><span class="label">QUIT</span><span class="lock">🔒</span></button></nav>
+<div class="footer">FOUNDATION BUILD · V0.4<br>MENU FEATURES NOT YET AVAILABLE</div></main>
 <script>
-(() => {
- const loading=document.getElementById('loading'), intro=document.getElementById('intro');
- const title=document.getElementById('title'), menu=document.getElementById('menu');
- const fill=document.getElementById('fill'), percent=document.getElementById('percent');
- const loadtext=document.getElementById('loadtext'), tip=document.getElementById('tip');
- const status=document.getElementById('status'), sound=document.getElementById('sound');
- sound.addEventListener('click',()=>{sound.textContent=sound.textContent.includes('PENDING')?'SOUND · OFF':'SOUND · PENDING'});
- const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
- const duration=reduced?500:3900, started=performance.now();
- let loadingFinished=false, introFinished=false;
- function finishIfReady(){
-   if(!loadingFinished || !introFinished) return;
-   loading.classList.add('fade');
-   setTimeout(()=>{
-     loading.style.display='none';
-     intro.style.display='none';
-     title.classList.add('show');
-     status.textContent='FORMU1A · CAREER MODE';
-     setTimeout(()=>{menu.classList.add('show');status.textContent='MAIN MENU · FOUNDATION BUILD'},reduced?80:500);
-   },reduced?50:650);
- }
- function frame(now){
-   const p=Math.min(1,(now-started)/duration), n=Math.round(p*100);
-   fill.style.width=n+'%'; percent.textContent=n+'%';
-   if(p>.3) tip.textContent='Calibrating the grid...';
-   if(p>.68){tip.textContent='Welcome to the paddock.';loadtext.textContent='Ready for lights out';}
-   if(p<1) requestAnimationFrame(frame);
-   else {loadingFinished=true;finishIfReady();}
- }
- requestAnimationFrame(frame);
- // Start the logo/line animation while the loading bar is still progressing.
- setTimeout(()=>{
-   intro.classList.add('play');
-   status.textContent='FORMU1A · TITLE SEQUENCE';
-   setTimeout(()=>{
-     intro.classList.add('vanish');
-     setTimeout(()=>{introFinished=true;finishIfReady();},reduced?100:700);
-   },reduced?500:3300);
- },reduced?100:500);
-})();
-</script>
-</body>
-</html>
+(()=>{const intro=document.getElementById('intro'),loading=document.getElementById('loading'),title=document.getElementById('title'),menu=document.getElementById('menu'),fill=document.getElementById('fill'),percent=document.getElementById('percent'),loadtext=document.getElementById('loadtext'),tip=document.getElementById('tip'),status=document.getElementById('status'),sound=document.getElementById('sound');
+sound.addEventListener('click',()=>{sound.textContent=sound.textContent.includes('PENDING')?'SOUND · OFF':'SOUND · PENDING'});
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,wait=ms=>new Promise(r=>setTimeout(r,reduced?Math.min(ms,120):ms));
+async function run(){status.textContent='FORMU1A · TITLE SEQUENCE';intro.classList.add('play');await wait(5600);intro.style.display='none';loading.classList.add('show');status.textContent='SYSTEM BOOT · FORMU1A';
+const duration=reduced?500:4200,start=performance.now();function update(now){const p=Math.min(1,(now-start)/duration),n=Math.round(p*100);fill.style.width=n+'%';percent.textContent=n+'%';if(p>.3)tip.textContent='Calibrating the grid...';if(p>.68){tip.textContent='Welcome to the paddock.';loadtext.textContent='Ready for lights out'}if(p<1)requestAnimationFrame(update);else setTimeout(async()=>{loading.style.opacity='0';await wait(650);loading.style.display='none';title.classList.add('show');status.textContent='FORMU1A · CAREER MODE';await wait(500);menu.classList.add('show');status.textContent='MAIN MENU · FOUNDATION BUILD'},250)}requestAnimationFrame(update)}
+run()})();
+</script></body></html>
