@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08090f">
+<title>FORMU1A — Foundation</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #08090f;
+    --panel: rgba(12, 14, 23, .78);
+    --muted: #9ba2b3;
+    --red: #e52b36;
+    --white: #f5f6fa;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 100%; min-height: 100%; background: var(--bg); color: var(--white); }
+  body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; overflow: hidden; }
+  button { font: inherit; }
+  .scene {
+    position: relative; width: 100%; height: 100svh; min-height: 480px; overflow: hidden;
+    background:
+      radial-gradient(ellipse at 72% 37%, rgba(229,43,54,.27), transparent 29%),
+      radial-gradient(ellipse at 22% 42%, rgba(56,79,157,.28), transparent 37%),
+      linear-gradient(160deg, #171927 0%, #090a11 56%, #030407 100%);
+    isolation: isolate;
+  }
+  .scene::before {
+    content: ""; position: absolute; inset: -30%; z-index: -2; opacity: .42;
+    background: repeating-linear-gradient(119deg, transparent 0 78px, rgba(255,255,255,.035) 79px 80px, transparent 81px 145px);
+    transform: translateX(-4%); animation: backgroundDrift 12s linear infinite;
+  }
+  .glow { position:absolute; width:45vw; height:45vw; border-radius:50%; filter:blur(70px); opacity:.18; z-index:-1; }
+  .glow.red { right:-10vw; top:8vh; background:#e52b36; }
+  .glow.blue { left:-18vw; top:30vh; background:#3155b9; }
+  .track-lines { position:absolute; inset:0; width:100%; height:100%; opacity:.85; pointer-events:none; }
+  .track-lines path { fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  .track-lines .white-line { stroke:#f4f5ff; stroke-width:2.4; filter:drop-shadow(0 0 5px rgba(255,255,255,.75)); }
+  .track-lines .red-line { stroke:var(--red); stroke-width:2; filter:drop-shadow(0 0 6px rgba(229,43,54,.8)); }
+  .track-lines .blue-line { stroke:#667dff; stroke-width:1.2; opacity:.55; }
+  .floor { position:absolute; left:-10%; right:-10%; bottom:-22%; height:53%; background:linear-gradient(180deg,rgba(18,20,32,.05),rgba(2,3,7,.96)); transform:perspective(450px) rotateX(28deg); border-top:1px solid rgba(255,255,255,.06); }
+  .car-wrap { position:absolute; left:50%; top:59%; width:min(78vw,780px); transform:translate(-50%,-50%); transition:opacity 1s ease, transform 1.3s cubic-bezier(.2,.8,.2,1); }
+  .car { width:100%; display:block; overflow:visible; filter:drop-shadow(0 18px 18px rgba(0,0,0,.7)); }
+  .car .body { fill:#050609; stroke:#303847; stroke-width:1.6; }
+  .car .accent { fill:none; stroke:#dce4ff; stroke-width:2; opacity:.75; }
+  .car .red-accent { fill:none; stroke:var(--red); stroke-width:3; }
+  .car .tire { fill:#050609; stroke:#343b4a; stroke-width:4; }
+  .car .rim { fill:none; stroke:#141824; stroke-width:3; }
+  .screen { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:clamp(20px,5vw,64px); opacity:0; visibility:hidden; transition:opacity .9s ease; }
+  .screen.active { opacity:1; visibility:visible; }
+  .loading-content { position:absolute; left:clamp(24px,7vw,100px); right:clamp(24px,7vw,100px); bottom:clamp(28px,7vh,74px); }
+  .eyebrow { color:#aab0c0; font-size:11px; letter-spacing:.24em; text-transform:uppercase; }
+  .loading-wordmark { font-size:clamp(26px,5vw,48px); font-weight:950; letter-spacing:-.065em; margin:0 0 10px; }
+  .red-one { color:var(--red); }
+  .load-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:9px; color:#aab0c0; font-size:10px; letter-spacing:.14em; text-transform:uppercase; }
+  .progress-track { height:3px; background:rgba(255,255,255,.13); width:100%; overflow:hidden; }
+  .progress-fill { height:100%; width:0; background:var(--red); box-shadow:0 0 12px rgba(229,43,54,.8); }
+  .loading-sub { color:#737b8d; font-size:11px; margin-top:12px; }
+  .title-screen { justify-content:flex-start; padding-top:clamp(32px,8vh,90px); }
+  .logo { font-size:clamp(44px,9vw,100px); font-weight:1000; letter-spacing:-.085em; line-height:.9; margin:0; text-shadow:0 5px 35px rgba(0,0,0,.4); }
+  .tagline { font-size:10px; letter-spacing:.28em; color:#c3c7d2; margin-top:17px; text-align:center; }
+  .menu {
+    position:absolute; left:clamp(20px,7vw,96px); bottom:clamp(24px,7vh,76px); width:min(340px,calc(100% - 40px));
+    display:flex; flex-direction:column; gap:9px; opacity:0; transform:translateY(18px); pointer-events:none;
+    transition:opacity .8s ease, transform .8s ease;
+  }
+  .menu.revealed { opacity:1; transform:translateY(0); pointer-events:auto; }
+  .menu-button {
+    display:flex; align-items:center; gap:14px; width:100%; min-height:49px; text-align:left; padding:12px 15px;
+    border:1px solid rgba(255,255,255,.12); border-radius:3px; background:rgba(9,11,18,.76); color:#757d8d;
+    cursor:not-allowed; backdrop-filter:blur(12px);
+  }
+  .menu-button .num { font-size:11px; font-weight:800; color:var(--red); letter-spacing:.08em; }
+  .menu-button .label { flex:1; font-size:12px; font-weight:800; letter-spacing:.11em; }
+  .menu-button .lock { font-size:12px; color:#5b6270; }
+  .menu-button.primary { min-height:58px; background:rgba(229,43,54,.12); border-color:rgba(229,43,54,.4); }
+  .menu-button.primary .label { color:#c1c5cf; }
+  .footer { position:absolute; right:clamp(20px,4vw,54px); bottom:30px; color:#666e7d; font-size:9px; letter-spacing:.13em; text-align:right; }
+  .sound-toggle { position:absolute; top:clamp(18px,4vh,38px); right:clamp(18px,4vw,42px); border:1px solid rgba(255,255,255,.18); background:rgba(8,9,15,.45); color:#d9dce5; padding:9px 12px; border-radius:3px; font-size:10px; letter-spacing:.1em; }
+  .sound-toggle:focus-visible { outline:2px solid var(--red); outline-offset:3px; }
+  .status { position:absolute; top:clamp(22px,4vh,40px); left:clamp(20px,4vw,46px); color:#777f90; font-size:9px; letter-spacing:.18em; }
+  .hidden { display:none !important; }
+  @keyframes backgroundDrift { from { transform:translateX(-4%) translateY(0); } to { transform:translateX(4%) translateY(2%); } }
+  @keyframes load { from { width:0; } to { width:100%; } }
+  @keyframes carReveal { from { opacity:0; transform:translate(-50%,-44%) scale(.96); } to { opacity:1; transform:translate(-50%,-50%) scale(1); } }
+  @media (max-width:600px) {
+    .car-wrap { width:112vw; top:56%; }
+    .title-screen { padding-top:17vh; }
+    .menu { bottom:clamp(22px,6vh,52px); gap:7px; }
+    .menu-button { min-height:44px; padding:10px 12px; }
+    .menu-button.primary { min-height:50px; }
+    .footer { display:none; }
+    .tagline { font-size:8px; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.01ms !important; }
+  }
+</style>
+</head>
+<body>
+<main class="scene" id="game">
+  <div class="glow red"></div><div class="glow blue"></div>
+  <svg class="track-lines" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <path class="blue-line" d="M-80 610 L260 510 L380 555 L600 385 L810 450 L1080 265 L1510 150"/>
+    <path class="white-line" d="M-60 455 L350 520 L540 370 L740 430 L980 325 L1480 180"/>
+    <path class="red-line" d="M-40 675 L250 590 L430 630 L660 490 L850 535 L1080 415 L1480 305"/>
+    <path class="white-line" d="M-30 720 L180 655 L280 700 L490 590 L660 640 L820 560 L1040 605 L1470 470" opacity=".5"/>
+  </svg>
+  <div class="floor"></div>
+
+  <div class="status" id="status">SYSTEM BOOT · FORMU1A</div>
+  <button class="sound-toggle" id="soundToggle" type="button" aria-label="Sound status">SOUND · PENDING</button>
+
+  <div class="car-wrap" id="carWrap" aria-hidden="true">
+    <svg class="car" viewBox="0 0 760 220">
+      <ellipse cx="385" cy="180" rx="300" ry="18" fill="#000" opacity=".72"/>
+      <g transform="translate(0 4)">
+        <path class="tire" d="M112 93 Q95 87 91 111 L86 151 Q88 169 111 171 L151 168 L158 105 Z"/>
+        <path class="tire" d="M570 92 Q589 86 596 111 L603 151 Q599 168 579 171 L540 167 L533 104 Z"/>
+        <path class="rim" d="M104 113 L144 113 L143 153 L99 157 Z M580 112 L591 154 L550 157 L548 112 Z"/>
+        <path class="body" d="M75 128 L130 116 L177 104 L240 98 L285 76 L347 68 L386 77 L445 78 L489 95 L548 103 L595 116 L665 124 L696 139 L651 149 L575 149 L526 137 L459 139 L414 150 L338 150 L283 140 L211 142 L156 151 L95 149 Z"/>
+        <path d="M267 98 L298 67 L359 65 L393 82 L374 100 L310 106 Z" fill="#07090e" stroke="#596274" stroke-width="2"/>
+        <path d="M317 76 L340 48 L368 49 L382 78 Z" fill="#080a10" stroke="#343c4c" stroke-width="2"/>
+        <path d="M341 48 L352 37 L365 40 L370 51 Z" fill="#050609"/>
+        <path d="M281 101 L344 94 L390 102 L451 105 L486 119 L430 123 L375 116 L326 119 L277 112 Z" fill="#e52b36"/>
+        <path class="accent" d="M165 121 L248 111 L287 108 M397 109 L478 111 L548 126"/>
+        <path class="red-accent" d="M185 129 L277 119 L323 124 L381 121 L430 129"/>
+        <path d="M62 126 L163 126 L169 139 L57 143 Z" fill="#050609" stroke="#333a48" stroke-width="2"/>
+        <path d="M579 126 L700 129 L710 139 L588 141 Z" fill="#050609" stroke="#333a48" stroke-width="2"/>
+        <path d="M218 137 L240 156 L289 157 L306 146 M453 139 L470 157 L516 156 L533 140" fill="none" stroke="#171b25" stroke-width="8"/>
+        <path d="M324 77 L352 74 L367 83 L348 89 L325 87 Z" fill="#141a25"/>
+        <circle cx="348" cy="81" r="7" fill="#e52b36"/>
+      </g>
+    </svg>
+  </div>
+
+  <section class="screen active" id="loadingScreen" aria-label="Loading">
+    <div class="loading-content">
+      <h1 class="loading-wordmark">FORMU<span class="red-one">1</span>A</h1>
+      <div class="load-row"><span>Initializing paddock</span><span id="loadPercent">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="loading-sub" id="loadingTip">Preparing your racing world...</div>
+    </div>
+  </section>
+
+  <section class="screen" id="titleScreen" aria-label="Title screen">
+    <div style="text-align:center;margin-top:2vh">
+      <h1 class="logo">FORMU<span class="red-one">1</span>A</h1>
+      <div class="tagline">YOUR CAREER. YOUR LEGACY.</div>
+    </div>
+  </section>
+
+  <nav class="menu" id="mainMenu" aria-label="Main menu">
+    <button class="menu-button primary" disabled><span class="num">01</span><span class="label">START</span><span class="lock">🔒</span></button>
+    <button class="menu-button" disabled><span class="num">02</span><span class="label">LOAD CAREER</span><span class="lock">🔒</span></button>
+    <button class="menu-button" disabled><span class="num">03</span><span class="label">EDIT DRIVER &amp; LIVERY</span><span class="lock">🔒</span></button>
+    <button class="menu-button" disabled><span class="num">04</span><span class="label">SETTINGS</span><span class="lock">🔒</span></button>
+    <button class="menu-button" disabled><span class="num">05</span><span class="label">QUIT</span><span class="lock">🔒</span></button>
+  </nav>
+  <div class="footer" id="footer">FOUNDATION BUILD · V0.1<br>MENU FEATURES NOT YET AVAILABLE</div>
+</main>
+<script>
+(() => {
+  const loadingScreen = document.getElementById('loadingScreen');
+  const titleScreen = document.getElementById('titleScreen');
+  const menu = document.getElementById('mainMenu');
+  const carWrap = document.getElementById('carWrap');
+  const progressFill = document.getElementById('progressFill');
+  const loadPercent = document.getElementById('loadPercent');
+  const loadingTip = document.getElementById('loadingTip');
+  const status = document.getElementById('status');
+  const soundToggle = document.getElementById('soundToggle');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Music intentionally not connected yet. We'll add selected NCS tracks later.
+  soundToggle.addEventListener('click', () => {
+    soundToggle.textContent = soundToggle.textContent.includes('PENDING')
+      ? 'SOUND · OFF'
+      : 'SOUND · PENDING';
+  });
+
+  const loadingDuration = reducedMotion ? 250 : 3200;
+  const titleHold = reducedMotion ? 300 : 1900;
+  const menuDelay = reducedMotion ? 100 : 350;
+
+  const start = performance.now();
+  function updateLoading(now) {
+    const amount = Math.min(1, (now - start) / loadingDuration);
+    const percent = Math.round(amount * 100);
+    progressFill.style.width = percent + '%';
+    loadPercent.textContent = percent + '%';
+    if (amount > .35) loadingTip.textContent = 'Calibrating the grid...';
+    if (amount > .72) loadingTip.textContent = 'Welcome to the paddock.';
+    if (amount < 1) requestAnimationFrame(updateLoading);
+    else {
+      setTimeout(() => {
+        loadingScreen.classList.remove('active');
+        titleScreen.classList.add('active');
+        status.textContent = 'FORMU1A · CAREER MODE';
+        carWrap.style.animation = 'carReveal 1.4s cubic-bezier(.2,.8,.2,1) both';
+        setTimeout(() => {
+          menu.classList.add('revealed');
+          status.textContent = 'MAIN MENU · FOUNDATION BUILD';
+        }, titleHold + menuDelay);
+      }, 250);
+    }
+  }
+  requestAnimationFrame(updateLoading);
+})();
+</script>
+</body>
+</html>
