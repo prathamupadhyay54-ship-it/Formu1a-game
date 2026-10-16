@@ -18,18 +18,18 @@
 .loadrow{display:flex;justify-content:space-between;color:#9696a0;font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px}
 .track{height:3px;background:#25252b;overflow:hidden}.fill{height:100%;width:0;background:var(--red);box-shadow:0 0 12px #ed1c2e99}
 .tip{color:#656570;font-size:12px;margin-top:12px}
-.intro{position:absolute;inset:0;display:none;align-items:center;justify-content:center}
+.intro{position:absolute;inset:0;display:none;align-items:center;justify-content:center;overflow:hidden;z-index:3}
 .intro.play{display:flex}
-.brand{position:absolute;top:50%;transform:translateY(-50%);font-size:clamp(42px,10vw,96px);font-weight:1000;letter-spacing:-.08em;white-space:nowrap;animation:brandUp 1.2s cubic-bezier(.55,0,.3,1) forwards}
-.bars{position:absolute;top:50%;left:50%;width:clamp(120px,27vw,220px);height:0;transform:translate(-50%,-50%);display:flex;justify-content:space-between}
-.bars i{display:block;width:clamp(13px,3vw,25px);height:0;background:#f4f4f4;animation:barsUp 1.35s cubic-bezier(.2,.8,.2,1) forwards}
+.brand{position:absolute;top:88%;transform:translateY(-50%);font-size:clamp(42px,10vw,96px);font-weight:1000;letter-spacing:-.08em;white-space:nowrap;animation:brandJourney 2.55s cubic-bezier(.55,0,.3,1) forwards;z-index:2}
+.bars{position:absolute;bottom:0;left:50%;width:clamp(120px,27vw,220px);height:0;transform:translateX(-50%);display:flex;justify-content:space-between;align-items:flex-end;z-index:1}
+.bars i{display:block;width:clamp(13px,3vw,25px);height:0;background:#f4f4f4;animation:barsUp 3.25s cubic-bezier(.2,.8,.2,1) forwards}
 .bars i:nth-child(2){animation-delay:.12s}.bars i:nth-child(3){animation-delay:.24s}
-.thegame{position:absolute;left:50%;top:50%;transform:translate(-50%,30px);font-size:clamp(22px,5vw,44px);font-weight:900;letter-spacing:.18em;white-space:nowrap;opacity:0;animation:gameUp .9s ease 1.25s forwards}
+.thegame{position:absolute;left:50%;top:76%;transform:translate(-50%,-50%);font-size:clamp(22px,5vw,44px);font-weight:900;letter-spacing:.18em;white-space:nowrap;opacity:0;animation:gameJourney 2.2s ease 1.35s forwards;z-index:2;background:#050505;padding:8px 12px}
 .intro.vanish .thegame{animation:gameAway .65s ease forwards}
-@keyframes brandUp{0%{top:50%;opacity:1;transform:translateY(-50%)}100%{top:22%;opacity:0;transform:translateY(-90px)}}
-@keyframes barsUp{from{height:0}to{height:43vh}}
-@keyframes gameUp{from{opacity:0;transform:translate(-50%,34px)}to{opacity:1;transform:translate(-50%,-50%)}}
-@keyframes gameAway{from{opacity:1;transform:translate(-50%,-50%)}to{opacity:0;transform:translate(-50%,-115px)}}
+@keyframes brandJourney{0%{top:90%;opacity:0;transform:translate(-50%,-50%)}12%{opacity:1}42%{top:50%;opacity:1;transform:translate(-50%,-50%)}100%{top:8%;opacity:0;transform:translate(-50%,-50%)}}
+@keyframes barsUp{0%{height:0}100%{height:83vh}}
+@keyframes gameJourney{0%{top:76%;opacity:0}18%{top:76%;opacity:1}65%{top:50%;opacity:1}100%{top:8%;opacity:0}}
+@keyframes gameAway{from{opacity:1;top:50%}to{opacity:0;top:5%}}
 .title{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding-top:clamp(34px,8vh,85px);opacity:0;transition:opacity .8s}
 .title.show{opacity:1}
 .title h1{margin:0;font-size:clamp(44px,9vw,100px);font-weight:1000;letter-spacing:-.085em}
@@ -80,28 +80,37 @@
  const status=document.getElementById('status'), sound=document.getElementById('sound');
  sound.addEventListener('click',()=>{sound.textContent=sound.textContent.includes('PENDING')?'SOUND · OFF':'SOUND · PENDING'});
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
- const duration=reduced?300:3200, started=performance.now();
- function frame(now){
-  const p=Math.min(1,(now-started)/duration), n=Math.round(p*100);
-  fill.style.width=n+'%';percent.textContent=n+'%';
-  if(p>.36)tip.textContent='Calibrating the grid...';
-  if(p>.72){tip.textContent='Welcome to the paddock.';loadtext.textContent='Ready for lights out';}
-  if(p<1){requestAnimationFrame(frame);return}
-  setTimeout(()=>{
+ const duration=reduced?500:3900, started=performance.now();
+ let loadingFinished=false, introFinished=false;
+ function finishIfReady(){
+   if(!loadingFinished || !introFinished) return;
    loading.classList.add('fade');
    setTimeout(()=>{
-    loading.style.display='none';intro.classList.add('play');status.textContent='FORMU1A · TITLE SEQUENCE';
-    setTimeout(()=>{
-     intro.classList.add('vanish');
-     setTimeout(()=>{
-      intro.style.display='none';title.classList.add('show');
-      setTimeout(()=>{menu.classList.add('show');status.textContent='MAIN MENU · FOUNDATION BUILD'},reduced?80:500);
-     },reduced?80:650);
-    },reduced?300:2300);
+     loading.style.display='none';
+     intro.style.display='none';
+     title.classList.add('show');
+     status.textContent='FORMU1A · CAREER MODE';
+     setTimeout(()=>{menu.classList.add('show');status.textContent='MAIN MENU · FOUNDATION BUILD'},reduced?80:500);
    },reduced?50:650);
-  },250);
+ }
+ function frame(now){
+   const p=Math.min(1,(now-started)/duration), n=Math.round(p*100);
+   fill.style.width=n+'%'; percent.textContent=n+'%';
+   if(p>.3) tip.textContent='Calibrating the grid...';
+   if(p>.68){tip.textContent='Welcome to the paddock.';loadtext.textContent='Ready for lights out';}
+   if(p<1) requestAnimationFrame(frame);
+   else {loadingFinished=true;finishIfReady();}
  }
  requestAnimationFrame(frame);
+ // Start the logo/line animation while the loading bar is still progressing.
+ setTimeout(()=>{
+   intro.classList.add('play');
+   status.textContent='FORMU1A · TITLE SEQUENCE';
+   setTimeout(()=>{
+     intro.classList.add('vanish');
+     setTimeout(()=>{introFinished=true;finishIfReady();},reduced?100:700);
+   },reduced?500:3300);
+ },reduced?100:500);
 })();
 </script>
 </body>
