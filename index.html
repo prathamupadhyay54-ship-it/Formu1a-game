@@ -1,36 +1,201 @@
 <!doctype html>
-<html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#050505">
-<title>FORMU1A — Foundation</title>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>FORMU1A — Intro Prototype</title>
 <style>
-:root{--red:#ed1c2e;--white:#f5f5f5}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#050505;color:var(--white);font-family:Arial,Helvetica,sans-serif;overflow:hidden}
-.scene{position:relative;width:100%;height:100svh;min-height:480px;background:#050505;overflow:hidden;isolation:isolate}.scene:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,#141414 0%,#050505 58%,#000 100%);z-index:-2}
-.status{position:absolute;top:24px;left:24px;color:#55555e;font-size:9px;letter-spacing:.2em;z-index:10}.sound{position:absolute;right:20px;top:18px;padding:10px 12px;border:1px solid #303036;background:#09090c;color:#aaa;font-size:10px;letter-spacing:.1em;z-index:10}
-.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .6s;z-index:5}.loading.show{opacity:1;visibility:visible}.loading-inner{position:absolute;left:clamp(24px,7vw,100px);right:clamp(24px,7vw,100px);bottom:clamp(28px,7vh,74px)}
-.wordmark{font-size:clamp(30px,7vw,64px);font-weight:1000;letter-spacing:-.075em;margin:0 0 20px}.red{color:var(--red)}.loadrow{display:flex;justify-content:space-between;color:#9696a0;font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px}.track{height:3px;background:#25252b;overflow:hidden}.fill{height:100%;width:0;background:var(--red);box-shadow:0 0 12px #ed1c2e99}.tip{color:#656570;font-size:12px;margin-top:12px}
-.intro{position:absolute;inset:0;display:none;overflow:hidden;z-index:3}.intro.play{display:block}
-.brand{position:absolute;left:50%;top:90%;transform:translate(-50%,0);font-size:clamp(42px,10vw,96px);font-weight:1000;letter-spacing:.04em;white-space:nowrap;opacity:0;animation:brandRise 5.2s linear forwards;z-index:2}
-.bars{position:absolute;bottom:0;left:50%;width:clamp(120px,27vw,220px);height:0;transform:translateX(-50%);display:flex;justify-content:space-between;align-items:flex-end;z-index:1}.bars:after{content:"";position:fixed;left:0;right:0;top:48%;height:12%;background:#050505;z-index:2;pointer-events:none}
-.bars i{display:block;width:clamp(13px,3vw,25px);height:0;background:#ed1c2e;animation:barsUp 5.2s linear forwards}
-.thegame{position:absolute;left:50%;top:100%;transform:translate(-50%,0);font-size:clamp(42px,10vw,96px);font-weight:1000;line-height:.94;letter-spacing:.04em;text-align:center;white-space:nowrap;opacity:0;z-index:3;animation:gameRise 5.2s linear 1.9s forwards}
-@keyframes brandRise{0%{top:90%;opacity:0;transform:translate(-50%,0)}8%{opacity:1}86%{top:-10%;opacity:1}100%{top:-30%;opacity:0}}
-@keyframes barsUp{0%{height:0}100%{height:100vh}}
-@keyframes gameRise{0%{top:100%;opacity:0;transform:translate(-50%,0)}8%{opacity:1}55%{top:44%;opacity:1;transform:translate(-50%,-50%)}86%{top:-10%;opacity:1;transform:translate(-50%,-50%)}100%{top:-30%;opacity:0;transform:translate(-50%,-50%)}}
-.title{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding-top:clamp(34px,8vh,85px);opacity:0;transition:opacity .8s;z-index:1}.title.show{opacity:1}.title h1{margin:0;font-size:clamp(44px,9vw,100px);font-weight:1000;letter-spacing:-.085em}.tagline{font-size:10px;letter-spacing:.28em;text-align:center;color:#c0c0c6;margin-top:16px}
-.menu{position:absolute;left:clamp(20px,7vw,96px);bottom:clamp(24px,7vh,76px);width:min(340px,calc(100% - 40px));display:flex;flex-direction:column;gap:9px;opacity:0;transform:translateY(18px);pointer-events:none;transition:opacity .8s,transform .8s;z-index:6}.menu.show{opacity:1;transform:translateY(0)}.menu button{display:flex;align-items:center;gap:14px;width:100%;min-height:49px;text-align:left;padding:12px 15px;border:1px solid #ffffff20;border-radius:3px;background:#101014dd;color:#777;cursor:not-allowed}.menu button:first-child{min-height:58px;background:#ed1c2e18;border-color:#ed1c2e66}.num{color:var(--red);font-size:11px;font-weight:800}.label{flex:1;font-size:12px;font-weight:800;letter-spacing:.11em}.lock{color:#555;font-size:12px}.footer{position:absolute;right:24px;bottom:30px;color:#595961;font-size:9px;letter-spacing:.13em;text-align:right;z-index:6}
-@media(max-width:600px){.menu{bottom:clamp(22px,6vh,52px);gap:7px}.menu button{min-height:44px;padding:10px 12px}.menu button:first-child{min-height:50px}.footer{display:none}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-</style></head><body><main class="scene">
-<div class="status" id="status">SYSTEM BOOT · FORMU1A</div><button class="sound" id="sound" type="button">SOUND · PENDING</button>
-<section class="intro" id="intro" aria-hidden="true"><div class="brand">FORMU<span>1</span>A</div><div class="bars"><i></i><i></i><i></i></div><div class="thegame">THE<br>GAME</div></section>
-<section class="loading" id="loading" aria-label="Loading game"><div class="loading-inner"><h1 class="wordmark">FORMU<span class="red">1</span>A</h1><div class="loadrow"><span id="loadtext">Initializing paddock</span><span id="percent">0%</span></div><div class="track"><div class="fill" id="fill"></div></div><div class="tip" id="tip">Preparing your racing world...</div></div></section>
-<section class="title" id="title"><div><h1>FORMU<span class="red">1</span>A</h1><div class="tagline">YOUR CAREER. YOUR LEGACY.</div></div></section>
-<nav class="menu" id="menu" aria-label="Main menu"><button disabled><span class="num">01</span><span class="label">START</span><span class="lock">🔒</span></button><button disabled><span class="num">02</span><span class="label">LOAD CAREER</span><span class="lock">🔒</span></button><button disabled><span class="num">03</span><span class="label">EDIT DRIVER &amp; LIVERY</span><span class="lock">🔒</span></button><button disabled><span class="num">04</span><span class="label">SETTINGS</span><span class="lock">🔒</span></button><button disabled><span class="num">05</span><span class="label">QUIT</span><span class="lock">🔒</span></button></nav>
-<div class="footer">FOUNDATION BUILD · V0.6<br>MENU FEATURES NOT YET AVAILABLE</div></main>
+:root{--red:#ed1c2e;--black:#050505;--white:#f5f5f5}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--black);color:var(--white);font-family:Arial,Helvetica,sans-serif}
+button{font:inherit}
+.stage{position:relative;width:100%;height:100svh;min-height:480px;overflow:hidden;background:#050505;isolation:isolate}
+#ripCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:4;display:block}
+.logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;white-space:nowrap;font-size:clamp(48px,11vw,110px);font-weight:1000;letter-spacing:.045em;line-height:1;color:#f7f7f7;opacity:0;transition:opacity .7s}
+.logo .one{color:#f7f7f7;transition:color .55s}
+.logo.revealed{opacity:1}
+.logo.final .one{color:var(--red)}
+.micro{position:absolute;left:22px;top:22px;z-index:8;color:#777781;font-size:10px;letter-spacing:.22em;text-transform:uppercase}
+.sound{position:absolute;right:18px;top:16px;z-index:10;border:1px solid #393940;background:#09090dcc;color:#c6c6cc;padding:11px 13px;font-size:10px;letter-spacing:.12em;cursor:pointer}
+.sound:active{transform:scale(.98)}
+.hint{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);z-index:8;color:#777781;font-size:10px;letter-spacing:.14em;text-align:center;white-space:nowrap}
+.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 45%,#151515,#050505 68%);z-index:6;opacity:0;visibility:hidden;transition:opacity .65s}
+.loading.show{opacity:1;visibility:visible}
+.load-inner{position:absolute;left:clamp(24px,7vw,100px);right:clamp(24px,7vw,100px);bottom:clamp(30px,7vh,76px)}
+.load-logo{font-size:clamp(36px,8vw,72px);font-weight:1000;letter-spacing:.035em;margin:0 0 24px}
+.load-logo .one{color:var(--red)}
+.load-row{display:flex;justify-content:space-between;color:#92929b;font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px}
+.track{height:3px;background:#29292e;overflow:hidden}.fill{height:100%;width:0;background:var(--red);box-shadow:0 0 12px #ed1c2e88}
+.tip{color:#686873;font-size:12px;margin-top:12px}
+.title{position:absolute;inset:0;z-index:1;display:flex;align-items:flex-start;justify-content:center;padding-top:clamp(42px,9vh,90px);opacity:0;transition:opacity .7s;pointer-events:none}
+.title.show{opacity:1}.title h1{margin:0;font-size:clamp(44px,9vw,100px);font-weight:1000;letter-spacing:.035em}.title .one{color:var(--red)}.tag{margin-top:12px;text-align:center;font-size:10px;letter-spacing:.28em;color:#a7a7b0}
+.menu{position:absolute;z-index:7;left:clamp(22px,7vw,96px);bottom:clamp(24px,7vh,76px);width:min(340px,calc(100% - 44px));display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(15px);pointer-events:none;transition:opacity .7s,transform .7s}
+.menu.show{opacity:1;transform:translateY(0)}.menu button{display:flex;gap:14px;align-items:center;min-height:47px;padding:12px 14px;text-align:left;border:1px solid #ffffff20;background:#101014dd;color:#777;cursor:not-allowed}.menu button:first-child{min-height:55px;background:#ed1c2e18;border-color:#ed1c2e66}.num{color:var(--red);font-size:11px;font-weight:800}.label{flex:1;font-size:12px;font-weight:800;letter-spacing:.12em}.lock{font-size:12px;color:#555}
+.footer{position:absolute;right:22px;bottom:26px;color:#595961;font-size:9px;letter-spacing:.13em;text-align:right;z-index:7}
+@media(max-width:600px){.menu{bottom:clamp(24px,6vh,52px)}.menu button{min-height:43px;padding:10px 12px}.menu button:first-child{min-height:49px}.footer{display:none}.micro{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.loading,.title,.menu,.logo,.logo .one{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main class="stage" id="stage">
+  <div class="micro" id="micro">FORMU1A · TITLE SEQUENCE</div>
+  <button class="sound" id="soundBtn" type="button">SOUND · OFF</button>
+  <div class="logo" id="logo" aria-label="FORMU1A">FORMU<span class="one" id="one">1</span>A</div>
+  <canvas id="ripCanvas" aria-hidden="true"></canvas>
+  <div class="hint" id="hint">RACING IS ABOUT TO BREAK THROUGH</div>
+
+  <section class="loading" id="loading" aria-label="Loading game">
+    <div class="load-inner">
+      <h1 class="load-logo">FORMU<span class="one">1</span>A</h1>
+      <div class="load-row"><span id="loadText">INITIALIZING PADDOCK</span><span id="percent">0%</span></div>
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <div class="tip" id="tip">Preparing your racing world...</div>
+    </div>
+  </section>
+  <section class="title" id="title"><div><h1>FORMU<span class="one">1</span>A</h1><div class="tag">YOUR CAREER. YOUR LEGACY.</div></div></section>
+  <nav class="menu" id="menu" aria-label="Main menu">
+    <button disabled><span class="num">01</span><span class="label">START</span><span class="lock">🔒</span></button>
+    <button disabled><span class="num">02</span><span class="label">LOAD CAREER</span><span class="lock">🔒</span></button>
+    <button disabled><span class="num">03</span><span class="label">EDIT DRIVER &amp; LIVERY</span><span class="lock">🔒</span></button>
+    <button disabled><span class="num">04</span><span class="label">SETTINGS</span><span class="lock">🔒</span></button>
+    <button disabled><span class="num">05</span><span class="label">QUIT</span><span class="lock">🔒</span></button>
+  </nav>
+  <div class="footer">FOUNDATION BUILD · V0.7<br>MENU FEATURES NOT YET AVAILABLE</div>
+</main>
 <script>
-(()=>{const intro=document.getElementById('intro'),loading=document.getElementById('loading'),title=document.getElementById('title'),menu=document.getElementById('menu'),fill=document.getElementById('fill'),percent=document.getElementById('percent'),loadtext=document.getElementById('loadtext'),tip=document.getElementById('tip'),status=document.getElementById('status'),sound=document.getElementById('sound');
-sound.addEventListener('click',()=>{sound.textContent=sound.textContent.includes('PENDING')?'SOUND · OFF':'SOUND · PENDING'});
-const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,wait=ms=>new Promise(r=>setTimeout(r,reduced?Math.min(ms,120):ms));
-async function run(){status.textContent='FORMU1A · TITLE SEQUENCE';intro.classList.add('play');await wait(7500);intro.style.display='none';loading.classList.add('show');status.textContent='SYSTEM BOOT · FORMU1A';
-const duration=reduced?500:4200,start=performance.now();function update(now){const p=Math.min(1,(now-start)/duration),n=Math.round(p*100);fill.style.width=n+'%';percent.textContent=n+'%';if(p>.3)tip.textContent='Calibrating the grid...';if(p>.68){tip.textContent='Welcome to the paddock.';loadtext.textContent='Ready for lights out'}if(p<1)requestAnimationFrame(update);else setTimeout(async()=>{loading.style.opacity='0';await wait(650);loading.style.display='none';title.classList.add('show');status.textContent='FORMU1A · CAREER MODE';await wait(500);menu.classList.add('show');status.textContent='MAIN MENU · FOUNDATION BUILD'},250)}requestAnimationFrame(update)}
-run()})();
-</script></body></html>
+(()=> {
+const canvas=document.getElementById('ripCanvas'),ctx=canvas.getContext('2d');
+const stage=document.getElementById('stage'),logo=document.getElementById('logo'),one=document.getElementById('one');
+const soundBtn=document.getElementById('soundBtn'),hint=document.getElementById('hint'),micro=document.getElementById('micro');
+const loading=document.getElementById('loading'),title=document.getElementById('title'),menu=document.getElementById('menu');
+const fill=document.getElementById('fill'),percent=document.getElementById('percent'),loadText=document.getElementById('loadText'),tip=document.getElementById('tip');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let W=0,H=0,dpr=1,start=0,raf=0,done=false,audioOn=false,audioCtx=null,master=null,scheduled=[];
+const RED='#c8102e', BLACK='#050505';
+function resize(){
+  const r=stage.getBoundingClientRect();W=r.width;H=r.height;dpr=Math.min(devicePixelRatio||1,2);
+  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);canvas.style.width=W+'px';canvas.style.height=H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+addEventListener('resize',resize);resize();
+
+const cars=[
+ {name:'KART',x:.17,color:'#ff9c39',w:.035,len:.10,speed:.76,delay:.08,pitch:112},
+ {name:'F4',x:.25,color:'#24d36d',w:.040,len:.12,speed:.82,delay:.16,pitch:82},
+ {name:'F3',x:.34,color:'#f3f3f3',w:.043,len:.13,speed:.90,delay:.23,pitch:68},
+ {name:'F2',x:.43,color:'#2d69ff',w:.045,len:.14,speed:.95,delay:.31,pitch:57},
+ {name:'F1',x:.52,color:'#ff2438',w:.048,len:.15,speed:1.02,delay:.38,pitch:48},
+ {name:'F2',x:.61,color:'#c77dff',w:.045,len:.14,speed:.92,delay:.45,pitch:61},
+ {name:'F3',x:.70,color:'#55e8e5',w:.043,len:.13,speed:.88,delay:.52,pitch:72},
+ {name:'F4',x:.79,color:'#ffd84a',w:.040,len:.12,speed:.84,delay:.59,pitch:88},
+ {name:'F1',x:.87,color:'#ff2939',w:.048,len:.15,speed:1.04,delay:.66,pitch:51}
+];
+function roundRect(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r);c.fill();}
+function drawCar(c,x,y,w,h,color){
+  c.save();c.translate(x,y);
+  // Long coloured speed trail above each car.
+  c.globalAlpha=.88;c.fillStyle=color;roundRect(c,-w*.20,h*.55,w*.40,h*2.9,w*.08);
+  c.globalAlpha=1;
+  // overhead open-wheel silhouette
+  c.fillStyle='#111116';roundRect(c,-w*.52,-h*.05,w*1.04,h*.20,w*.12);
+  c.fillStyle=color;roundRect(c,-w*.29,-h*.25,w*.58,h*.70,w*.17);
+  c.fillStyle='#16161a';roundRect(c,-w*.18,-h*.08,w*.36,h*.34,w*.12);
+  c.fillStyle='#d9e0e8';roundRect(c,-w*.10,-h*.02,w*.20,h*.18,w*.06);
+  c.fillStyle=color;roundRect(c,-w*.62,h*.55,w*1.24,h*.13,w*.06);
+  c.fillStyle='#0b0b0e';
+  roundRect(c,-w*.55,h*.04,w*.20,h*.24,w*.06);roundRect(c,w*.35,h*.04,w*.20,h*.24,w*.06);
+  roundRect(c,-w*.55,h*.49,w*.20,h*.24,w*.06);roundRect(c,w*.35,h*.49,w*.20,h*.24,w*.06);
+  c.restore();
+}
+function paint(now){
+  const elapsed=(now-start)/1000;
+  ctx.clearRect(0,0,W,H);
+  // The red top layer covers the title until cars tear it away.
+  ctx.fillStyle=RED;ctx.fillRect(0,0,W,H);
+  // faint red paper texture / racing streaks
+  ctx.globalAlpha=.10;ctx.fillStyle='#ff6875';
+  for(let i=0;i<14;i++){const y=((i*137+elapsed*90)% (H+80))-40;ctx.fillRect(0,y,W,1)}
+  ctx.globalAlpha=1;
+  // Erase torn channels from the red overlay, exposing black and the white title below.
+  ctx.save();ctx.globalCompositeOperation='destination-out';
+  for(const car of cars){
+    const t=elapsed-car.delay;if(t<0)continue;
+    const progress=Math.min(1,t*car.speed/Math.max(.6,H/900));
+    const y=H+80-progress*(H+180);
+    const x=car.x*W+Math.sin(t*1.25+car.x*8)*W*.006;
+    const ww=Math.max(9,car.w*W),hh=Math.max(30,car.len*H);
+    // The rip widens and has tiny side tears as the car passes.
+    ctx.beginPath();ctx.moveTo(x-ww*.42,H);ctx.lineTo(x-ww*.20,y+hh*.35);ctx.lineTo(x-ww*.34,y+hh*.02);
+    ctx.lineTo(x-ww*.16,y-hh*.5);ctx.lineTo(x+ww*.10,y-hh*.18);ctx.lineTo(x+ww*.32,y-hh*.7);
+    ctx.lineTo(x+ww*.45,y+hh*.20);ctx.lineTo(x+ww*.22,y+hh*.5);ctx.lineTo(x+ww*.42,H);ctx.closePath();ctx.fill();
+    // small lateral cracks around the moving car make the opening feel torn, not geometric.
+    for(let k=-1;k<=1;k+=2){
+      ctx.beginPath();ctx.moveTo(x+k*ww*.28,y+hh*.18);ctx.lineTo(x+k*ww*.78,y-hh*.12);ctx.lineTo(x+k*ww*.55,y+hh*.42);ctx.closePath();ctx.fill();
+    }
+  }
+  ctx.restore();
+  // Cars are visible on top of the red sheet while passing.
+  for(const car of cars){
+    const t=elapsed-car.delay;if(t<0)continue;
+    const progress=Math.min(1,t*car.speed/Math.max(.6,H/900));
+    const y=H+80-progress*(H+180);
+    const x=car.x*W+Math.sin(t*1.25+car.x*8)*W*.006;
+    drawCar(ctx,x,y,Math.max(10,car.w*W),Math.max(26,car.len*H*.42),car.color);
+  }
+  if(elapsed>2.6){logo.classList.add('revealed')}
+  if(elapsed>4.2){logo.classList.add('final');hint.textContent='FORMU1A';micro.textContent='FORMU1A · RACING REVEALED'}
+  if(elapsed>6.4&&!done){done=true;finishIntro();return}
+  raf=requestAnimationFrame(paint);
+}
+function finishIntro(){
+  cancelAnimationFrame(raf);
+  canvas.style.display='none';logo.classList.remove('revealed','final');hint.style.display='none';micro.textContent='SYSTEM BOOT · FORMU1A';
+  loading.classList.add('show');
+  const duration=reduce?400:3600,startTime=performance.now();
+  function load(now){
+    const p=Math.min(1,(now-startTime)/duration),n=Math.round(p*100);
+    fill.style.width=n+'%';percent.textContent=n+'%';
+    if(p>.32)tip.textContent='Calibrating the grid...';
+    if(p>.7){tip.textContent='Welcome to the paddock.';loadText.textContent='READY FOR LIGHTS OUT'}
+    if(p<1)requestAnimationFrame(load);
+    else setTimeout(()=>{loading.classList.remove('show');loading.style.display='none';title.classList.add('show');setTimeout(()=>menu.classList.add('show'),450);},250);
+  }requestAnimationFrame(load);
+}
+// Audio is generated locally with Web Audio: distinct synthesized engine tones for kart/F4/F3/F2/F1 pass-bys.
+// It is intentionally started only after tapping the sound button, because mobile browsers block autoplay audio.
+function startAudio(){
+  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;
+  audioCtx=new AC();master=audioCtx.createGain();master.gain.value=.20;master.connect(audioCtx.destination);
+  const now=audioCtx.currentTime;
+  cars.forEach((car,i)=>{
+    const when=now+car.delay*1.1;
+    const osc=audioCtx.createOscillator(),sub=audioCtx.createOscillator(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain(),pan=audioCtx.createStereoPanner();
+    const base=car.pitch;
+    osc.type=car.name==='KART'?'sawtooth':(car.name==='F1'?'sawtooth':'triangle');
+    sub.type='sine';osc.frequency.setValueAtTime(base*2.8,when);osc.frequency.exponentialRampToValueAtTime(base*7.5,when+1.15);osc.frequency.exponentialRampToValueAtTime(base*2.1,when+2.35);
+    sub.frequency.setValueAtTime(base*.8,when);sub.frequency.exponentialRampToValueAtTime(base*1.8,when+1.1);sub.frequency.exponentialRampToValueAtTime(base*.65,when+2.35);
+    filter.type='lowpass';filter.frequency.setValueAtTime(car.name==='F1'?1800:car.name==='KART'?3200:2300,when);filter.frequency.exponentialRampToValueAtTime(650,when+2.3);
+    gain.gain.setValueAtTime(.0001,when);gain.gain.exponentialRampToValueAtTime(car.name==='F1'?.20:.105,when+.18);gain.gain.setValueAtTime(car.name==='F1'?.20:.105,when+1.0);gain.gain.exponentialRampToValueAtTime(.0001,when+2.4);
+    pan.pan.setValueAtTime(-.85+(i/(cars.length-1))*1.7,when);pan.pan.linearRampToValueAtTime(.85-(i/(cars.length-1))*1.7,when+2.3);
+    osc.connect(filter);sub.connect(filter);filter.connect(gain);gain.connect(pan);pan.connect(master);
+    osc.start(when);sub.start(when);osc.stop(when+2.45);sub.stop(when+2.45);
+  });
+  return true;
+}
+soundBtn.addEventListener('click',async()=>{
+  if(!audioOn){
+    const ok=startAudio();if(!ok){soundBtn.textContent='AUDIO NOT SUPPORTED';return}
+    audioOn=true;soundBtn.textContent='SOUND · ON';
+    if(master)master.gain.setTargetAtTime(.20,audioCtx.currentTime,.04);
+    if(audioCtx.state==='suspended')await audioCtx.resume();
+  }else{
+    audioOn=false;if(master)master.gain.setTargetAtTime(0,audioCtx.currentTime,.04);soundBtn.textContent='SOUND · OFF';
+  }
+});
+function begin(){start=performance.now();if(reduce){hint.textContent='FORMU1A';}raf=requestAnimationFrame(paint)}
+begin();
+})();
+</script>
+</body>
+</html>
