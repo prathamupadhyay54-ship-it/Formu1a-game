@@ -77,16 +77,48 @@ function drawSprite(c,x,y,s,car){
 }
 function initRedSheet(){mctx.clearRect(0,0,W,H);mctx.fillStyle=RED;mctx.fillRect(0,0,W,H);mctx.globalAlpha=.1;mctx.fillStyle='#ff5369';for(let i=0;i<12;i++)mctx.fillRect(0,i/12*H,W,1);mctx.globalAlpha=1}
 function cutTrail(x,y,width){
- // Two narrow tire paths with repeated tread blocks, cut through the red sheet to reveal black beneath.
- const trackW=Math.max(2.2,width*.13),separation=Math.max(5,width*.30),bottom=H+5;
- mctx.save();mctx.globalCompositeOperation='destination-out';
+ // Two substantial tyre tracks per car. Each track gets alternating tread gaps,
+ // creating the impression of four tyres leaving two continuous marks.
+ const trackW=Math.max(4,width*.24);
+ const separation=Math.max(9,width*.48);
+ const bottom=H+8;
+ const step=Math.max(10,width*.34);
+ mctx.save();
+ mctx.globalCompositeOperation='destination-out';
  for(const side of [-1,1]){
   const tx=x+side*separation/2;
-  mctx.fillStyle='#000';mctx.fillRect(tx-trackW/2,y,trackW,bottom-y);
-  const step=Math.max(13,width*.62);
-  for(let yy=y+step*.35;yy<bottom;yy+=step){
-   const offset=((Math.floor((yy-y)/step)%2)===0?1:-1)*trackW*.9;
-   mctx.fillRect(tx-trackW/2+offset,yy,trackW*.7,Math.max(3,width*.12));
+  // Slightly irregular edges keep the print from looking like a perfect stripe.
+  mctx.beginPath();
+  mctx.moveTo(tx-trackW*.48,y);
+  for(let yy=y;yy<=bottom;yy+=step*.5){
+   const wobble=((Math.floor((yy-y)/(step*.5))%2)?1:-1)*trackW*.08;
+   mctx.lineTo(tx-trackW*.5+wobble,yy);
+  }
+  mctx.lineTo(tx+trackW*.5,bottom);
+  for(let yy=bottom;yy>=y;yy-=step*.5){
+   const wobble=((Math.floor((yy-y)/(step*.5))%2)?-1:1)*trackW*.08;
+   mctx.lineTo(tx+trackW*.5+wobble,yy);
+  }
+  mctx.closePath();
+  mctx.fill();
+ }
+ mctx.restore();
+ // Repaint short red diagonal gaps into the black reveal for visible tread blocks.
+ mctx.save();
+ mctx.globalCompositeOperation='source-over';
+ mctx.fillStyle=RED;
+ for(const side of [-1,1]){
+  const tx=x+side*separation/2;
+  let row=0;
+  for(let yy=y+step*.38;yy<bottom;yy+=step,row++){
+   const gapW=trackW*.72;
+   const gapH=Math.max(1.8,width*.055);
+   const offset=(row%2===0?-1:1)*trackW*.10;
+   mctx.save();
+   mctx.translate(tx+offset,yy);
+   mctx.rotate((row%2===0?1:-1)*.28);
+   mctx.fillRect(-gapW/2,-gapH/2,gapW,gapH);
+   mctx.restore();
   }
  }
  mctx.restore();
