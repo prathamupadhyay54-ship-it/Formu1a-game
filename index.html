@@ -247,7 +247,7 @@
 .track-stage{position:relative;width:100%;height:clamp(150px,28vh,245px);flex:0 0 auto;display:flex;align-items:center;justify-content:center;margin-top:0;}
 .race-track{width:100%;height:100%;overflow:visible;}
 .track-shadow{fill:none;stroke:#ed1c2e;stroke-width:17;opacity:.10;filter:url(#trackGlow);}
-.track-line{fill:none;stroke:#f4f4f4;stroke-width:5.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 4px #ed1c2e88);}
+.track-line{fill:none;stroke:#f4f4f4;stroke-width:7.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 4px #ed1c2e88);}
 .track-inner{fill:none;stroke:#5a5a60;stroke-width:1.3;stroke-dasharray:3 7;opacity:.8;}
 .sector-mark{fill:none;stroke-width:3;stroke-linecap:round;opacity:.9;}
 .sector-a{stroke:#bd63ff}.sector-b{stroke:#32e889}.sector-c{stroke:#ffd83d}
@@ -293,7 +293,7 @@
 .bic-heading{flex:0 0 auto!important;gap:3px!important;margin-bottom:0!important;}
 .track-stage{height:clamp(240px,37vh,390px)!important;width:100%!important;flex:1 1 auto!important;min-height:220px!important;margin:2px 0 0!important;overflow:visible!important;}
 .menu-art svg.race-track{display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;height:100%!important;min-height:220px!important;overflow:visible!important;flex:1 1 auto!important;}
-.track-line{stroke:#f7f7f7!important;stroke-width:5.5!important;filter:drop-shadow(0 0 5px #ed1c2e)!important;}
+.track-line{stroke:#f7f7f7!important;stroke-width:7.5!important;filter:drop-shadow(0 0 5px #ed1c2e)!important;}
 .track-shadow{stroke:#ed1c2e!important;stroke-width:15!important;opacity:.2!important;filter:url(#trackGlow)!important;}
 .moving-car{filter:drop-shadow(0 0 6px currentColor)!important;}
 .circuit-arrow{top:50%!important;width:42px!important;height:54px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#f7f7f7!important;font-size:42px!important;line-height:1!important;transform:translateY(-50%)!important;padding:0!important;transition:color .15s,transform .15s!important;}
@@ -328,7 +328,7 @@
 .bic-meta{display:flex!important;flex-wrap:wrap!important;justify-content:center!important;color:#a7a7ad!important;font-size:clamp(9px,2.2vw,12px)!important;letter-spacing:.08em!important;gap:8px!important;}
 .track-stage{position:relative!important;width:100%!important;height:clamp(220px,34vh,400px)!important;min-height:220px!important;flex:1 1 auto!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:3px 0 4px!important;overflow:visible!important;}
 #raceTrack.race-track{display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;height:100%!important;min-height:220px!important;overflow:visible!important;}
-#raceTrack .track-line{stroke:#f4f4f4!important;stroke-width:3.2!important;opacity:1!important;filter:none!important;}
+#raceTrack .track-line{stroke:#f4f4f4!important;stroke-width:7.5!important;opacity:1!important;filter:none!important;}
 #raceTrack .track-shadow{stroke:#f4f4f4!important;stroke-width:7!important;opacity:.10!important;filter:none!important;}
 #raceTrack .track-inner{stroke:#777!important;stroke-width:1!important;stroke-dasharray:3 7!important;opacity:.22!important;}
 #sectorSegments path{fill:none!important;stroke:#f4f4f4!important;stroke-width:3.2!important;stroke-linecap:round!important;stroke-linejoin:round!important;filter:none!important;}
@@ -392,7 +392,7 @@
 
 /* v2.8: one white circuit path only; grey elements are buildings, not track overlays */
 #raceTrack .track-shadow, #raceTrack .track-inner, #raceTrack #sectorSegments, #raceTrack #sectorLabels { display:none!important; stroke:none!important; opacity:0!important; filter:none!important; }
-#raceTrack .track-line, #raceTrack #trackLine { display:block!important; visibility:visible!important; opacity:1!important; stroke:#f4f4f4!important; stroke-width:5!important; filter:drop-shadow(0 0 5px #ed1c2e55)!important; }
+#raceTrack .track-line, #raceTrack #trackLine { display:block!important; visibility:visible!important; opacity:1!important; stroke:#f4f4f4!important; stroke-width:7.5!important; filter:drop-shadow(0 0 5px #ed1c2e55)!important; }
 
 #raceTrack #staticSectorLabels { display:block!important; visibility:visible!important; opacity:1!important; }
 #raceTrack .moving-car { display:block!important; visibility:visible!important; opacity:1!important; }
@@ -426,20 +426,7 @@
           <linearGradient id="pitRoof" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b8d90"/><stop offset="1" stop-color="#55575a"/></linearGradient>
         </defs>
         <!-- Pit complex is drawn as vector geometry; no screenshot or raster map is used. -->
-        <g id="pitBuildings" aria-label="Buddh pit buildings">
-          <path d="M654 756 L1002 730 L1012 779 L661 807 Z" fill="url(#pitRoof)" stroke="#bfc0c2" stroke-width="3"/>
-          <path d="M676 802 L1001 779 L1007 795 L682 821 Z" fill="#55575a" stroke="#a4a6a8" stroke-width="2"/>
-          <path d="M689 829 L835 818 L841 858 L695 870 Z" fill="#45474a" stroke="#8e9093" stroke-width="2"/>
-          <path d="M858 816 L1003 805 L1009 844 L864 856 Z" fill="#45474a" stroke="#8e9093" stroke-width="2"/>
-          <path d="M402 866 L555 846 L570 931 L417 947 Q393 938 402 866 Z" fill="#bfc0c2" stroke="#77797d" stroke-width="10"/>
-          <path d="M1057 810 L1082 805 L1121 939 L1091 944 Z" fill="#bfc0c2" stroke="#77797d" stroke-width="10"/>
-          <path d="M619 806 L1008 779" stroke="#292a2c" stroke-width="18" opacity=".9"/>
-          <path d="M619 806 L1008 779" stroke="#d9d9d9" stroke-width="3"/>
-          <path d="M821 790 L834 789 L836 818 L823 819 Z" fill="#fff"/>
-          <path d="M821 790 L834 789 L834 796 L822 797 Z M823 804 L835 803 L835 810 L824 811 Z" fill="#111"/>
-          <path d="M656 761 L1004 735 M660 770 L1007 744" stroke="#a3a5a8" stroke-width="1.5"/>
-          <path d="M410 875 L548 857 M416 887 L552 869 M1064 822 L1107 931" stroke="#e0e0e0" stroke-width="1.5" opacity=".7"/>
-        </g>
+        <!-- Pit/building structures removed as requested. -->
         <!-- One continuous centerline traced from the supplied circuit reference. -->
         <path id="trackLine" class="track-line" d="M 930 760
           L 1185 723
@@ -464,7 +451,7 @@
           Q 782 535 768 555
           L 620 739 Q 603 760 586 775
           Q 571 789 582 808 Q 592 824 616 821
-          L 930 760 Z" fill="none" stroke="#f4f4f4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#trackGlow)"/>
+          L 930 760 Z" fill="none" stroke="#f4f4f4" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#trackGlow)"/>
         <g id="sectorSegments" aria-hidden="true" style="display:none!important"></g>
         <g id="sectorLabels" aria-hidden="true" style="display:none!important"></g>
         <g id="staticSectorLabels" aria-hidden="true" pointer-events="none">
