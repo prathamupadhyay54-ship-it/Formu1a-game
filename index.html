@@ -360,6 +360,18 @@
 }
 @media(max-height:700px){.menu-art{top:25%!important;height:72%!important}.track-stage{height:clamp(150px,28vh,250px)!important;min-height:150px!important}.menu{top:15%!important;}}
 
+
+/* v2.1 precise header/menu spacing; preserve all race logic and visuals */
+.stage.landscape-menu .logo.parked{left:4.5%!important;top:6.5%!important;transform:none!important;font-size:clamp(26px,4.2vw,46px)!important;line-height:1!important;}
+.stage.landscape-menu .menu-header{top:6.1%!important;right:4.5%!important;left:auto!important;align-items:center!important;}
+.stage.landscape-menu .menu{top:15.5%!important;}
+.stage.landscape-menu .bic-heading{transform:translateY(28px)!important;}
+@media (orientation:portrait){
+ .stage.landscape-menu .logo.parked{left:4.5%!important;top:6.5%!important;font-size:clamp(26px,7vw,38px)!important;}
+ .stage.landscape-menu .menu-header{top:6.1%!important;right:4.5%!important;}
+ .stage.landscape-menu .menu{top:15.5%!important;}
+ .stage.landscape-menu .bic-heading{transform:translateY(28px)!important;}
+}
 </style>
 </head>
 <body>
