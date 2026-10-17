@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050505">
-<title>FORMU1A — Main Menu UI v1.0.1</title>
+<title>FORMU1A — Main Menu UI v1.1</title>
 <style>
 :root{--red:#c8102e;--accent:#ed1c2e;--black:#050505;--white:#f5f5f5}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:var(--white);font-family:Arial,Helvetica,sans-serif}
@@ -60,6 +60,39 @@
 .start-gate-hint{font-size:11px;color:#777780;letter-spacing:.06em}
 .start-gate-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 18px #ed1c2e99;animation:pulse 1.2s ease-in-out infinite}
 @keyframes pulse{50%{opacity:.35;transform:scale(.8)}}
+
+/* FORMU1A v1.1: simplified split-screen menu inspired by the supplied reference */
+.logo.parked{left:26%;top:53%;font-size:clamp(30px,5.4vw,66px);letter-spacing:.015em;transform:translate(-50%,-50%);z-index:7}
+.logo.parked:after{content:"THE GAME";display:block;margin-top:13px;text-align:center;font-size:clamp(9px,1.3vw,14px);font-weight:700;letter-spacing:.52em;color:#e7e7e7}
+.menu-art{left:-5vw;right:auto;top:28%;width:54vw;height:46%;opacity:0;transform:translateX(-12px);filter:grayscale(1)}
+.menu-art.show{opacity:.19;transform:translateX(0)}
+.menu{left:auto;right:clamp(18px,5vw,72px);top:12%;bottom:8%;width:min(48vw,600px);gap:clamp(9px,1.5vh,16px);justify-content:center}
+.menu-card{flex:1;min-height:0;max-height:130px;padding:clamp(12px,1.8vw,22px);gap:clamp(12px,2vw,22px);border-radius:0;background:linear-gradient(105deg,#171719e8 0%,#090909e8 100%);border:1px solid #ffffff27;clip-path:polygon(5% 0,100% 0,100% 82%,93% 100%,0 100%,0 12%);box-shadow:none}
+.menu-card:before{left:0;top:7px;bottom:7px;width:4px;background:#ed1c2e;opacity:1}
+.menu-card:first-child{background:linear-gradient(105deg,#201316ed 0%,#090909ed 100%);border-color:#ffffff3b}
+.menu-icon{flex:0 0 38px;width:38px;height:38px;border:0;background:transparent;border-radius:0}
+.menu-icon svg{width:27px;height:27px}
+.menu-copy{gap:7px}
+.menu-title{font-size:clamp(13px,1.7vw,22px);font-style:italic;letter-spacing:.045em}
+.menu-desc{font-size:clamp(9px,.95vw,12px);letter-spacing:.19em;text-transform:uppercase;color:#b5b5b8}
+.menu-card:after{content:attr(data-number);position:absolute;right:14px;top:2px;font-size:clamp(25px,4.5vw,52px);font-style:italic;font-weight:900;color:#ffffff24;pointer-events:none}
+.menu-header{top:16px;left:clamp(18px,4vw,48px);right:clamp(18px,4vw,48px)}
+.header-icon{border-radius:0;background:#101014aa}
+@media(max-width:700px){
+ .logo.parked{left:50%;top:16%;font-size:clamp(30px,8vw,52px)}
+ .logo.parked:after{margin-top:8px;letter-spacing:.42em}
+ .menu-art{left:-20vw;top:13%;width:105vw;height:35%;opacity:0}
+ .menu-art.show{opacity:.10}
+ .menu{left:18px;right:18px;top:30%;bottom:3%;width:auto;gap:9px;justify-content:center}
+ .menu-card{flex:1;min-height:58px;max-height:none;padding:10px 14px;gap:12px;clip-path:polygon(4% 0,100% 0,100% 82%,94% 100%,0 100%,0 13%)}
+ .menu-icon{flex-basis:34px;width:34px;height:34px}
+ .menu-icon svg{width:23px;height:23px}
+ .menu-title{font-size:12px}
+ .menu-desc{font-size:9px;letter-spacing:.12em}
+ .menu-card:after{right:9px;font-size:26px}
+}
+@media(max-height:620px) and (min-width:701px){.menu{top:9%;bottom:4%;gap:7px}.menu-card{padding:10px 16px}.menu-desc{font-size:9px}}
+
 </style>
 </head>
 <body>
@@ -91,10 +124,11 @@
     </svg>
   </div>
   <nav class="menu" id="menu" aria-label="Main menu">
-    <div class="menu-card"><span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3v18M5 5h13l-2 4 2 4H5"></path></svg></span><span class="menu-copy"><span class="menu-title">START</span><span class="menu-desc">Begin your racing journey</span></span></div>
-    <div class="menu-card"><span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7V4h3M4 4l6 6M20 17v3h-3M20 20l-6-6"></path><rect x="7" y="7" width="10" height="10" rx="1.5"></rect></svg></span><span class="menu-copy"><span class="menu-title">LOAD CAREER</span><span class="menu-desc">Continue your championship</span></span></div>
-    <div class="menu-card"><span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 5.1L20 9l-4 4 .9 5.7-4.9-2.7-4.9 2.7L8 13 4 9l5.6-.9L12 3z"></path><path d="M4 21h16"></path></svg></span><span class="menu-copy"><span class="menu-title">EDIT DRIVER &amp; LIVERY</span><span class="menu-desc">Make your mark on the grid</span></span></div>
-    <div class="menu-card"><span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h5"></path><path d="M15 17l2 2 4-5"></path></svg></span><span class="menu-copy"><span class="menu-title">QUIT</span><span class="menu-desc">Return from the racing experience</span></span></div>
+    <div class="menu-card" data-number="01"><span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3v18M5 5h13l-2 4 2 4H5"></path></svg></span><span class="menu-copy"><span class="menu-title">CAREER</span><span class="menu-desc">Start or continue your journey</span></span></div>
+    <div class="menu-card" data-number="02"><span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 4v6h6M21 20v-6h-6"></path><path d="M5 14a7 7 0 0 0 12 2l4-2M19 10A7 7 0 0 0 7 8L3 10"></path></svg></span><span class="menu-copy"><span class="menu-title">CUSTOM RACE</span><span class="menu-desc">Jump straight onto the grid</span></span></div>
+    <div class="menu-card" data-number="03"><span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4L15 12l-3-3z"></path></svg></span><span class="menu-copy"><span class="menu-title">GARAGE</span><span class="menu-desc">Cars and liveries</span></span></div>
+    <div class="menu-card" data-number="04"><span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.7-3.3 3.1-5 7-5s6.3 1.7 7 5"></path></svg></span><span class="menu-copy"><span class="menu-title">PROFILE</span><span class="menu-desc">Your racing profile</span></span></div>
+    <div class="menu-card" data-number="05"><span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.7 2.94-.09-.03a1.7 1.7 0 0 0-1.8.48l-.06.07h-3.4l-.03-.1a1.7 1.7 0 0 0-1.3-1.25l-.1-.02-2.94-1.7.03-.1a1.7 1.7 0 0 0-.48-1.79l-.07-.06v-3.4l.1-.03a1.7 1.7 0 0 0 1.25-1.3l.02-.1 1.7-2.94.1.03a1.7 1.7 0 0 0 1.79-.48l.06-.07h3.4l.03.1a1.7 1.7 0 0 0 1.3 1.25l.1.02 2.94 1.7-.03.1a1.7 1.7 0 0 0 .48 1.79l.07.06v3.4z"></path></svg></span><span class="menu-copy"><span class="menu-title">SETTINGS</span><span class="menu-desc">Game preferences</span></span></div>
   </nav>
 </main>
 <script>
@@ -230,12 +264,13 @@ function startAudio(){
  audioStarted=true;
  const soundURL='https://cdn.budgetpixel.com/audio-library/sfx/roaring-fast-highpitched-sharp-powerful-1y5sd00.wav';
  const rates=[0.82,0.94,1.04,1.13,1.22];
- const offsets=[0,220,440,660,880];
+ const offsets=[0,120,240,360,480];
  const passes=[];
  cars.forEach((car,i)=>{
   const audio=new Audio(soundURL);
   audio.preload='auto';
-  audio.volume=0.92;
+  audio.load();
+  audio.volume=0.45;
   audio.playbackRate=rates[i];
   audio.preservesPitch=false;
   passes.push(audio);
