@@ -328,12 +328,12 @@
 .bic-meta{display:flex!important;flex-wrap:wrap!important;justify-content:center!important;color:#a7a7ad!important;font-size:clamp(9px,2.2vw,12px)!important;letter-spacing:.08em!important;gap:8px!important;}
 .track-stage{position:relative!important;width:100%!important;height:clamp(220px,34vh,400px)!important;min-height:220px!important;flex:1 1 auto!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:3px 0 4px!important;overflow:visible!important;}
 #raceTrack.race-track{display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;height:100%!important;min-height:220px!important;overflow:visible!important;}
-#raceTrack .track-line{stroke:#f4f4f4!important;stroke-width:1!important;opacity:.12!important;filter:none!important;}
-#raceTrack .track-shadow{stroke:#ed1c2e!important;stroke-width:14!important;opacity:.16!important;filter:url(#trackGlow)!important;}
-#raceTrack .track-inner{stroke:#777!important;stroke-width:1.4!important;stroke-dasharray:3 7!important;opacity:.5!important;}
-#sectorSegments path{fill:none!important;stroke-width:5!important;stroke-linecap:round!important;stroke-linejoin:round!important;filter:drop-shadow(0 0 4px #ed1c2e66)!important;}
+#raceTrack .track-line{stroke:#f4f4f4!important;stroke-width:3.2!important;opacity:1!important;filter:none!important;}
+#raceTrack .track-shadow{stroke:#f4f4f4!important;stroke-width:7!important;opacity:.10!important;filter:none!important;}
+#raceTrack .track-inner{stroke:#777!important;stroke-width:1!important;stroke-dasharray:3 7!important;opacity:.22!important;}
+#sectorSegments path{fill:none!important;stroke:#f4f4f4!important;stroke-width:3.2!important;stroke-linecap:round!important;stroke-linejoin:round!important;filter:none!important;}
 #sectorLabels text{font-size:10px!important;font-weight:900!important;}
-.moving-car{display:block!important;opacity:1!important;filter:drop-shadow(0 0 7px #ed1c2e)!important;}
+.moving-car{display:block!important;opacity:1!important;filter:drop-shadow(0 0 4px #f4f4f466)!important;}
 .circuit-arrow{display:none!important;}
 .sector-panel,.lap-panel{width:100%!important;max-width:650px!important;align-self:center!important;flex:0 0 auto!important;}
 .sector-panel{margin-top:0!important;}
@@ -696,10 +696,16 @@ let progress=0, speed=0.031, speedTarget=0.031, speedChangeAt=lapStartTime+1100;
 let currentLapSector=0, lastLapSeconds=null, bestLapSeconds=null, lapSectorResults=[];
 const fmtLap=(seconds)=>{if(!Number.isFinite(seconds))return '--:--.---';const m=Math.floor(seconds/60);return `${m}:${(seconds-m*60).toFixed(3).padStart(6,'0')}`;};
 const fmtSector=(seconds)=>Number.isFinite(seconds)?`${seconds.toFixed(3)}s`:'--.---s';
+// Find the start/finish point on the clean track path, then traverse it backwards.
+// SVG coordinates increase downward, so reverse path-distance gives the desired anti-clockwise motion.
+let startDistance=0,bestStartDistance=Infinity;
+for(let d=0;d<=trackLength;d+=1){const p=trackPath.getPointAtLength(d);const err=(p.x-432)**2+(p.y-176)**2;if(err<bestStartDistance){bestStartDistance=err;startDistance=d;}}
+const startFraction=startDistance/trackLength;
+function reverseDistance(fraction){return ((startDistance-fraction*trackLength)%trackLength+trackLength)%trackLength;}
 function pathSlice(startFraction,endFraction){
- const a=startFraction*trackLength,b=endFraction*trackLength,pts=[];
- const count=Math.max(12,Math.round((b-a)/4));
- for(let i=0;i<=count;i++){const p=trackPath.getPointAtLength(a+(b-a)*i/count);pts.push(`${i?'L':'M'}${p.x.toFixed(2)} ${p.y.toFixed(2)}`);}
+ const span=(endFraction-startFraction)*trackLength,pts=[];
+ const count=Math.max(12,Math.round(span/4));
+ for(let i=0;i<=count;i++){const f=startFraction+(endFraction-startFraction)*i/count;const p=trackPath.getPointAtLength(reverseDistance(f));pts.push(`${i?'L':'M'}${p.x.toFixed(2)} ${p.y.toFixed(2)}`);}
  return pts.join(' ');
 }
 function makeSvg(tag,attrs){const n=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));return n;}
@@ -707,15 +713,15 @@ function buildSectorGraphics(){
  sectorSegments.replaceChildren();sectorLabels.replaceChildren();
  for(let i=0;i<3;i++){
   const p=makeSvg('path',{d:pathSlice(sectorFractions[i],sectorFractions[i+1]),fill:'none',stroke:'#f4f4f4','stroke-width':'4.1','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.98','data-sector':i});
-  p.style.filter='drop-shadow(0 0 3px #ed1c2e66)';sectorSegments.appendChild(p);sectorPaths.push(p);
-  const at=trackPath.getPointAtLength(((i+0.5)/3)*trackLength);
+  p.style.filter='none';p.setAttribute('stroke','#f4f4f4');sectorSegments.appendChild(p);sectorPaths.push(p);
+  const at=trackPath.getPointAtLength(reverseDistance((i+0.5)/3));
   const t=makeSvg('text',{x:at.x,y:at.y-13,'text-anchor':'middle',fill:'#ffffff','font-size':'10','font-weight':'800','letter-spacing':'.7','paint-order':'stroke','stroke':'#050505','stroke-width':'3','stroke-linejoin':'round'});
   t.textContent=`S${i+1}`;sectorLabels.appendChild(t);
  }
 }
 function paintSector(i,seconds,delta){
  const color=delta===null?'#f4f4f4':delta < -0.035?'#bd63ff':delta < -0.005?'#32e889':delta <= 0.035?'#ffd83d':'#ff4b55';
- sectorPaths[i].setAttribute('stroke',color);
+ sectorPaths[i].setAttribute('stroke','#f4f4f4');
  const timeEl=document.getElementById(`sectorTime${i+1}`),deltaEl=document.getElementById(`sectorDelta${i+1}`);
  timeEl.firstChild.textContent=fmtSector(seconds)+' ';
  deltaEl.textContent=delta===null?'FIRST LAP':`${delta>0?'+':''}${delta.toFixed(3)}`;
@@ -779,9 +785,9 @@ function animateTrack(now){
   }
  }
  // Sector clock starts are interpolated at each crossing for timing precision.
- const point=trackPath.getPointAtLength(progress*trackLength);
+ const point=trackPath.getPointAtLength(reverseDistance(progress));
  movingDot.setAttribute('transform',`translate(${point.x} ${point.y})`);
- movingDot.style.color='#ed1c2e';
+ movingDot.style.color='#f4f4f4';
  requestAnimationFrame(animateTrack);
 }
 buildSectorGraphics();
