@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050505">
-<title>FORMU1A — Buddh Circuit Traced Layout v2.7</title>
+<title>FORMU1A — Buddh Circuit Lap Timing v3.6</title>
 <style>
 :root{--red:#c8102e;--accent:#ed1c2e;--black:#050505;--white:#f5f5f5}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:var(--white);font-family:Arial,Helvetica,sans-serif}
@@ -259,7 +259,7 @@
 .sector{min-width:0;display:flex;flex-direction:column;gap:5px;padding-right:7px;border-right:1px solid #ffffff28;}
 .sector:last-child{border:0;padding-right:0}.sector>span,.lap-stats span,.current-lap>span{font-size:8px;letter-spacing:.13em;color:#aaa;font-weight:800;}
 .sector-bar{height:6px;border-radius:9px;background:#303035;overflow:hidden}.sector-bar i{display:block;height:100%;width:52%;border-radius:9px}.sector-purple .sector-bar i{background:#bd63ff}.sector-green .sector-bar i{background:#32e889}.sector-yellow .sector-bar i{background:#ffd83d}
-.sector strong{font-size:9px;white-space:nowrap}.sector em{font-style:normal;margin-left:4px}.sector-purple em,.purple{color:#bd63ff}.sector-green em,.green{color:#32e889}.sector-yellow em,.yellow{color:#ffd83d}
+.sector strong{font-size:9px;white-space:nowrap}.sector em{font-style:normal;margin-left:4px}.sector-purple em,.purple{color:#bd63ff}.sector-green em,.green{color:#32e889}.sector-yellow em,.yellow{color:#ffd83d}.red{color:#ff4b55}
 .lap-panel{display:flex;align-items:center;gap:12px;border:1px solid #ffffff18;border-left:3px solid #ed1c2e;border-radius:12px;padding:8px 10px;background:#101012e8;flex:0 0 auto;}
 .current-lap{display:flex;flex-direction:column;gap:2px;min-width:36%;}.current-lap strong{font-size:clamp(17px,5vw,24px);letter-spacing:.02em}.current-lap em{font-size:11px;color:#ed1c2e;font-style:normal;font-weight:800}
 .lap-stats{display:grid;grid-template-columns:repeat(3,1fr);flex:1;border-radius:8px;background:#050506;padding:7px 4px;}
@@ -420,42 +420,48 @@
     <div class="bic-heading"><span class="bic-kicker">INDIA · GRAND PRIX CIRCUIT</span><strong id="circuitName">BUDDH INTERNATIONAL CIRCUIT</strong><span class="bic-meta"><span id="circuitLocation">GREATER NOIDA, INDIA</span><i></i><span id="circuitLength">5.137 KM</span><i></i><span id="circuitTurns">16 TURNS</span></span></div>
     <div class="track-stage">
 
-      <svg class="race-track" id="raceTrack" viewBox="0 250 1536 875" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Custom vector drawing of Buddh International Circuit, pit buildings, and sector markings">
+      <svg class="race-track" id="raceTrack" viewBox="0 250 1536 875" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Buddh International Circuit vector track with synchronized lap timing">
         <defs>
           <filter id="trackGlow" x="-15%" y="-15%" width="130%" height="130%"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
           <linearGradient id="pitRoof" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b8d90"/><stop offset="1" stop-color="#55575a"/></linearGradient>
         </defs>
         <!-- Pit complex is drawn as vector geometry; no screenshot or raster map is used. -->
         <!-- Pit/building structures removed as requested. -->
-        <!-- One continuous centerline traced from the supplied circuit reference; smooth right-hand corner. -->
-        <path id="trackLine" class="track-line" d="M 930 760
-          C 1000 749 1090 730 1168 724
-          C 1189 722 1204 729 1211 742
-          C 1218 754 1213 766 1201 770
-          C 1191 773 1182 771 1178 780
-          C 1173 791 1177 811 1185 830
-          C 1196 854 1216 878 1241 898
-          C 1260 914 1280 925 1294 934
-          C 1305 941 1306 948 1297 953
-          C 1290 958 1280 959 1268 959
-          L 347 974 Q 319 974 310 958 Q 302 945 319 927
-          L 610 650 Q 632 629 626 610
-          L 597 565 Q 585 545 568 552
-          Q 552 560 540 567 Q 529 574 510 569
-          L 394 529 Q 365 519 359 494
-          Q 354 476 356 458 Q 359 438 342 430
-          L 205 395 Q 171 386 151 365
-          Q 127 340 130 310 Q 133 278 160 254
-          Q 190 228 226 232 Q 258 235 277 267
-          L 319 331 Q 332 351 350 368
-          L 436 451 Q 455 470 477 465
-          Q 494 462 511 448 L 538 430
-          Q 552 421 571 428
-          L 741 487 Q 765 496 774 516
-          Q 782 535 768 555
-          L 620 739 Q 603 760 586 775
-          Q 571 789 582 808 Q 592 824 616 821
-          L 930 760 Z" fill="none" stroke="#f4f4f4" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#trackGlow)"/>
+        <!-- One continuous centerline traced from the supplied BIC reference screenshot; clockwise. -->
+        <path id="trackLine" class="track-line" d="M 868 748
+  C 930 746 1018 738 1108 728
+  C 1122 726 1130 733 1130 746
+  C 1130 770 1127 792 1140 814
+  C 1158 842 1190 865 1225 884
+  C 1250 898 1278 912 1292 922
+  C 1305 931 1301 941 1287 944
+  C 1265 948 1227 950 1186 952
+  L 382 967
+  C 350 968 325 967 316 953
+  C 306 938 319 922 333 906
+  L 593 625
+  C 607 610 606 591 596 574
+  C 588 560 577 552 565 556
+  C 550 561 540 573 524 570
+  L 414 539
+  C 388 532 377 520 377 502
+  C 377 486 371 477 355 471
+  L 202 429
+  C 168 420 145 402 141 380
+  C 136 356 148 335 169 322
+  C 193 307 222 308 242 321
+  C 263 335 280 356 300 382
+  L 419 500
+  C 438 518 462 527 483 519
+  L 531 495
+  C 545 488 555 491 570 497
+  L 710 542
+  C 735 550 743 566 734 588
+  C 727 606 709 626 690 648
+  L 583 770
+  C 568 787 559 801 561 816
+  C 564 835 580 845 605 844
+  L 868 748 Z" fill="none" stroke="#f4f4f4" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#trackGlow)"/>
         <g id="sectorSegments" aria-hidden="true" style="display:none!important"></g>
         <g id="sectorLabels" aria-hidden="true" style="display:none!important"></g>
         <g id="staticSectorLabels" aria-hidden="true" pointer-events="none">
@@ -723,30 +729,32 @@ menuItems.forEach(item=>{
  item.addEventListener('click',()=>selectMenuItem(item));
  item.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectMenuItem(item)} if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const idx=(Number(item.dataset.index)+(e.key==='ArrowRight'?1:3))%4;selectMenuItem(menuItems[idx]);menuItems[idx].focus();}});
 });
-// FORMU1A v2.0: one circuit first, with real marker-driven sector and lap timing.
-// The first lap establishes the reference. Later laps are compared against it.
+// FORMU1A v3.7: reference-traced circuit and lap progress is derived from elapsed time, not random marker speed.
+// Target lap = 1:34.416. The dot and clock share this elapsed-time source.
+// Sector split targets sum exactly to the lap target.
 const raceTrack=document.getElementById('raceTrack');
 const trackPath=document.getElementById('trackLine');
 const movingDot=document.getElementById('movingDot');
 const sectorSegments=document.getElementById('sectorSegments');
 const sectorLabels=document.getElementById('sectorLabels');
 const trackLength=trackPath.getTotalLength();
-const sectorFractions=[0,1/3,2/3,1];
+const TARGET_LAP_SECONDS=94.416;
+const TARGET_SECTOR_SECONDS=[28.421,31.876,34.119];
+const sectorBoundaries=[0,TARGET_SECTOR_SECONDS[0]/TARGET_LAP_SECONDS,(TARGET_SECTOR_SECONDS[0]+TARGET_SECTOR_SECONDS[1])/TARGET_LAP_SECONDS,1];
 const sectorNames=['SECTOR 1','SECTOR 2','SECTOR 3'];
-const sectorColors=['#f4f4f4','#f4f4f4','#f4f4f4'];
+const sectorColors=['#bd63ff','#32e889','#ffd83d'];
 const sectorPaths=[];
 const sectorStarts=[0,0,0];
 const currentSectorTimes=[null,null,null];
-const referenceSectorTimes=[null,null,null];
+const referenceSectorTimes=[...TARGET_SECTOR_SECONDS];
 let completedLaps=0, lapStartTime=performance.now(), previousFrame=lapStartTime;
-let progress=0, speed=0.031, speedTarget=0.031, speedChangeAt=lapStartTime+1100;
-let currentLapSector=0, lastLapSeconds=null, bestLapSeconds=null, lapSectorResults=[];
+let progress=0, currentLapSector=0, lastLapSeconds=null, bestLapSeconds=null;
+let currentLapSectorTimes=[null,null,null];
 const fmtLap=(seconds)=>{if(!Number.isFinite(seconds))return '--:--.---';const m=Math.floor(seconds/60);return `${m}:${(seconds-m*60).toFixed(3).padStart(6,'0')}`;};
 const fmtSector=(seconds)=>Number.isFinite(seconds)?`${seconds.toFixed(3)}s`:'--.---s';
-// Find the start/finish point, then move forward along the SVG path in the same direction as the arrows in the track reference.
+// Find the start/finish point from the existing track's start/finish coordinate.
 let startDistance=0,bestStartDistance=Infinity;
 for(let d=0;d<=trackLength;d+=1){const p=trackPath.getPointAtLength(d);const err=(p.x-930)**2+(p.y-760)**2;if(err<bestStartDistance){bestStartDistance=err;startDistance=d;}}
-const startFraction=startDistance/trackLength;
 function arrowDistance(fraction){return ((startDistance+fraction*trackLength)%trackLength+trackLength)%trackLength;}
 function pathSlice(startFraction,endFraction){
  const span=(endFraction-startFraction)*trackLength,pts=[];
@@ -756,88 +764,86 @@ function pathSlice(startFraction,endFraction){
 }
 function makeSvg(tag,attrs){const n=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));return n;}
 function buildSectorGraphics(){
- sectorSegments.replaceChildren();sectorLabels.replaceChildren();
+ sectorSegments.replaceChildren();sectorLabels.replaceChildren();sectorPaths.length=0;
  for(let i=0;i<3;i++){
-  const p=makeSvg('path',{d:pathSlice(sectorFractions[i],sectorFractions[i+1]),fill:'none',stroke:'#f4f4f4','stroke-width':'4.1','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.98','data-sector':i});
-  p.style.filter='none';p.setAttribute('stroke','#f4f4f4');sectorSegments.appendChild(p);sectorPaths.push(p);
-  const at=trackPath.getPointAtLength(arrowDistance((i+0.5)/3));
+  const p=makeSvg('path',{d:pathSlice(sectorBoundaries[i],sectorBoundaries[i+1]),fill:'none',stroke:sectorColors[i],'stroke-width':'4.1','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.98','data-sector':i});
+  p.style.filter='none';sectorSegments.appendChild(p);sectorPaths.push(p);
+  const at=trackPath.getPointAtLength(arrowDistance((sectorBoundaries[i]+sectorBoundaries[i+1])/2));
   const t=makeSvg('text',{x:at.x,y:at.y-13,'text-anchor':'middle',fill:'#ffffff','font-size':'10','font-weight':'800','letter-spacing':'.7','paint-order':'stroke','stroke':'#050505','stroke-width':'3','stroke-linejoin':'round'});
   t.textContent=`S${i+1}`;sectorLabels.appendChild(t);
  }
 }
+function deltaColor(delta){
+ if(delta===null)return '#aaa';
+ if(delta < -0.035)return '#bd63ff';   // purple: clearly faster than target
+ if(delta < -0.005)return '#32e889';  // green: slightly faster
+ if(delta <= 0.035)return '#ffd83d';  // yellow: on target
+ return '#ff4b55';                    // red: slower than target
+}
 function paintSector(i,seconds,delta){
- const color=delta===null?'#f4f4f4':delta < -0.035?'#bd63ff':delta < -0.005?'#32e889':delta <= 0.035?'#ffd83d':'#ff4b55';
- sectorPaths[i].setAttribute('stroke','#f4f4f4');
  const timeEl=document.getElementById(`sectorTime${i+1}`),deltaEl=document.getElementById(`sectorDelta${i+1}`);
- timeEl.firstChild.textContent=fmtSector(seconds)+' ';
- deltaEl.textContent=delta===null?'FIRST LAP':`${delta>0?'+':''}${delta.toFixed(3)}`;
- deltaEl.style.color=color;
- const bar=document.querySelectorAll('.sector-bar i')[i];if(bar)bar.style.width=`${Math.max(12,Math.min(100,seconds/13*100))}%`;
- if(bar)bar.style.background=color;
+ if(timeEl.firstChild)timeEl.firstChild.textContent=fmtSector(seconds)+' ';
+ deltaEl.textContent=delta===null?'TARGET':`${delta>0?'+':''}${delta.toFixed(3)}`;
+ deltaEl.style.color=deltaColor(delta);
+ const bar=document.querySelectorAll('.sector-bar i')[i];
+ if(bar){bar.style.width=`${Math.max(12,Math.min(100,seconds/TARGET_SECTOR_SECONDS[i]*100))}%`;bar.style.background=sectorColors[i];}
 }
 function updateLapPanel(lapSeconds,delta){
  document.getElementById('currentLapTime').textContent=fmtLap(lapSeconds);
  const deltaEl=document.getElementById('lapDelta');
- if(delta===null){deltaEl.textContent='FIRST LAP';deltaEl.style.color='#aaa';}
- else{deltaEl.textContent=`${delta>0?'+':''}${delta.toFixed(3)}`;deltaEl.style.color=delta<-.035?'#bd63ff':delta<-.005?'#32e889':delta<=.035?'#ffd83d':'#ff4b55';}
+ if(delta===null){deltaEl.textContent='TARGET 1:34.416';deltaEl.style.color='#aaa';}
+ else{deltaEl.textContent=`${delta>0?'+':''}${delta.toFixed(3)}`;deltaEl.style.color=deltaColor(delta);}
  document.getElementById('bestLapTime').textContent=fmtLap(bestLapSeconds);
  document.getElementById('lastLapTime').textContent=fmtLap(lastLapSeconds);
  document.getElementById('lapGap').textContent=delta===null?'--.---':`${delta>0?'+':''}${delta.toFixed(3)}`;
 }
-function completeSector(i,now){
- const seconds=(now-sectorStarts[i])/1000;
- currentLapSector=Math.min(i+1,3);currentLapSector===3?null:null;
- const baseline=referenceSectorTimes[i];
- const delta=baseline===null?null:seconds-baseline;
- currentLapSectorTimes[i]=seconds;
+function completeSector(i,boundaryTime){
+ const seconds=(boundaryTime-sectorStarts[i])/1000;
+ currentLapSector=i+1;currentLapSectorTimes[i]=seconds;
+ const delta=seconds-TARGET_SECTOR_SECONDS[i];
  paintSector(i,seconds,delta);
+ if(i<2)sectorStarts[i+1]=boundaryTime;
 }
-let currentLapSectorTimes=[null,null,null];
-function finishLap(now){
- const lapSeconds=(now-lapStartTime)/1000;
- const delta=lastLapSeconds===null?null:lapSeconds-lastLapSeconds;
+function finishLap(finishTime){
+ const lapSeconds=(finishTime-lapStartTime)/1000;
+ const delta=lastLapSeconds===null?lapSeconds-TARGET_LAP_SECONDS:lapSeconds-lastLapSeconds;
  completedLaps++;
- lapSectorResults=currentLapSectorTimes.slice();
  if(bestLapSeconds===null||lapSeconds<bestLapSeconds)bestLapSeconds=lapSeconds;
  lastLapSeconds=lapSeconds;
  updateLapPanel(lapSeconds,delta);
- // The first lap becomes the baseline. Later laps are classified by comparison with the previous lap's sectors.
- if(completedLaps===1){for(let i=0;i<3;i++)referenceSectorTimes[i]=currentLapSectorTimes[i];}
- currentLapSectorTimes=[null,null,null];
- currentSectorTimes.fill(null);currentLapSector=0;lapStartTime=now;
- for(let i=0;i<3;i++){sectorStarts[i]=now;}
+ currentLapSectorTimes=[null,null,null];currentSectorTimes.fill(null);currentLapSector=0;
+ lapStartTime=finishTime;
+ for(let i=0;i<3;i++)sectorStarts[i]=finishTime;
 }
 function animateTrack(now){
- const dt=Math.min(80,now-previousFrame);previousFrame=now;
- // Pace changes gradually and irregularly, so the marker doesn't move at a constant speed.
- if(now>=speedChangeAt){speedTarget=0.022+Math.random()*0.018;speedChangeAt=now+650+Math.random()*1700;}
- speed+=(speedTarget-speed)*Math.min(1,dt/950);
- const oldProgress=progress;progress+=dt/1000*speed;
- if(progress>=1){
-  // Close each sector and the lap at the exact progress boundaries crossed.
-  const finishTime=now-(progress-1)/speed*1000;
+ previousFrame=now;
+ let elapsed=(now-lapStartTime)/1000;
+ // Use absolute elapsed time so the dot crosses the finish exactly at the target lap time.
+ while(elapsed>=TARGET_LAP_SECONDS){
+  const finishTime=lapStartTime+TARGET_LAP_SECONDS*1000;
   for(let i=currentLapSector;i<3;i++){
-   const boundary=(i+1)/3;
-   const boundaryTime=now-(progress-boundary)/speed*1000;
-   if(boundary<=1){completeSector(i,boundaryTime);}
+   const boundaryTime=lapStartTime+(sectorBoundaries[i+1]*TARGET_LAP_SECONDS*1000);
+   completeSector(i,boundaryTime);
   }
-  finishLap(finishTime);progress%=1;
+  finishLap(finishTime);
+  elapsed=(now-lapStartTime)/1000;
  }
- for(let i=0;i<3;i++){
-  const boundary=(i+1)/3;
-  if(currentLapSector===i && oldProgress<boundary && progress>=boundary && progress<1){
-   const boundaryTime=now-(progress-boundary)/speed*1000;
-   completeSector(i,boundaryTime);sectorStarts[i+1]=boundaryTime;
-  }
+ progress=Math.max(0,Math.min(0.999999,elapsed/TARGET_LAP_SECONDS));
+ for(let i=currentLapSector;i<3;i++){
+  const boundary=sectorBoundaries[i+1];
+  if(progress>=boundary){
+   const boundaryTime=lapStartTime+boundary*TARGET_LAP_SECONDS*1000;
+   completeSector(i,boundaryTime);
+  }else break;
  }
- // Sector clock starts are interpolated at each crossing for timing precision.
+ updateLapPanel(elapsed,null);
  const point=trackPath.getPointAtLength(arrowDistance(progress));
  movingDot.setAttribute('transform',`translate(${point.x} ${point.y})`);
  movingDot.style.color='#f4f4f4';
  requestAnimationFrame(animateTrack);
 }
 buildSectorGraphics();
-for(let i=0;i<3;i++)sectorStarts[i]=lapStartTime;
+for(let i=0;i<3;i++){sectorStarts[i]=lapStartTime;paintSector(i,TARGET_SECTOR_SECONDS[i],0);}
 requestAnimationFrame(animateTrack);
 initRedSheet();
 })();
