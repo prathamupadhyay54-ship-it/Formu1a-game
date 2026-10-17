@@ -390,7 +390,7 @@
 #raceTrack.race-track{width:100%!important;height:100%!important;min-height:0!important;display:block!important;visibility:visible!important;opacity:1!important;overflow:visible!important;}
 #raceTrack .moving-car{display:block!important;visibility:visible!important;opacity:1!important;}
 
-/* v2.5: reference image only; no artificial track lines or coloured sector overlays */
+/* v2.8: one white circuit path only; grey elements are buildings, not track overlays */
 #raceTrack .track-shadow, #raceTrack .track-inner, #raceTrack #sectorSegments, #raceTrack #sectorLabels { display:none!important; stroke:none!important; opacity:0!important; filter:none!important; }
 #raceTrack .track-line, #raceTrack #trackLine { display:block!important; visibility:visible!important; opacity:1!important; stroke:#f4f4f4!important; stroke-width:5!important; filter:drop-shadow(0 0 5px #ed1c2e55)!important; }
 
@@ -441,29 +441,33 @@
           <path d="M410 875 L548 857 M416 887 L552 869 M1064 822 L1107 931" stroke="#e0e0e0" stroke-width="1.5" opacity=".7"/>
         </g>
         <!-- One continuous centerline traced from the supplied circuit reference. -->
-        <path id="trackLine" class="track-line" d="M 870 780
-          L 1120 766 Q 1150 764 1175 762 L 1245 758 Q 1270 758 1278 779
-          L 1280 824 Q 1283 845 1305 868 L 1350 914 Q 1374 940 1380 963
-          Q 1385 985 1354 990 L 380 997 Q 344 997 332 983 Q 321 971 337 951
-          L 423 854 L 505 759 L 592 657 L 674 562 Q 706 527 731 494
-          Q 747 472 737 453 Q 730 439 704 430 L 622 402 L 551 386
-          Q 526 380 506 394 L 483 403 Q 466 408 448 390 L 394 331
-          Q 370 302 347 300 Q 319 297 291 314 Q 263 331 255 358
-          Q 248 386 270 407 Q 292 428 330 439 L 399 459 Q 424 467 441 489
-          Q 452 504 455 523 Q 460 545 483 555 L 535 571 Q 557 578 575 567
-          Q 590 558 603 568 Q 619 582 609 604 Q 599 627 579 649
-          L 528 706 L 472 772 L 417 838 L 365 900 Q 345 925 339 950
-          Q 335 968 354 977 Q 371 985 401 982 L 566 982 L 790 982 L 1050 982
-          Q 1090 982 1117 980 Q 1146 978 1151 960 Q 1155 945 1137 927
-          L 1097 885 Q 1081 868 1078 848 L 1070 793 Q 1068 781 1053 781
-          L 870 780 Z" fill="none" stroke="#f4f4f4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#trackGlow)"/>
+        <path id="trackLine" class="track-line" d="M 870 790
+          L 1112 775 Q 1132 775 1137 794
+          L 1143 835 Q 1148 860 1173 887
+          L 1225 930 Q 1260 956 1290 970
+          Q 1310 982 1288 993 Q 1278 1002 1248 1002
+          L 370 1005 Q 333 1005 316 989 Q 303 974 326 947
+          L 414 846 L 502 744 L 582 652 L 650 574
+          Q 686 535 721 500 Q 741 480 735 461
+          Q 730 445 706 436 L 631 409 L 563 386
+          Q 537 378 516 392 L 488 405 Q 468 413 450 393
+          L 398 334 Q 374 304 349 301 Q 321 298 294 315
+          Q 267 333 257 359 Q 249 386 271 408
+          Q 293 430 331 441 L 399 461
+          Q 425 469 442 491 Q 454 507 457 526
+          Q 461 545 484 556 L 532 572
+          Q 555 580 574 568 Q 591 558 604 570
+          Q 619 584 609 606 Q 600 628 581 650
+          L 554 685 Q 536 709 542 731
+          Q 549 751 571 766 L 605 788 Q 625 799 654 799
+          L 870 790 Z" fill="none" stroke="#f4f4f4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#trackGlow)"/>
         <g id="sectorSegments" aria-hidden="true" style="display:none!important"></g>
         <g id="sectorLabels" aria-hidden="true" style="display:none!important"></g>
         <g id="staticSectorLabels" aria-hidden="true" pointer-events="none">
-          <text x="490" y="545" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="24" font-weight="900">S1</text>
-          <text x="575" y="742" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="24" font-weight="900">S2</text>
-          <text x="625" y="410" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="24" font-weight="900">S3</text>
-          <text x="870" y="760" text-anchor="middle" fill="#bcbcc0" font-size="15" font-weight="800" letter-spacing="1.2">START / FINISH</text>
+          <text x="430" y="500" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="24" font-weight="900">S1</text>
+          <text x="500" y="815" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="24" font-weight="900">S2</text>
+          <text x="610" y="430" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="24" font-weight="900">S3</text>
+          <text x="870" y="770" text-anchor="middle" fill="#bcbcc0" font-size="15" font-weight="800" letter-spacing="1.2">START / FINISH</text>
         </g>
         <g class="moving-car" id="movingDot" aria-label="Your car"><circle r="9" fill="#f8f8f8" stroke="#ed1c2e" stroke-width="3.5"/><circle r="3" fill="#ed1c2e"/></g>
       </svg>
@@ -747,9 +751,9 @@ const fmtSector=(seconds)=>Number.isFinite(seconds)?`${seconds.toFixed(3)}s`:'--
 // Find the start/finish point on the clean track path, then traverse it backwards.
 // SVG coordinates increase downward, so reverse path-distance gives the desired anti-clockwise motion.
 let startDistance=0,bestStartDistance=Infinity;
-for(let d=0;d<=trackLength;d+=1){const p=trackPath.getPointAtLength(d);const err=(p.x-870)**2+(p.y-780)**2;if(err<bestStartDistance){bestStartDistance=err;startDistance=d;}}
+for(let d=0;d<=trackLength;d+=1){const p=trackPath.getPointAtLength(d);const err=(p.x-870)**2+(p.y-790)**2;if(err<bestStartDistance){bestStartDistance=err;startDistance=d;}}
 const startFraction=startDistance/trackLength;
-function reverseDistance(fraction){return ((startDistance-fraction*trackLength)%trackLength+trackLength)%trackLength;}
+function reverseDistance(fraction){return ((startDistance+fraction*trackLength)%trackLength+trackLength)%trackLength;}
 function pathSlice(startFraction,endFraction){
  const span=(endFraction-startFraction)*trackLength,pts=[];
  const count=Math.max(12,Math.round(span/4));
