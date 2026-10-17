@@ -284,6 +284,37 @@
 }
 @media(max-height:760px){.track-stage{height:clamp(125px,22vh,190px)}.menu-art{gap:5px!important}.sector-panel{padding:6px 8px}.lap-panel{padding:6px 8px}.lap-row{padding:5px 4px}.mini-track{height:18px}}
 
+
+/* v1.9: fix mobile circuit layout, expose SVG track, simplify arrows and remove lower clutter */
+.logo.parked{top:10px!important;}
+.menu{top:8%!important;}
+.menu-art{top:17%!important;bottom:auto!important;height:81%!important;width:100vw!important;max-width:760px!important;padding:0 18px 8px!important;gap:7px!important;justify-content:flex-start!important;overflow:hidden!important;}
+.menu-art.show{opacity:1!important;}
+.bic-heading{flex:0 0 auto!important;gap:3px!important;margin-bottom:0!important;}
+.track-stage{height:clamp(240px,37vh,390px)!important;width:100%!important;flex:1 1 auto!important;min-height:220px!important;margin:2px 0 0!important;overflow:visible!important;}
+.menu-art svg.race-track{display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;height:100%!important;min-height:220px!important;overflow:visible!important;flex:1 1 auto!important;}
+.track-line{stroke:#f7f7f7!important;stroke-width:5.5!important;filter:drop-shadow(0 0 5px #ed1c2e)!important;}
+.track-shadow{stroke:#ed1c2e!important;stroke-width:15!important;opacity:.2!important;filter:url(#trackGlow)!important;}
+.moving-car{filter:drop-shadow(0 0 6px currentColor)!important;}
+.circuit-arrow{top:50%!important;width:42px!important;height:54px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#f7f7f7!important;font-size:42px!important;line-height:1!important;transform:translateY(-50%)!important;padding:0!important;transition:color .15s,transform .15s!important;}
+.circuit-arrow:active,.circuit-arrow.is-active{color:#ed1c2e!important;transform:translateY(-50%) scale(.9)!important;}
+.arrow-left{left:-5px!important}.arrow-right{right:-5px!important}
+.sector-panel,.lap-panel{width:100%!important;max-width:590px!important;align-self:center!important;}
+.lap-table,.circuit-thumbnails,.circuit-dots{display:none!important;}
+@media(max-width:700px){
+ .logo.parked{left:20px!important;top:10px!important;font-size:clamp(25px,6.6vw,34px)!important;}
+ .menu{top:8%!important;width:calc(100vw - 28px)!important;}
+ .menu-art{top:16%!important;height:82%!important;width:100vw!important;padding:0 16px 8px!important;gap:8px!important;}
+ .bic-kicker{font-size:9px!important;}
+ .bic-heading strong{font-size:clamp(12px,3.4vw,18px)!important;}
+ .bic-meta{font-size:8px!important;}
+ .track-stage{height:clamp(240px,34vh,340px)!important;min-height:220px!important;}
+ .menu-art svg.race-track{min-height:220px!important;}
+ .circuit-arrow{width:34px!important;height:48px!important;font-size:38px!important;}
+ .sector-panel{margin-top:0!important;}
+}
+@media(max-height:760px){.menu-art{top:15%!important;height:84%!important}.track-stage{height:clamp(200px,34vh,300px)!important;min-height:190px!important}}
+
 </style>
 </head>
 <body>
@@ -332,9 +363,6 @@
       <div class="current-lap"><span>CURRENT LAP</span><strong id="currentLapTime">1:34.416</strong><em>+0.084</em></div>
       <div class="lap-stats"><div><span>BEST</span><strong>1:33.902</strong></div><div><span>LAST</span><strong>1:34.332</strong></div><div><span>GAP</span><strong>+0.430</strong></div></div>
     </div>
-    <div class="lap-table" aria-label="Lap times"><div class="lap-row lap-head"><span>LAP</span><span>SECTOR 1</span><span>SECTOR 2</span><span>SECTOR 3</span><span>LAP TIME</span></div><div class="lap-row"><span>3</span><b class="purple">28.421</b><b class="green">31.876</b><b class="yellow">34.119</b><strong>1:34.416</strong></div><div class="lap-row"><span>2</span><span>28.723</span><b class="green">32.004</b><b class="yellow">33.981</b><strong>1:34.708</strong></div><div class="lap-row"><span>1</span><span>28.905</span><b class="green">32.110</b><span>34.322</span><strong>1:35.337</strong></div></div>
-    <div class="circuit-thumbnails" id="circuitThumbs"><button class="circuit-thumb" data-circuit="0" type="button"><span class="mini-track monaco-mini"></span><b>MONACO</b><small>MONACO</small></button><button class="circuit-thumb selected" data-circuit="1" type="button"><span class="mini-track buddh-mini"></span><b>BUDDH</b><small>INDIA</small></button><button class="circuit-thumb" data-circuit="2" type="button"><span class="mini-track silver-mini"></span><b>SILVERSTONE</b><small>UK</small></button></div>
-    <div class="circuit-dots"><i class="active"></i><i></i><i></i><i></i><i></i></div>
   </section>
   <nav class="menu" id="menu" aria-label="Main menu" style="--active-index:0">
     <div class="menu-card active" data-index="0" tabindex="0" role="button" aria-selected="true"><span class="menu-title">CAREER</span></div>
@@ -595,8 +623,7 @@ function setCircuit(index){
  document.getElementById('circuitLocation').textContent=c.location;
  document.getElementById('circuitLength').textContent=c.length;
  document.getElementById('circuitTurns').textContent=c.turns;
- document.querySelectorAll('.circuit-thumb').forEach((el,i)=>el.classList.toggle('selected',i===circuitIndex));
- document.querySelectorAll('.circuit-dots i').forEach((el,i)=>el.classList.toggle('active',i===circuitIndex));
+ // Circuit thumbnails are intentionally removed; arrows are the selector.
  document.getElementById('raceTrack').classList.remove('layout-monaco','layout-silver');
  if(c.cls!=='buddh')document.getElementById('raceTrack').classList.add('layout-'+c.cls);
  document.querySelectorAll('#raceTrack .track-line, #raceTrack .track-shadow, #raceTrack .track-inner').forEach(path=>path.setAttribute('d',c.path));
@@ -605,7 +632,7 @@ function setCircuit(index){
 }
 document.getElementById('prevCircuit').addEventListener('click',()=>setCircuit(circuitIndex-1));
 document.getElementById('nextCircuit').addEventListener('click',()=>setCircuit(circuitIndex+1));
-document.querySelectorAll('.circuit-thumb').forEach(el=>el.addEventListener('click',()=>setCircuit(Number(el.dataset.circuit))));
+
 // Animated dots follow the actual SVG path, like cars circulating around the lap.
 let trackPath=document.getElementById('trackLine');
 const carNodes=[...document.querySelectorAll('.moving-car')];
