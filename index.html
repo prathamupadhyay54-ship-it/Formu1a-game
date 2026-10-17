@@ -845,9 +845,8 @@ for(let i=0;i<3;i++){sectorStarts[i]=lapStartTime;paintSector(i,null,null,i===0?
 requestAnimationFrame(animateTrack);
 initRedSheet();
 })();
-</script>
+// FORMU1A v4.1 circuit carousel: working arrows, keyboard, and touch swipe.
 
-// FORMU1A v4.0 circuit carousel: five static circuits, no dot or timing UI.
 (()=>{
  const circuits=[
   {name:'BUDDH INTERNATIONAL CIRCUIT',location:'GREATER NOIDA, INDIA',length:'5.137 KM',turns:'16 TURNS'},
@@ -862,8 +861,13 @@ initRedSheet();
  document.getElementById('circuitPrev').addEventListener('click',()=>showCircuit(index-1));
  document.getElementById('circuitNext').addEventListener('click',()=>showCircuit(index+1));
  document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')showCircuit(index-1);if(e.key==='ArrowRight')showCircuit(index+1);});
+ const carouselStage=document.querySelector('.track-stage.circuit-carousel'); let swipeStartX=null;
+ carouselStage.addEventListener('touchstart',e=>{swipeStartX=e.changedTouches[0].clientX;},{passive:true});
+ carouselStage.addEventListener('touchend',e=>{if(swipeStartX===null)return;const dx=e.changedTouches[0].clientX-swipeStartX;if(Math.abs(dx)>45)showCircuit(index+(dx<0?1:-1));swipeStartX=null;},{passive:true});
  showCircuit(0);
 })();
+
+</script>
 
 </body>
 </html>
