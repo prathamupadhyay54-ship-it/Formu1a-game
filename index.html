@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050505">
-<title>FORMU1A — Buddh Circuit Menu v1.7</title>
+<title>FORMU1A — Circuit Race UI v1.8</title>
 <style>
 :root{--red:#c8102e;--accent:#ed1c2e;--black:#050505;--white:#f5f5f5}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:var(--white);font-family:Arial,Helvetica,sans-serif}
@@ -233,6 +233,57 @@
 }
 @media(max-height:620px){.menu{top:17%!important}.menu-art{height:60%!important;bottom:0!important}}
 
+
+/* v1.8 race telemetry UI */
+.menu{top:12%!important;}
+.menu-art{left:50%!important;right:auto!important;top:23%!important;bottom:auto!important;width:min(100vw,760px)!important;height:75%!important;padding:0 18px 6px!important;gap:8px!important;justify-content:flex-start!important;overflow:visible!important;transform:translate(-50%,18px)!important;opacity:0!important;}
+.menu-art.show{opacity:1!important;transform:translate(-50%,0)!important;}
+.menu-header{left:auto!important;right:20px!important;top:18px!important;}
+.profile-button{appearance:none;cursor:pointer;border-radius:50%!important;width:38px!important;height:38px!important;padding:0!important;}
+.bic-heading{flex:0 0 auto;gap:3px!important;}
+.bic-kicker{font-size:9px!important;letter-spacing:.25em!important;}
+.bic-heading strong{font-size:clamp(12px,3.4vw,19px)!important;letter-spacing:.06em!important;}
+.bic-meta{font-size:8px!important;gap:7px!important;}
+.track-stage{position:relative;width:100%;height:clamp(150px,28vh,245px);flex:0 0 auto;display:flex;align-items:center;justify-content:center;margin-top:0;}
+.race-track{width:100%;height:100%;overflow:visible;}
+.track-shadow{fill:none;stroke:#ed1c2e;stroke-width:17;opacity:.10;filter:url(#trackGlow);}
+.track-line{fill:none;stroke:#f4f4f4;stroke-width:5.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 4px #ed1c2e88);}
+.track-inner{fill:none;stroke:#5a5a60;stroke-width:1.3;stroke-dasharray:3 7;opacity:.8;}
+.sector-mark{fill:none;stroke-width:3;stroke-linecap:round;opacity:.9;}
+.sector-a{stroke:#bd63ff}.sector-b{stroke:#32e889}.sector-c{stroke:#ffd83d}
+.start-line{stroke:#fff;stroke-width:4;stroke-dasharray:3 2}.track-label{fill:#aaa;font-size:8px;letter-spacing:1px;font-weight:bold}
+.moving-car{filter:drop-shadow(0 0 5px currentColor);}
+.circuit-arrow{position:absolute;top:43%;z-index:3;width:34px;height:34px;border:1px solid #ed1c2e;border-radius:50%;background:#080809e8;color:white;font-size:30px;line-height:24px;box-shadow:0 0 14px #ed1c2e33;cursor:pointer;}
+.arrow-left{left:0}.arrow-right{right:0}
+.sector-panel{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border:1px solid #ffffff20;border-radius:13px;padding:9px 10px;background:linear-gradient(120deg,#171719c9,#080808e8);flex:0 0 auto;}
+.sector{min-width:0;display:flex;flex-direction:column;gap:5px;padding-right:7px;border-right:1px solid #ffffff28;}
+.sector:last-child{border:0;padding-right:0}.sector>span,.lap-stats span,.current-lap>span{font-size:8px;letter-spacing:.13em;color:#aaa;font-weight:800;}
+.sector-bar{height:6px;border-radius:9px;background:#303035;overflow:hidden}.sector-bar i{display:block;height:100%;width:52%;border-radius:9px}.sector-purple .sector-bar i{background:#bd63ff}.sector-green .sector-bar i{background:#32e889}.sector-yellow .sector-bar i{background:#ffd83d}
+.sector strong{font-size:9px;white-space:nowrap}.sector em{font-style:normal;margin-left:4px}.sector-purple em,.purple{color:#bd63ff}.sector-green em,.green{color:#32e889}.sector-yellow em,.yellow{color:#ffd83d}
+.lap-panel{display:flex;align-items:center;gap:12px;border:1px solid #ffffff18;border-left:3px solid #ed1c2e;border-radius:12px;padding:8px 10px;background:#101012e8;flex:0 0 auto;}
+.current-lap{display:flex;flex-direction:column;gap:2px;min-width:36%;}.current-lap strong{font-size:clamp(17px,5vw,24px);letter-spacing:.02em}.current-lap em{font-size:11px;color:#ed1c2e;font-style:normal;font-weight:800}
+.lap-stats{display:grid;grid-template-columns:repeat(3,1fr);flex:1;border-radius:8px;background:#050506;padding:7px 4px;}
+.lap-stats>div{display:flex;flex-direction:column;gap:4px;padding:0 6px;border-right:1px solid #ffffff20;min-width:0}.lap-stats>div:last-child{border:0}.lap-stats span{font-size:7px}.lap-stats strong{font-size:10px;white-space:nowrap}
+.lap-table{border-radius:10px;overflow:hidden;background:#0d0d0fe8;flex:0 0 auto;}
+.lap-row{display:grid;grid-template-columns:.35fr .8fr .8fr .8fr .9fr;align-items:center;gap:3px;padding:7px 8px;font-size:9px;text-align:center;border-bottom:1px solid #ffffff0c;}
+.lap-row:last-child{border:0}.lap-head{font-size:7px;color:#85858c;letter-spacing:.07em;font-weight:800;background:#141416;padding-top:8px;padding-bottom:8px}.lap-row strong{font-size:9px}
+.circuit-thumbnails{display:flex;gap:10px;justify-content:center;flex:0 0 auto;margin-top:1px;}
+.circuit-thumb{flex:1;max-width:180px;min-width:0;display:flex;align-items:center;flex-direction:column;gap:2px;padding:5px 4px 6px;border:1px solid #ffffff2b;border-radius:12px;background:#09090bd9;color:#f5f5f5;cursor:pointer;}
+.circuit-thumb.selected{border:2px solid #ed1c2e;box-shadow:0 0 12px #ed1c2e25}.mini-track{height:24px;width:80%;display:block;opacity:.85;background-repeat:no-repeat;background-position:center;background-size:contain;}
+.monaco-mini{background-image:url('https://upload.wikimedia.org/wikipedia/commons/9/9a/Circuit_Monaco.svg')}.buddh-mini{background-image:url('https://commons.wikimedia.org/wiki/Special:Redirect/file/Buddh_Circuit.svg')}.silver-mini{background-image:url('https://upload.wikimedia.org/wikipedia/commons/4/4a/Silverstone_Circuit_2020.png')}
+.circuit-thumb b{font-size:8px;letter-spacing:.05em}.circuit-thumb small{font-size:7px;color:#85858c}.circuit-dots{display:flex;justify-content:center;gap:10px;flex:0 0 auto;padding:1px 0 0}.circuit-dots i{width:6px;height:6px;border-radius:50%;background:#39393e}.circuit-dots i.active{background:#ed1c2e;box-shadow:0 0 9px #ed1c2e}
+@media(max-width:700px){
+ .menu{top:12%!important;width:calc(100vw - 28px)!important;left:14px!important;gap:0!important;}
+ .menu-art{top:22%!important;height:76%!important;width:100vw!important;padding:0 15px 4px!important;gap:7px!important;}
+ .track-stage{height:clamp(145px,24vh,205px)!important;}
+ .sector-panel{padding:8px 8px;gap:6px}.sector{gap:4px;padding-right:5px}.sector>span{font-size:7px}.sector strong{font-size:8px}.sector em{margin-left:2px}
+ .lap-panel{gap:7px;padding:7px}.current-lap{min-width:34%}.current-lap strong{font-size:20px}.lap-stats>div{padding:0 4px}.lap-stats strong{font-size:9px}
+ .lap-row{padding:6px 3px;font-size:8px;gap:1px}.lap-head{font-size:6px}.lap-row strong{font-size:8px}
+ .circuit-thumbnails{gap:7px}.circuit-thumb{padding:4px 2px 5px}.mini-track{height:20px}.circuit-thumb b{font-size:7px}.circuit-thumb small{font-size:6px}
+ .circuit-arrow{width:30px;height:30px;font-size:27px}
+}
+@media(max-height:760px){.track-stage{height:clamp(125px,22vh,190px)}.menu-art{gap:5px!important}.sector-panel{padding:6px 8px}.lap-panel{padding:6px 8px}.lap-row{padding:5px 4px}.mini-track{height:18px}}
+
 </style>
 </head>
 <body>
@@ -248,19 +299,43 @@
     <div class="track"><div class="fill" id="fill"></div></div>
   </section>
   <header class="menu-header" id="menuHeader" aria-label="Game controls">
-    <div class="header-icon" aria-label="Settings" title="Settings">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z"/><path d="m19.4 13.5 1.2.9-1.5 2.6-1.4-.5a7.8 7.8 0 0 1-2.1 1.2l-.3 1.5h-3l-.3-1.5a7.8 7.8 0 0 1-2.1-1.2l-1.4.5L7 14.4l1.2-.9a7.9 7.9 0 0 1 0-2.9L7 9.7l1.5-2.6 1.4.5A7.8 7.8 0 0 1 12 6.4l.3-1.5h3l.3 1.5a7.8 7.8 0 0 1 2.1 1.2l1.4-.5 1.5 2.6-1.2.9a7.9 7.9 0 0 1 0 2.9Z"/></svg>
-    </div>
-    <div class="header-icon" aria-label="Profile" title="Profile">
+    <button class="header-icon profile-button" aria-label="Profile" title="Profile" type="button">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.7-3.3 3.1-5 7-5s6.3 1.7 7 5"></path></svg>
-    </div>
+    </button>
   </header>
   <div class="car-callout" id="carCallout" aria-hidden="true">AERODYNAMICS · CHASSIS · POWERTRAIN</div>
-  <div class="menu-art" id="menuArt" aria-hidden="true">
-    <div class="bic-heading"><span class="bic-kicker">INDIA · GRAND PRIX CIRCUIT</span><strong>BUDDH INTERNATIONAL CIRCUIT</strong><span class="bic-meta">GREATER NOIDA, INDIA <i></i> 5.137 KM <i></i> 16 TURNS</span></div>
-    <img class="bic-map" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Buddh_Circuit.svg" alt="Buddh International Circuit track layout" loading="eager">
-    <div class="bic-footer"><span>28°21′ N · 77°32′ E</span><span>FORMU1A CIRCUIT SERIES</span></div>
-  </div>
+  <section class="menu-art" id="menuArt" aria-label="Circuit and race timing">
+    <div class="bic-heading"><span class="bic-kicker">INDIA · GRAND PRIX CIRCUIT</span><strong id="circuitName">BUDDH INTERNATIONAL CIRCUIT</strong><span class="bic-meta"><span id="circuitLocation">GREATER NOIDA, INDIA</span><i></i><span id="circuitLength">5.137 KM</span><i></i><span id="circuitTurns">16 TURNS</span></span></div>
+    <div class="track-stage">
+      <button class="circuit-arrow arrow-left" id="prevCircuit" aria-label="Previous circuit" type="button">‹</button>
+      <svg class="race-track" id="raceTrack" viewBox="0 0 700 300" role="img" aria-label="Animated cars circulating on track">
+        <defs><filter id="trackGlow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+        <path class="track-shadow" d="M115 80 C70 48 34 78 47 115 C57 143 109 143 152 159 L206 190 L247 181 L289 199 L343 178 L391 194 L425 221 L397 247 L319 254 L286 241 L243 253 L175 249 L150 271 L525 270 Q560 269 540 246 L510 218 L505 178 L433 176 L373 159 L323 129 L286 136 L254 115 L215 120 L180 101 L164 65 Q151 32 125 46 Q100 55 115 80 Z"/>
+        <path class="track-line" id="trackLine" d="M115 80 C70 48 34 78 47 115 C57 143 109 143 152 159 L206 190 L247 181 L289 199 L343 178 L391 194 L425 221 L397 247 L319 254 L286 241 L243 253 L175 249 L150 271 L525 270 Q560 269 540 246 L510 218 L505 178 L433 176 L373 159 L323 129 L286 136 L254 115 L215 120 L180 101 L164 65 Q151 32 125 46 Q100 55 115 80 Z"/>
+        <path class="track-inner" d="M115 80 C70 48 34 78 47 115 C57 143 109 143 152 159 L206 190 L247 181 L289 199 L343 178 L391 194 L425 221 L397 247 L319 254 L286 241 L243 253 L175 249 L150 271 L525 270 Q560 269 540 246 L510 218 L505 178 L433 176 L373 159 L323 129 L286 136 L254 115 L215 120 L180 101 L164 65 Q151 32 125 46 Q100 55 115 80 Z"/>
+        <path class="sector-mark sector-a" d="M47 115 L152 159 L206 190 L247 181"/><path class="sector-mark sector-b" d="M247 181 L289 199 L343 178 L391 194 L425 221 L397 247"/><path class="sector-mark sector-c" d="M397 247 L319 254 L286 241 L243 253 L175 249 L150 271 L525 270 Q560 269 540 246 L510 218 L505 178 L433 176 L373 159 L323 129"/>
+        <path class="start-line" d="M432 166 L432 186"/><text x="447" y="165" class="track-label">START / FINISH</text>
+        <g class="moving-car car-one"><circle r="5.5" fill="#f8f8f8"/><circle r="2" fill="#ed1c2e"/></g>
+        <g class="moving-car car-two"><circle r="5" fill="#32e889"/><circle r="1.8" fill="#ffffff"/></g>
+        <g class="moving-car car-three"><circle r="5" fill="#ffd83d"/><circle r="1.8" fill="#ffffff"/></g>
+        <g class="moving-car car-four"><circle r="4.5" fill="#bd63ff"/><circle r="1.7" fill="#ffffff"/></g>
+        <g class="moving-car car-five"><circle r="4.5" fill="#46d9ff"/><circle r="1.7" fill="#ffffff"/></g>
+      </svg>
+      <button class="circuit-arrow arrow-right" id="nextCircuit" aria-label="Next circuit" type="button">›</button>
+    </div>
+    <div class="sector-panel" aria-label="Sector times">
+      <div class="sector sector-purple"><span>SECTOR 1</span><div class="sector-bar"><i></i></div><strong>28.421s <em>-0.236</em></strong></div>
+      <div class="sector sector-green"><span>SECTOR 2</span><div class="sector-bar"><i></i></div><strong>31.876s <em>-0.112</em></strong></div>
+      <div class="sector sector-yellow"><span>SECTOR 3</span><div class="sector-bar"><i></i></div><strong>34.119s <em>+0.084</em></strong></div>
+    </div>
+    <div class="lap-panel">
+      <div class="current-lap"><span>CURRENT LAP</span><strong id="currentLapTime">1:34.416</strong><em>+0.084</em></div>
+      <div class="lap-stats"><div><span>BEST</span><strong>1:33.902</strong></div><div><span>LAST</span><strong>1:34.332</strong></div><div><span>GAP</span><strong>+0.430</strong></div></div>
+    </div>
+    <div class="lap-table" aria-label="Lap times"><div class="lap-row lap-head"><span>LAP</span><span>SECTOR 1</span><span>SECTOR 2</span><span>SECTOR 3</span><span>LAP TIME</span></div><div class="lap-row"><span>3</span><b class="purple">28.421</b><b class="green">31.876</b><b class="yellow">34.119</b><strong>1:34.416</strong></div><div class="lap-row"><span>2</span><span>28.723</span><b class="green">32.004</b><b class="yellow">33.981</b><strong>1:34.708</strong></div><div class="lap-row"><span>1</span><span>28.905</span><b class="green">32.110</b><span>34.322</span><strong>1:35.337</strong></div></div>
+    <div class="circuit-thumbnails" id="circuitThumbs"><button class="circuit-thumb" data-circuit="0" type="button"><span class="mini-track monaco-mini"></span><b>MONACO</b><small>MONACO</small></button><button class="circuit-thumb selected" data-circuit="1" type="button"><span class="mini-track buddh-mini"></span><b>BUDDH</b><small>INDIA</small></button><button class="circuit-thumb" data-circuit="2" type="button"><span class="mini-track silver-mini"></span><b>SILVERSTONE</b><small>UK</small></button></div>
+    <div class="circuit-dots"><i class="active"></i><i></i><i></i><i></i><i></i></div>
+  </section>
   <nav class="menu" id="menu" aria-label="Main menu" style="--active-index:0">
     <div class="menu-card active" data-index="0" tabindex="0" role="button" aria-selected="true"><span class="menu-title">CAREER</span></div>
     <div class="menu-card" data-index="1" tabindex="0" role="button" aria-selected="false"><span class="menu-title">CUSTOM RACE</span></div>
@@ -507,6 +582,40 @@ menuItems.forEach(item=>{
  item.addEventListener('click',()=>selectMenuItem(item));
  item.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectMenuItem(item)} if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const idx=(Number(item.dataset.index)+(e.key==='ArrowRight'?1:3))%4;selectMenuItem(menuItems[idx]);menuItems[idx].focus();}});
 });
+// Circuit selector: arrows and thumbnails change the selected circuit presentation.
+const circuits=[
+ {name:'CIRCUIT DE MONACO',location:'MONTE CARLO, MONACO',length:'3.337 KM',turns:'19 TURNS',cls:'monaco',path:'M105 65 C75 35 45 49 45 79 L45 124 L88 142 L102 177 L150 180 L171 155 L203 160 L232 198 L269 194 L280 166 L313 152 L330 119 L370 120 L396 144 L382 177 L418 201 L463 190 L478 160 L453 135 L463 105 L425 91 L392 65 L350 73 L317 48 L280 65 L246 38 L215 60 L177 45 L150 68 L105 65 Z'},
+ {name:'BUDDH INTERNATIONAL CIRCUIT',location:'GREATER NOIDA, INDIA',length:'5.137 KM',turns:'16 TURNS',cls:'buddh',path:'M115 80 C70 48 34 78 47 115 C57 143 109 143 152 159 L206 190 L247 181 L289 199 L343 178 L391 194 L425 221 L397 247 L319 254 L286 241 L243 253 L175 249 L150 271 L525 270 Q560 269 540 246 L510 218 L505 178 L433 176 L373 159 L323 129 L286 136 L254 115 L215 120 L180 101 L164 65 Q151 32 125 46 Q100 55 115 80 Z'},
+ {name:'SILVERSTONE CIRCUIT',location:'SILVERSTONE, UNITED KINGDOM',length:'5.891 KM',turns:'18 TURNS',cls:'silver',path:'M93 72 L147 47 L193 61 L220 88 L274 81 L306 106 L350 91 L380 115 L429 99 L466 123 L451 155 L482 181 L459 214 L411 213 L384 244 L336 231 L298 250 L260 228 L220 244 L194 218 L154 225 L128 195 L94 185 L111 151 L78 126 L93 72 Z'}
+];
+let circuitIndex=1;
+function setCircuit(index){
+ circuitIndex=(index+circuits.length)%circuits.length;const c=circuits[circuitIndex];
+ document.getElementById('circuitName').textContent=c.name;
+ document.getElementById('circuitLocation').textContent=c.location;
+ document.getElementById('circuitLength').textContent=c.length;
+ document.getElementById('circuitTurns').textContent=c.turns;
+ document.querySelectorAll('.circuit-thumb').forEach((el,i)=>el.classList.toggle('selected',i===circuitIndex));
+ document.querySelectorAll('.circuit-dots i').forEach((el,i)=>el.classList.toggle('active',i===circuitIndex));
+ document.getElementById('raceTrack').classList.remove('layout-monaco','layout-silver');
+ if(c.cls!=='buddh')document.getElementById('raceTrack').classList.add('layout-'+c.cls);
+ document.querySelectorAll('#raceTrack .track-line, #raceTrack .track-shadow, #raceTrack .track-inner').forEach(path=>path.setAttribute('d',c.path));
+ document.querySelectorAll('#raceTrack .sector-mark').forEach((path,i)=>path.style.opacity=c.cls==='buddh'?'0.9':(i===circuitIndex?'1':'.55'));
+ trackPath=document.getElementById('trackLine');
+}
+document.getElementById('prevCircuit').addEventListener('click',()=>setCircuit(circuitIndex-1));
+document.getElementById('nextCircuit').addEventListener('click',()=>setCircuit(circuitIndex+1));
+document.querySelectorAll('.circuit-thumb').forEach(el=>el.addEventListener('click',()=>setCircuit(Number(el.dataset.circuit))));
+// Animated dots follow the actual SVG path, like cars circulating around the lap.
+let trackPath=document.getElementById('trackLine');
+const carNodes=[...document.querySelectorAll('.moving-car')];
+let raceStart=performance.now();
+function animateTrack(now){
+ const len=trackPath.getTotalLength();
+ carNodes.forEach((car,i)=>{const progress=((now-raceStart)*(0.000035+i*0.000003)+i*0.19)%1;const pt=trackPath.getPointAtLength(progress*len);car.setAttribute('transform',`translate(${pt.x} ${pt.y})`);});
+ requestAnimationFrame(animateTrack);
+}
+requestAnimationFrame(animateTrack);
 initRedSheet();
 })();
 </script>
