@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050505">
-<title>FORMU1A — Buddh Circuit Live Timing v2.0</title>
+<title>FORMU1A — Buddh Circuit Traced Layout v2.7</title>
 <style>
 :root{--red:#c8102e;--accent:#ed1c2e;--black:#050505;--white:#f5f5f5}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:var(--white);font-family:Arial,Helvetica,sans-serif}
@@ -420,33 +420,52 @@
     <div class="bic-heading"><span class="bic-kicker">INDIA · GRAND PRIX CIRCUIT</span><strong id="circuitName">BUDDH INTERNATIONAL CIRCUIT</strong><span class="bic-meta"><span id="circuitLocation">GREATER NOIDA, INDIA</span><i></i><span id="circuitLength">5.137 KM</span><i></i><span id="circuitTurns">16 TURNS</span></span></div>
     <div class="track-stage">
 
-      <svg class="race-track" id="raceTrack" viewBox="0 0 1255 780" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Buddh International Circuit with pit buildings and sector markings">
-        <!-- Original reference raster removed. Custom vector circuit and pit complex below. -->
+      <svg class="race-track" id="raceTrack" viewBox="0 250 1536 875" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Custom vector drawing of Buddh International Circuit, pit buildings, and sector markings">
+        <defs>
+          <filter id="trackGlow" x="-15%" y="-15%" width="130%" height="130%"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <linearGradient id="pitRoof" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b8d90"/><stop offset="1" stop-color="#55575a"/></linearGradient>
+        </defs>
+        <!-- Pit complex is drawn as vector geometry; no screenshot or raster map is used. -->
         <g id="pitBuildings" aria-label="Buddh pit buildings">
-          <path d="M650 478 L1008 447 L1018 495 L655 525 Z" fill="#77797d" stroke="#bfc0c2" stroke-width="2"/>
-          <path d="M678 530 L1002 502 L1007 516 L681 545 Z" fill="#4c4e52" stroke="#999a9c" stroke-width="2"/>
-          <path d="M692 552 L835 540 L839 579 L696 591 Z" fill="#45474a" stroke="#8e9093" stroke-width="2"/>
-          <path d="M861 538 L1003 526 L1008 564 L866 577 Z" fill="#45474a" stroke="#8e9093" stroke-width="2"/>
-          <path d="M390 588 L552 566 L566 648 L406 666 Q383 655 390 588 Z" fill="#bfc0c2" stroke="#77797d" stroke-width="8"/>
-          <path d="M1055 505 L1080 500 L1118 633 L1090 638 Z" fill="#bfc0c2" stroke="#77797d" stroke-width="8"/>
-          <path d="M615 528 L1009 495" stroke="#2a2a2c" stroke-width="18" opacity=".8"/>
-          <path d="M615 528 L1009 495" stroke="#d9d9d9" stroke-width="3"/>
-          <path d="M822 511 L833 510 L835 535 L824 536 Z" fill="#fff"/>
-          <path d="M822 511 L833 510 L833 516 L822 517 Z M824 523 L834 522 L834 528 L824 529 Z" fill="#111"/>
-          <path d="M648 481 L1007 450" stroke="#9b9da0" stroke-width="1.5"/>
-          <path d="M650 487 L1009 456" stroke="#9b9da0" stroke-width="1.5"/>
+          <path d="M654 756 L1002 730 L1012 779 L661 807 Z" fill="url(#pitRoof)" stroke="#bfc0c2" stroke-width="3"/>
+          <path d="M676 802 L1001 779 L1007 795 L682 821 Z" fill="#55575a" stroke="#a4a6a8" stroke-width="2"/>
+          <path d="M689 829 L835 818 L841 858 L695 870 Z" fill="#45474a" stroke="#8e9093" stroke-width="2"/>
+          <path d="M858 816 L1003 805 L1009 844 L864 856 Z" fill="#45474a" stroke="#8e9093" stroke-width="2"/>
+          <path d="M402 866 L555 846 L570 931 L417 947 Q393 938 402 866 Z" fill="#bfc0c2" stroke="#77797d" stroke-width="10"/>
+          <path d="M1057 810 L1082 805 L1121 939 L1091 944 Z" fill="#bfc0c2" stroke="#77797d" stroke-width="10"/>
+          <path d="M619 806 L1008 779" stroke="#292a2c" stroke-width="18" opacity=".9"/>
+          <path d="M619 806 L1008 779" stroke="#d9d9d9" stroke-width="3"/>
+          <path d="M821 790 L834 789 L836 818 L823 819 Z" fill="#fff"/>
+          <path d="M821 790 L834 789 L834 796 L822 797 Z M823 804 L835 803 L835 810 L824 811 Z" fill="#111"/>
+          <path d="M656 761 L1004 735 M660 770 L1007 744" stroke="#a3a5a8" stroke-width="1.5"/>
+          <path d="M410 875 L548 857 M416 887 L552 869 M1064 822 L1107 931" stroke="#e0e0e0" stroke-width="1.5" opacity=".7"/>
         </g>
-        <!-- Invisible motion guide only. The reference image itself is the visible circuit; no extra track strokes are drawn. -->
-        <path id="trackLine" class="track-line" d="M 1008 495 C 1040 493 1080 499 1100 525 C 1117 548 1122 567 1145 588 C 1168 608 1190 620 1200 645 C 1208 664 1190 674 1165 676 L 310 676 C 286 676 275 664 291 646 L 405 523 C 428 499 447 480 438 454 C 431 433 412 423 391 412 L 318 373 C 297 362 285 355 270 356 C 247 358 228 371 211 357 C 192 341 185 313 164 297 C 144 282 119 284 99 299 C 78 315 73 341 82 365 C 92 392 119 405 148 412 L 246 438 C 266 444 286 457 306 470 L 362 506 C 383 520 401 518 421 510 L 465 497 L 512 516 L 558 500 L 606 522 L 655 503 L 704 526 L 737 551 C 753 564 751 576 736 591 L 695 628 C 684 638 665 640 642 640 L 575 642 L 527 630 L 477 642 L 432 633 L 389 641 L 350 641 L 324 662 L 310 676 L 1008 676 C 1045 676 1056 662 1036 643 L 1007 613 L 1000 552 L 1008 495 Z" fill="none" stroke="#f4f4f4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- One continuous centerline traced from the supplied circuit reference. -->
+        <path id="trackLine" class="track-line" d="M 870 780
+          L 1120 766 Q 1150 764 1175 762 L 1245 758 Q 1270 758 1278 779
+          L 1280 824 Q 1283 845 1305 868 L 1350 914 Q 1374 940 1380 963
+          Q 1385 985 1354 990 L 380 997 Q 344 997 332 983 Q 321 971 337 951
+          L 423 854 L 505 759 L 592 657 L 674 562 Q 706 527 731 494
+          Q 747 472 737 453 Q 730 439 704 430 L 622 402 L 551 386
+          Q 526 380 506 394 L 483 403 Q 466 408 448 390 L 394 331
+          Q 370 302 347 300 Q 319 297 291 314 Q 263 331 255 358
+          Q 248 386 270 407 Q 292 428 330 439 L 399 459 Q 424 467 441 489
+          Q 452 504 455 523 Q 460 545 483 555 L 535 571 Q 557 578 575 567
+          Q 590 558 603 568 Q 619 582 609 604 Q 599 627 579 649
+          L 528 706 L 472 772 L 417 838 L 365 900 Q 345 925 339 950
+          Q 335 968 354 977 Q 371 985 401 982 L 566 982 L 790 982 L 1050 982
+          Q 1090 982 1117 980 Q 1146 978 1151 960 Q 1155 945 1137 927
+          L 1097 885 Q 1081 868 1078 848 L 1070 793 Q 1068 781 1053 781
+          L 870 780 Z" fill="none" stroke="#f4f4f4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#trackGlow)"/>
         <g id="sectorSegments" aria-hidden="true" style="display:none!important"></g>
         <g id="sectorLabels" aria-hidden="true" style="display:none!important"></g>
         <g id="staticSectorLabels" aria-hidden="true" pointer-events="none">
-          <text x="275" y="430" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="22" font-weight="900">S1</text>
-          <text x="520" y="622" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="22" font-weight="900">S2</text>
-          <text x="620" y="400" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="22" font-weight="900">S3</text>
-          <text x="850" y="480" text-anchor="middle" fill="#bcbcc0" font-size="13" font-weight="800" letter-spacing="1.2">START / FINISH</text>
+          <text x="490" y="545" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="24" font-weight="900">S1</text>
+          <text x="575" y="742" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="24" font-weight="900">S2</text>
+          <text x="625" y="410" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="24" font-weight="900">S3</text>
+          <text x="870" y="760" text-anchor="middle" fill="#bcbcc0" font-size="15" font-weight="800" letter-spacing="1.2">START / FINISH</text>
         </g>
-        <g class="moving-car" id="movingDot" aria-label="Your car"><circle r="8" fill="#f8f8f8" stroke="#ed1c2e" stroke-width="3"/><circle r="2.8" fill="#ed1c2e"/></g>
+        <g class="moving-car" id="movingDot" aria-label="Your car"><circle r="9" fill="#f8f8f8" stroke="#ed1c2e" stroke-width="3.5"/><circle r="3" fill="#ed1c2e"/></g>
       </svg>
 
     </div>
@@ -671,13 +690,12 @@ function requestLandscapeMode(){
   const fs=root.requestFullscreen||root.webkitRequestFullscreen;
   if(fs){const result=fs.call(root);if(result&&typeof result.catch==='function')result.catch(()=>{});}
  }catch(e){}
- try{if(screen.orientation&&typeof screen.orientation.lock==='function'){const result=screen.orientation.lock('landscape');if(result&&typeof result.catch==='function')result.catch(()=>{});}}catch(e){}
+ try{/* Keep the user's current screen orientation. */}catch(e){}
 }
 let experienceStarted=false;
 function beginExperience(){
  if(experienceStarted)return;
  experienceStarted=true;
- requestLandscapeMode();
  startMenuMusic();
  const gate=document.getElementById('startGate');
  gate.classList.add('hide');
@@ -729,7 +747,7 @@ const fmtSector=(seconds)=>Number.isFinite(seconds)?`${seconds.toFixed(3)}s`:'--
 // Find the start/finish point on the clean track path, then traverse it backwards.
 // SVG coordinates increase downward, so reverse path-distance gives the desired anti-clockwise motion.
 let startDistance=0,bestStartDistance=Infinity;
-for(let d=0;d<=trackLength;d+=1){const p=trackPath.getPointAtLength(d);const err=(p.x-850)**2+(p.y-510)**2;if(err<bestStartDistance){bestStartDistance=err;startDistance=d;}}
+for(let d=0;d<=trackLength;d+=1){const p=trackPath.getPointAtLength(d);const err=(p.x-870)**2+(p.y-780)**2;if(err<bestStartDistance){bestStartDistance=err;startDistance=d;}}
 const startFraction=startDistance/trackLength;
 function reverseDistance(fraction){return ((startDistance-fraction*trackLength)%trackLength+trackLength)%trackLength;}
 function pathSlice(startFraction,endFraction){
