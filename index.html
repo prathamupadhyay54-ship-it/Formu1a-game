@@ -441,33 +441,37 @@
           <path d="M410 875 L548 857 M416 887 L552 869 M1064 822 L1107 931" stroke="#e0e0e0" stroke-width="1.5" opacity=".7"/>
         </g>
         <!-- One continuous centerline traced from the supplied circuit reference. -->
-        <path id="trackLine" class="track-line" d="M 870 790
-          L 1112 775 Q 1132 775 1137 794
-          L 1143 835 Q 1148 860 1173 887
-          L 1225 930 Q 1260 956 1290 970
-          Q 1310 982 1288 993 Q 1278 1002 1248 1002
-          L 370 1005 Q 333 1005 316 989 Q 303 974 326 947
-          L 414 846 L 502 744 L 582 652 L 650 574
-          Q 686 535 721 500 Q 741 480 735 461
-          Q 730 445 706 436 L 631 409 L 563 386
-          Q 537 378 516 392 L 488 405 Q 468 413 450 393
-          L 398 334 Q 374 304 349 301 Q 321 298 294 315
-          Q 267 333 257 359 Q 249 386 271 408
-          Q 293 430 331 441 L 399 461
-          Q 425 469 442 491 Q 454 507 457 526
-          Q 461 545 484 556 L 532 572
-          Q 555 580 574 568 Q 591 558 604 570
-          Q 619 584 609 606 Q 600 628 581 650
-          L 554 685 Q 536 709 542 731
-          Q 549 751 571 766 L 605 788 Q 625 799 654 799
-          L 870 790 Z" fill="none" stroke="#f4f4f4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#trackGlow)"/>
+        <path id="trackLine" class="track-line" d="M 930 760
+          L 1185 723
+          Q 1214 720 1226 739 Q 1237 759 1225 780
+          Q 1216 791 1200 789 Q 1180 786 1182 812
+          Q 1184 856 1210 881 Q 1237 907 1290 927
+          Q 1318 938 1307 950 Q 1300 959 1277 959
+          L 347 974 Q 319 974 310 958 Q 302 945 319 927
+          L 610 650 Q 632 629 626 610
+          L 597 565 Q 585 545 568 552
+          Q 552 560 540 567 Q 529 574 510 569
+          L 394 529 Q 365 519 359 494
+          Q 354 476 356 458 Q 359 438 342 430
+          L 205 395 Q 171 386 151 365
+          Q 127 340 130 310 Q 133 278 160 254
+          Q 190 228 226 232 Q 258 235 277 267
+          L 319 331 Q 332 351 350 368
+          L 436 451 Q 455 470 477 465
+          Q 494 462 511 448 L 538 430
+          Q 552 421 571 428
+          L 741 487 Q 765 496 774 516
+          Q 782 535 768 555
+          L 620 739 Q 603 760 586 775
+          Q 571 789 582 808 Q 592 824 616 821
+          L 930 760 Z" fill="none" stroke="#f4f4f4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#trackGlow)"/>
         <g id="sectorSegments" aria-hidden="true" style="display:none!important"></g>
         <g id="sectorLabels" aria-hidden="true" style="display:none!important"></g>
         <g id="staticSectorLabels" aria-hidden="true" pointer-events="none">
           <text x="430" y="500" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="24" font-weight="900">S1</text>
           <text x="500" y="815" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="24" font-weight="900">S2</text>
           <text x="610" y="430" text-anchor="middle" fill="#ffffff" stroke="#080808" stroke-width="4" paint-order="stroke" font-size="24" font-weight="900">S3</text>
-          <text x="870" y="770" text-anchor="middle" fill="#bcbcc0" font-size="15" font-weight="800" letter-spacing="1.2">START / FINISH</text>
+          <text x="930" y="740" text-anchor="middle" fill="#bcbcc0" font-size="15" font-weight="800" letter-spacing="1.2">START / FINISH</text>
         </g>
         <g class="moving-car" id="movingDot" aria-label="Your car"><circle r="9" fill="#f8f8f8" stroke="#ed1c2e" stroke-width="3.5"/><circle r="3" fill="#ed1c2e"/></g>
       </svg>
@@ -750,7 +754,7 @@ const fmtLap=(seconds)=>{if(!Number.isFinite(seconds))return '--:--.---';const m
 const fmtSector=(seconds)=>Number.isFinite(seconds)?`${seconds.toFixed(3)}s`:'--.---s';
 // Find the start/finish point, then move forward along the SVG path in the same direction as the arrows in the track reference.
 let startDistance=0,bestStartDistance=Infinity;
-for(let d=0;d<=trackLength;d+=1){const p=trackPath.getPointAtLength(d);const err=(p.x-870)**2+(p.y-790)**2;if(err<bestStartDistance){bestStartDistance=err;startDistance=d;}}
+for(let d=0;d<=trackLength;d+=1){const p=trackPath.getPointAtLength(d);const err=(p.x-930)**2+(p.y-760)**2;if(err<bestStartDistance){bestStartDistance=err;startDistance=d;}}
 const startFraction=startDistance/trackLength;
 function arrowDistance(fraction){return ((startDistance+fraction*trackLength)%trackLength+trackLength)%trackLength;}
 function pathSlice(startFraction,endFraction){
