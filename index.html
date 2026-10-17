@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050505">
-<title>FORMU1A — Intro Prototype v0.9.6</title>
+<title>FORMU1A — Main Menu UI v1.0</title>
 <style>
 :root{--red:#c8102e;--accent:#ed1c2e;--black:#050505;--white:#f5f5f5}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:var(--white);font-family:Arial,Helvetica,sans-serif}
@@ -15,10 +15,37 @@
 .loading{position:absolute;z-index:6;left:clamp(24px,7vw,100px);right:clamp(24px,7vw,100px);top:calc(50% + clamp(100px,12vh,132px));opacity:0;visibility:hidden;transition:opacity .65s,visibility .65s}
 .loading.show{opacity:1;visibility:visible}.load-row{display:flex;justify-content:space-between;gap:12px;color:#92929b;font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px}
 .track{height:3px;background:#29292e;overflow:hidden}.fill{height:100%;width:0;background:var(--accent);box-shadow:0 0 12px #ed1c2e88;transition:width .08s linear}
-.menu{position:absolute;z-index:7;left:clamp(22px,7vw,96px);right:clamp(22px,7vw,96px);bottom:clamp(24px,7vh,76px);display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(15px);pointer-events:none;transition:opacity .7s,transform .7s}
-.menu.show{opacity:1;transform:translateY(0);pointer-events:auto}.menu button{display:flex;gap:14px;align-items:center;min-height:47px;padding:12px 14px;text-align:left;border:1px solid #ffffff20;background:#101014dd;color:#777;cursor:not-allowed}
-.menu button:first-child{min-height:55px;background:#ed1c2e18;border-color:#ed1c2e66}.num{color:var(--accent);font-size:11px;font-weight:800}.label{flex:1;font-size:12px;font-weight:800;letter-spacing:.12em}.lock{font-size:12px;color:#555}
-@media(max-width:600px){.menu{left:22px;right:22px;bottom:clamp(22px,5vh,46px);gap:6px}.menu button{min-height:41px;padding:9px 12px}.menu button:first-child{min-height:46px}.loading{top:calc(50% + 100px)}}
+.menu-header{position:absolute;z-index:8;top:20px;left:clamp(18px,4vw,48px);right:clamp(18px,4vw,48px);display:flex;align-items:center;justify-content:space-between;opacity:0;pointer-events:none;transition:opacity .7s}
+.menu-header.show{opacity:1;pointer-events:auto}
+.header-icon{width:46px;height:46px;display:grid;place-items:center;border:1px solid #ffffff24;border-radius:14px;background:#101014d9;color:#f5f5f5}
+.header-icon svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.menu-art{position:absolute;z-index:5;right:-2vw;top:20%;width:min(58vw,780px);height:70%;opacity:0;transform:translateX(24px);transition:opacity 1s,transform 1s;pointer-events:none}
+.menu-art.show{opacity:.13;transform:translateX(0)}
+.menu-art svg{width:100%;height:100%;overflow:visible}
+.menu{position:absolute;z-index:7;left:clamp(20px,5vw,76px);top:27%;bottom:auto;width:min(560px,47vw);display:flex;flex-direction:column;gap:13px;opacity:0;transform:translateY(15px);pointer-events:none;transition:opacity .7s,transform .7s}
+.menu.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.menu-card{display:flex;gap:18px;align-items:center;min-height:84px;padding:17px 20px;text-align:left;border:1px solid #ffffff20;border-radius:4px;background:linear-gradient(105deg,#151519f5,#0b0b0de8);color:#f5f5f5;box-shadow:0 12px 28px #00000020}
+.menu-card:first-child{border-color:#ed1c2e80;background:linear-gradient(105deg,#2a0b11f5,#100b0de8)}
+.menu-icon{flex:0 0 42px;width:42px;height:42px;display:grid;place-items:center;color:var(--accent);border:1px solid #ed1c2e55;background:#ed1c2e0c}
+.menu-icon svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.menu-copy{display:flex;flex-direction:column;gap:5px;min-width:0}
+.menu-title{font-size:clamp(12px,1.4vw,16px);font-weight:800;letter-spacing:.11em}
+.menu-desc{font-size:11px;letter-spacing:.025em;color:#85858d;line-height:1.4}
+@media(max-width:700px){
+ .menu-header{top:16px;left:16px;right:16px}
+ .header-icon{width:42px;height:42px}
+ .menu{left:18px;top:25%;width:min(78vw,470px);gap:10px}
+ .menu-card{min-height:68px;padding:13px 14px;gap:12px}
+ .menu-icon{flex-basis:36px;width:36px;height:36px}
+ .menu-icon svg{width:21px;height:21px}
+ .menu-title{font-size:11px;letter-spacing:.075em}
+ .menu-desc{font-size:10px}
+ .menu-art{right:-18vw;top:29%;width:83vw;height:55%;opacity:0}
+ .menu-art.show{opacity:.10}
+ .loading{top:calc(50% + 100px)}
+}
+@media(max-height:620px) and (min-width:701px){.menu{top:24%;gap:8px}.menu-card{min-height:64px;padding:11px 16px}.menu-desc{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.loading,.logo,.logo .one,.menu,.menu-header,.menu-art{transition-duration:.01ms!important}}
 @media(prefers-reduced-motion:reduce){.loading,.logo,.logo .one,.menu{transition-duration:.01ms!important}}
 </style>
 </head>
@@ -30,12 +57,28 @@
     <div class="load-row"><span id="loadText">INITIALIZING PADDOCK</span><span id="percent">0%</span></div>
     <div class="track"><div class="fill" id="fill"></div></div>
   </section>
+  <header class="menu-header" id="menuHeader" aria-label="Game controls">
+    <div class="header-icon" aria-label="Settings" title="Settings">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.7 2.94-.09-.03a1.7 1.7 0 0 0-1.8.48l-.06.07h-3.4l-.03-.1a1.7 1.7 0 0 0-1.3-1.25l-.1-.02-2.94-1.7.03-.1a1.7 1.7 0 0 0-.48-1.79l-.07-.06v-3.4l.1-.03a1.7 1.7 0 0 0 1.25-1.3l.02-.1 1.7-2.94.1.03a1.7 1.7 0 0 0 1.79-.48l.06-.07h3.4l.03.1a1.7 1.7 0 0 0 1.3 1.25l.1.02 2.94 1.7-.03.1a1.7 1.7 0 0 0 .48 1.79l.07.06v3.4z"></path></svg>
+    </div>
+    <div class="header-icon" aria-label="Profile" title="Profile">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.7-3.3 3.1-5 7-5s6.3 1.7 7 5"></path></svg>
+    </div>
+  </header>
+  <div class="menu-art" id="menuArt" aria-hidden="true">
+    <svg viewBox="0 0 620 760" role="presentation">
+      <g transform="translate(310 380) rotate(-12)" stroke="#bfc0c5" stroke-linejoin="round">
+        <path d="M-125 -300 L-250 -335 L-280 -300 L-145 -245 Z" fill="#8b8d94" stroke-width="8"/><path d="M125 -300 L250 -335 L280 -300 L145 -245 Z" fill="#8b8d94" stroke-width="8"/>
+        <rect x="-225" y="-315" width="42" height="92" rx="12" fill="#17181c" stroke-width="7"/><rect x="183" y="-315" width="42" height="92" rx="12" fill="#17181c" stroke-width="7"/><rect x="-225" y="235" width="42" height="92" rx="12" fill="#17181c" stroke-width="7"/><rect x="183" y="235" width="42" height="92" rx="12" fill="#17181c" stroke-width="7"/>
+        <path d="M-120 -255 Q-90 -300 -45 -300 L45 -300 Q90 -300 120 -255 L150 -130 L120 205 L70 270 L-70 270 L-120 205 L-150 -130 Z" fill="#33353b" stroke-width="9"/><path d="M-70 -190 L70 -190 L52 125 L-52 125 Z" fill="#090a0d" stroke-width="6"/><path d="M-42 -155 L42 -155 L32 -75 L-32 -75 Z" fill="#8d929a" stroke-width="5"/><path d="M-48 145 L48 145 L70 215 L-70 215 Z" fill="#ed1c2e" stroke-width="7"/><path d="M-145 -145 L-190 -115 L-165 -65 L-115 -90 Z M145 -145 L190 -115 L165 -65 L115 -90 Z" fill="#5c5e65" stroke-width="7"/><path d="M-155 190 L-255 220 L-250 265 L-115 245 Z M155 190 L255 220 L250 265 L115 245 Z" fill="#17181c" stroke-width="8"/><path d="M-112 -230 L-70 -260 L-40 -220 L-78 -185 Z M112 -230 L70 -260 L40 -220 L78 -185 Z" fill="#ed1c2e" stroke-width="5"/>
+      </g>
+    </svg>
+  </div>
   <nav class="menu" id="menu" aria-label="Main menu">
-    <button disabled><span class="num">01</span><span class="label">START</span><span class="lock">🔒</span></button>
-    <button disabled><span class="num">02</span><span class="label">LOAD CAREER</span><span class="lock">🔒</span></button>
-    <button disabled><span class="num">03</span><span class="label">EDIT DRIVER &amp; LIVERY</span><span class="lock">🔒</span></button>
-    <button disabled><span class="num">04</span><span class="label">SETTINGS</span><span class="lock">🔒</span></button>
-    <button disabled><span class="num">05</span><span class="label">QUIT</span><span class="lock">🔒</span></button>
+    <div class="menu-card"><span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3v18M5 5h13l-2 4 2 4H5"></path></svg></span><span class="menu-copy"><span class="menu-title">START</span><span class="menu-desc">Begin your racing journey</span></span></div>
+    <div class="menu-card"><span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7V4h3M4 4l6 6M20 17v3h-3M20 20l-6-6"></path><rect x="7" y="7" width="10" height="10" rx="1.5"></rect></svg></span><span class="menu-copy"><span class="menu-title">LOAD CAREER</span><span class="menu-desc">Continue your championship</span></span></div>
+    <div class="menu-card"><span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 5.1L20 9l-4 4 .9 5.7-4.9-2.7-4.9 2.7L8 13 4 9l5.6-.9L12 3z"></path><path d="M4 21h16"></path></svg></span><span class="menu-copy"><span class="menu-title">EDIT DRIVER &amp; LIVERY</span><span class="menu-desc">Make your mark on the grid</span></span></div>
+    <div class="menu-card"><span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h5"></path><path d="M15 17l2 2 4-5"></path></svg></span><span class="menu-copy"><span class="menu-title">QUIT</span><span class="menu-desc">Return from the racing experience</span></span></div>
   </nav>
 </main>
 <script>
@@ -158,7 +201,7 @@ function startLoading(){
    setTimeout(()=>{
     logo.classList.add('parked');
     loading.classList.remove('show');
-    setTimeout(()=>menu.classList.add('show'),700);
+    setTimeout(()=>{menu.classList.add('show');document.getElementById('menuHeader').classList.add('show');document.getElementById('menuArt').classList.add('show')},700);
    },750);
   },700);
  }
