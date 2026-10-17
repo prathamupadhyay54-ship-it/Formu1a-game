@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050505">
-<title>FORMU1A — Main Menu UI v1.0</title>
+<title>FORMU1A — Main Menu UI v1.0.1</title>
 <style>
 :root{--red:#c8102e;--accent:#ed1c2e;--black:#050505;--white:#f5f5f5}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:var(--white);font-family:Arial,Helvetica,sans-serif}
@@ -22,29 +22,32 @@
 .menu-art{position:absolute;z-index:5;right:-2vw;top:20%;width:min(58vw,780px);height:70%;opacity:0;transform:translateX(24px);transition:opacity 1s,transform 1s;pointer-events:none}
 .menu-art.show{opacity:.13;transform:translateX(0)}
 .menu-art svg{width:100%;height:100%;overflow:visible}
-.menu{position:absolute;z-index:7;left:clamp(20px,5vw,76px);top:27%;bottom:auto;width:min(560px,47vw);display:flex;flex-direction:column;gap:13px;opacity:0;transform:translateY(15px);pointer-events:none;transition:opacity .7s,transform .7s}
+.menu{position:absolute;z-index:7;left:clamp(20px,5vw,76px);top:27%;bottom:auto;width:min(620px,52vw);display:flex;flex-direction:column;gap:14px;opacity:0;transform:translateY(15px);pointer-events:none;transition:opacity .7s,transform .7s}
 .menu.show{opacity:1;transform:translateY(0);pointer-events:auto}
-.menu-card{display:flex;gap:18px;align-items:center;min-height:84px;padding:17px 20px;text-align:left;border:1px solid #ffffff20;border-radius:4px;background:linear-gradient(105deg,#151519f5,#0b0b0de8);color:#f5f5f5;box-shadow:0 12px 28px #00000020}
-.menu-card:first-child{border-color:#ed1c2e80;background:linear-gradient(105deg,#2a0b11f5,#100b0de8)}
-.menu-icon{flex:0 0 42px;width:42px;height:42px;display:grid;place-items:center;color:var(--accent);border:1px solid #ed1c2e55;background:#ed1c2e0c}
+.menu-card{position:relative;display:flex;gap:20px;align-items:center;min-height:88px;padding:18px 22px;text-align:left;border:1px solid #ffffff22;border-radius:7px;background:linear-gradient(100deg,#17171cf5 0%,#0b0b0df0 78%);color:#f5f5f5;box-shadow:0 12px 28px #00000028;overflow:hidden}
+.menu-card:before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;background:#ed1c2e;opacity:.8}
+.menu-card:first-child{border-color:#ed1c2eaa;background:linear-gradient(100deg,#310b13f5 0%,#110b0df0 78%)}
+.menu-icon{flex:0 0 46px;width:46px;height:46px;display:grid;place-items:center;color:var(--accent);border:1px solid #ed1c2e75;border-radius:5px;background:#ed1c2e12}
 .menu-icon svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .menu-copy{display:flex;flex-direction:column;gap:5px;min-width:0}
-.menu-title{font-size:clamp(12px,1.4vw,16px);font-weight:800;letter-spacing:.11em}
-.menu-desc{font-size:11px;letter-spacing:.025em;color:#85858d;line-height:1.4}
+.menu-title{font-size:clamp(13px,1.45vw,16px);font-weight:800;letter-spacing:.10em}
+.menu-desc{font-size:12px;letter-spacing:.015em;color:#a0a0a8;line-height:1.45}
 @media(max-width:700px){
  .menu-header{top:16px;left:16px;right:16px}
  .header-icon{width:42px;height:42px}
- .menu{left:18px;top:25%;width:min(78vw,470px);gap:10px}
- .menu-card{min-height:68px;padding:13px 14px;gap:12px}
- .menu-icon{flex-basis:36px;width:36px;height:36px}
- .menu-icon svg{width:21px;height:21px}
- .menu-title{font-size:11px;letter-spacing:.075em}
- .menu-desc{font-size:10px}
+ .menu{left:18px;top:25%;width:min(86vw,520px);gap:11px}
+ .menu-card{position:relative;min-height:74px;padding:14px 16px 14px 15px;gap:14px;border-radius:7px;background:linear-gradient(100deg,#17171cf5 0%,#0b0b0df0 78%);box-shadow:0 9px 22px #00000030}
+ .menu-card:before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;background:#ed1c2e;opacity:.8}
+ .menu-card:first-child{background:linear-gradient(100deg,#310b13f5 0%,#110b0df0 78%);border-color:#ed1c2eaa}
+ .menu-icon{flex-basis:40px;width:40px;height:40px;border-radius:5px;background:#ed1c2e12;border-color:#ed1c2e75}
+ .menu-icon svg{width:22px;height:22px}
+ .menu-title{font-size:12px;letter-spacing:.09em}
+ .menu-desc{font-size:11px;color:#a0a0a8}
  .menu-art{right:-18vw;top:29%;width:83vw;height:55%;opacity:0}
- .menu-art.show{opacity:.10}
+ .menu-art.show{opacity:.08}
  .loading{top:calc(50% + 100px)}
 }
-@media(max-height:620px) and (min-width:701px){.menu{top:24%;gap:8px}.menu-card{min-height:64px;padding:11px 16px}.menu-desc{font-size:10px}}
+@media(max-height:620px){.menu{top:24%;gap:8px}.menu-card{min-height:64px;padding:11px 16px}.menu-desc{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.loading,.logo,.logo .one,.menu,.menu-header,.menu-art{transition-duration:.01ms!important}}
 @media(prefers-reduced-motion:reduce){.loading,.logo,.logo .one,.menu{transition-duration:.01ms!important}}
 </style>
@@ -93,10 +96,10 @@ const spriteData=['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAAJ0CAYAAAB
 const carSprites=spriteData.map(src=>{const im=new Image();im.src=src;return im;});
 const cars=[
 {name:'KART',x:.14,color:'#ff9c39',speed:.82,delay:.20,pitch:145,type:'kart',sprite:0},
-{name:'F4',x:.29,color:'#24d36d',speed:.82,delay:.48,pitch:105,type:'formula',sprite:1},
-{name:'F3',x:.50,color:'#f3f3f3',speed:.82,delay:.72,pitch:82,type:'formula',sprite:2},
-{name:'F2',x:.69,color:'#2d69ff',speed:.82,delay:.94,pitch:66,type:'formula',sprite:3},
-{name:'F1',x:.88,color:'#ff2438',speed:.82,delay:1.12,pitch:52,type:'formula',sprite:4}];
+{name:'F4',x:.32,color:'#24d36d',speed:.82,delay:.20,pitch:105,type:'formula',sprite:1},
+{name:'F3',x:.50,color:'#f3f3f3',speed:.82,delay:.20,pitch:82,type:'formula',sprite:2},
+{name:'F2',x:.68,color:'#2d69ff',speed:.82,delay:.20,pitch:66,type:'formula',sprite:3},
+{name:'F1',x:.86,color:'#ff2438',speed:.82,delay:.20,pitch:52,type:'formula',sprite:4}];
 function resize(){const r=stage.getBoundingClientRect();W=r.width;H=r.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=mask.width=Math.round(W*dpr);canvas.height=mask.height=Math.round(H*dpr);canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);mctx.setTransform(dpr,0,0,dpr,0,0)}
 addEventListener('resize',resize);resize();
 function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r);c.fill()}
@@ -167,7 +170,7 @@ function cutTrail(x,y,width){
  mctx.restore();
 }
 function position(car,t){const elapsed=t-car.delay;if(elapsed<0)return null;const p=Math.min(1,elapsed/(2.5/car.speed));return{x:car.x*W+Math.sin(elapsed*2+car.x*9)*W*.003,y:H+95-p*(H+190),s:Math.max(12,Math.min(W*.075,car.name==='KART'?W*.047:W*.066))}}
-function paint(now){const elapsed=(now-start)/1000;ctx.clearRect(0,0,W,H);for(const car of cars){const p=position(car,elapsed);if(p)cutTrail(p.x,p.y,p.s*.74)}ctx.drawImage(mask,0,0,mask.width,mask.height,0,0,W,H);for(const car of cars){const p=position(car,elapsed);if(!p)continue;ctx.save();ctx.globalAlpha=.45;ctx.strokeStyle=car.color;ctx.lineWidth=Math.max(1,p.s*.045);ctx.beginPath();ctx.moveTo(p.x,p.y+p.s);ctx.lineTo(p.x,p.y+p.s*2);ctx.stroke();ctx.restore();drawSprite(ctx,p.x,p.y,p.s,car)}if(elapsed>5.55&&!done){done=true;finishIntro();return}raf=requestAnimationFrame(paint)}
+function paint(now){const elapsed=(now-start)/1000;ctx.clearRect(0,0,W,H);for(const car of cars){const p=position(car,elapsed);if(p)cutTrail(p.x,p.y,p.s*.74)}ctx.drawImage(mask,0,0,mask.width,mask.height,0,0,W,H);for(const car of cars){const p=position(car,elapsed);if(!p)continue;ctx.save();ctx.globalAlpha=.45;ctx.strokeStyle=car.color;ctx.lineWidth=Math.max(1,p.s*.045);ctx.beginPath();ctx.moveTo(p.x,p.y+p.s);ctx.lineTo(p.x,p.y+p.s*2);ctx.stroke();ctx.restore();drawSprite(ctx,p.x,p.y,p.s,car)}if(elapsed>3.45&&!done){done=true;finishIntro();return}raf=requestAnimationFrame(paint)}
 function finishIntro(){
  cancelAnimationFrame(raf);
  const fadeStart=performance.now(),fadeDuration=1050;
@@ -207,10 +210,79 @@ function startLoading(){
  }
  requestAnimationFrame(load);
 }
-function startAudio(){if(audioStarted)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;try{audioCtx=new AC();const master=audioCtx.createGain();master.gain.value=.14;master.connect(audioCtx.destination);const now=audioCtx.currentTime;cars.forEach((car,i)=>{const when=now+car.delay,o=audioCtx.createOscillator(),h=audioCtx.createOscillator(),f=audioCtx.createBiquadFilter(),g=audioCtx.createGain(),pan=audioCtx.createStereoPanner(),base=car.pitch;o.type='sawtooth';h.type='triangle';o.frequency.setValueAtTime(base,when);o.frequency.exponentialRampToValueAtTime(base*(car.name==='F1'?4.8:car.name==='KART'?3.4:4),when+.8/car.speed);o.frequency.exponentialRampToValueAtTime(base*1.2,when+2.25/car.speed);h.frequency.setValueAtTime(base*1.98,when);h.frequency.exponentialRampToValueAtTime(base*5.2,when+.8/car.speed);h.frequency.exponentialRampToValueAtTime(base*1.5,when+2.25/car.speed);f.type='lowpass';f.frequency.setValueAtTime(car.name==='KART'?2800:2200,when);f.frequency.exponentialRampToValueAtTime(520,when+2.2/car.speed);g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(car.name==='F1'?.07:.05,when+.18);g.gain.exponentialRampToValueAtTime(.0001,when+2.3/car.speed);pan.pan.setValueAtTime(-.8+i/(cars.length-1)*1.6,when);pan.pan.linearRampToValueAtTime(.8-i/(cars.length-1)*1.6,when+2.2/car.speed);o.connect(f);h.connect(f);f.connect(g);g.connect(pan);pan.connect(master);o.start(when);h.start(when);o.stop(when+2.4/car.speed);h.stop(when+2.4/car.speed)});audioStarted=true;if(audioCtx.state==='suspended')audioCtx.resume().catch(()=>{})}catch(e){}}
-function resumeAudio(){if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume().catch(()=>{})}
-document.addEventListener('pointerdown',resumeAudio,{passive:true});document.addEventListener('keydown',resumeAudio);
-initRedSheet();startAudio();start=performance.now();raf=requestAnimationFrame(paint);
+function startAudio(){
+ if(audioStarted)return;
+ const AC=window.AudioContext||window.webkitAudioContext;
+ if(!AC)return;
+ try{
+  if(!audioCtx)audioCtx=new AC();
+  const launch=()=>{
+   if(audioStarted||!audioCtx||audioCtx.state!=='running')return;
+   audioStarted=true;
+   const now=audioCtx.currentTime;
+   const elapsed=Math.max(0,(performance.now()-start)/1000);
+   const master=audioCtx.createGain();master.gain.value=.22;master.connect(audioCtx.destination);
+   // A layered engine profile: changing RPM, harmonics, filtered mechanical rasp and a passing stereo sweep.
+   cars.forEach((car,i)=>{
+    const total=2.5/car.speed;
+    const passed=elapsed-car.delay;
+    if(passed>=total)return;
+    const wait=Math.max(0,car.delay-elapsed);
+    const phase=Math.max(0,passed)/total;
+    const duration=Math.max(.18,total-Math.max(0,passed));
+    const when=now+wait;
+    const base=car.pitch*(car.name==='F1'?1.35:car.name==='F2'?1.18:car.name==='F3'?1.05:car.name==='F4'?.92:.82);
+    const engine=audioCtx.createGain();
+    const filter=audioCtx.createBiquadFilter();filter.type='lowpass';
+    filter.frequency.setValueAtTime(car.name==='KART'?1900:2600,when);
+    filter.frequency.exponentialRampToValueAtTime(car.name==='KART'?900:1250,when+duration);
+    filter.Q.value=1.2;
+    const pan=audioCtx.createStereoPanner();
+    const panStart=-.78+i/(cars.length-1)*1.56;
+    pan.pan.setValueAtTime(panStart,when);
+    pan.pan.linearRampToValueAtTime(-panStart,when+duration);
+    engine.gain.setValueAtTime(.0001,when);
+    engine.gain.exponentialRampToValueAtTime(car.name==='F1'?.105:car.name==='KART'?.085:.075,when+Math.min(.16,duration*.22));
+    engine.gain.setValueAtTime(car.name==='F1'?.085:.06,when+duration*.55);
+    engine.gain.exponentialRampToValueAtTime(.0001,when+duration);
+    filter.connect(engine);engine.connect(pan);pan.connect(master);
+    const rev=audioCtx.createOscillator();rev.type='sawtooth';
+    const harmonic=audioCtx.createOscillator();harmonic.type=car.name==='KART'?'square':'triangle';
+    const sub=audioCtx.createOscillator();sub.type='triangle';
+    const revStart=base*(1+phase*2.1),peak=base*(car.name==='F1'?5.2:car.name==='F2'?4.6:car.name==='F3'?4.1:car.name==='F4'?3.7:3.1);
+    rev.frequency.setValueAtTime(Math.max(30,revStart),when);
+    harmonic.frequency.setValueAtTime(Math.max(50,revStart*2.03),when);
+    sub.frequency.setValueAtTime(Math.max(25,revStart*.48),when);
+    const peakAt=when+Math.max(.12,duration*.42);
+    rev.frequency.exponentialRampToValueAtTime(peak,peakAt);
+    rev.frequency.exponentialRampToValueAtTime(Math.max(35,base*1.25),when+duration);
+    harmonic.frequency.exponentialRampToValueAtTime(peak*1.96,peakAt);
+    harmonic.frequency.exponentialRampToValueAtTime(Math.max(55,base*1.7),when+duration);
+    sub.frequency.exponentialRampToValueAtTime(Math.max(30,peak*.46),peakAt);
+    sub.frequency.exponentialRampToValueAtTime(Math.max(25,base*.55),when+duration);
+    const hGain=audioCtx.createGain();hGain.gain.value=car.name==='KART'?.20:.13;
+    const subGain=audioCtx.createGain();subGain.gain.value=.30;
+    rev.connect(filter);harmonic.connect(hGain);hGain.connect(filter);sub.connect(subGain);subGain.connect(filter);
+    rev.start(when);harmonic.start(when);sub.start(when);
+    rev.stop(when+duration+.03);harmonic.stop(when+duration+.03);sub.stop(when+duration+.03);
+    // A short filtered broadband layer adds the tyre/air rush as each car passes.
+    const length=Math.max(1,Math.ceil(audioCtx.sampleRate*duration));
+    const buffer=audioCtx.createBuffer(1,length,audioCtx.sampleRate),data=buffer.getChannelData(0);
+    for(let j=0;j<length;j++)data[j]=(Math.random()*2-1)*(.45+.55*Math.sin(Math.PI*j/length));
+    const noise=audioCtx.createBufferSource();noise.buffer=buffer;
+    const nf=audioCtx.createBiquadFilter();nf.type='bandpass';nf.frequency.value=car.name==='KART'?1400:2100;nf.Q.value=.65;
+    const ng=audioCtx.createGain();ng.gain.setValueAtTime(.0001,when);ng.gain.exponentialRampToValueAtTime(car.name==='F1'?.022:.014,when+Math.min(.2,duration*.25));ng.gain.exponentialRampToValueAtTime(.0001,when+duration);
+    noise.connect(nf);nf.connect(ng);ng.connect(pan);noise.start(when);noise.stop(when+duration+.02);
+   });
+  };
+  if(audioCtx.state==='running'){launch();return;}
+  audioCtx.resume().then(launch).catch(()=>{});
+ }catch(e){}
+}
+function onFirstInteraction(){startAudio()}
+document.addEventListener('pointerdown',onFirstInteraction,{passive:true});
+document.addEventListener('keydown',onFirstInteraction);
+initRedSheet();start=performance.now();startAudio();raf=requestAnimationFrame(paint);
 })();
 </script>
 </body>
