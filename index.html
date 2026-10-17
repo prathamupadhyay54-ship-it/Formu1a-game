@@ -748,16 +748,15 @@ let progress=0, speed=0.031, speedTarget=0.031, speedChangeAt=lapStartTime+1100;
 let currentLapSector=0, lastLapSeconds=null, bestLapSeconds=null, lapSectorResults=[];
 const fmtLap=(seconds)=>{if(!Number.isFinite(seconds))return '--:--.---';const m=Math.floor(seconds/60);return `${m}:${(seconds-m*60).toFixed(3).padStart(6,'0')}`;};
 const fmtSector=(seconds)=>Number.isFinite(seconds)?`${seconds.toFixed(3)}s`:'--.---s';
-// Find the start/finish point on the clean track path, then traverse it backwards.
-// SVG coordinates increase downward, so reverse path-distance gives the desired anti-clockwise motion.
+// Find the start/finish point, then move forward along the SVG path in the same direction as the arrows in the track reference.
 let startDistance=0,bestStartDistance=Infinity;
 for(let d=0;d<=trackLength;d+=1){const p=trackPath.getPointAtLength(d);const err=(p.x-870)**2+(p.y-790)**2;if(err<bestStartDistance){bestStartDistance=err;startDistance=d;}}
 const startFraction=startDistance/trackLength;
-function reverseDistance(fraction){return ((startDistance+fraction*trackLength)%trackLength+trackLength)%trackLength;}
+function arrowDistance(fraction){return ((startDistance+fraction*trackLength)%trackLength+trackLength)%trackLength;}
 function pathSlice(startFraction,endFraction){
  const span=(endFraction-startFraction)*trackLength,pts=[];
  const count=Math.max(12,Math.round(span/4));
- for(let i=0;i<=count;i++){const f=startFraction+(endFraction-startFraction)*i/count;const p=trackPath.getPointAtLength(reverseDistance(f));pts.push(`${i?'L':'M'}${p.x.toFixed(2)} ${p.y.toFixed(2)}`);}
+ for(let i=0;i<=count;i++){const f=startFraction+(endFraction-startFraction)*i/count;const p=trackPath.getPointAtLength(arrowDistance(f));pts.push(`${i?'L':'M'}${p.x.toFixed(2)} ${p.y.toFixed(2)}`);}
  return pts.join(' ');
 }
 function makeSvg(tag,attrs){const n=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));return n;}
@@ -766,7 +765,7 @@ function buildSectorGraphics(){
  for(let i=0;i<3;i++){
   const p=makeSvg('path',{d:pathSlice(sectorFractions[i],sectorFractions[i+1]),fill:'none',stroke:'#f4f4f4','stroke-width':'4.1','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.98','data-sector':i});
   p.style.filter='none';p.setAttribute('stroke','#f4f4f4');sectorSegments.appendChild(p);sectorPaths.push(p);
-  const at=trackPath.getPointAtLength(reverseDistance((i+0.5)/3));
+  const at=trackPath.getPointAtLength(arrowDistance((i+0.5)/3));
   const t=makeSvg('text',{x:at.x,y:at.y-13,'text-anchor':'middle',fill:'#ffffff','font-size':'10','font-weight':'800','letter-spacing':'.7','paint-order':'stroke','stroke':'#050505','stroke-width':'3','stroke-linejoin':'round'});
   t.textContent=`S${i+1}`;sectorLabels.appendChild(t);
  }
@@ -837,7 +836,7 @@ function animateTrack(now){
   }
  }
  // Sector clock starts are interpolated at each crossing for timing precision.
- const point=trackPath.getPointAtLength(reverseDistance(progress));
+ const point=trackPath.getPointAtLength(arrowDistance(progress));
  movingDot.setAttribute('transform',`translate(${point.x} ${point.y})`);
  movingDot.style.color='#f4f4f4';
  requestAnimationFrame(animateTrack);
