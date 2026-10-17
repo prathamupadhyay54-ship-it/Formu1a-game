@@ -418,6 +418,9 @@
 .circuit-dots i.active{background:#ed1c2e;box-shadow:0 0 8px #ed1c2e88;}
 @media(max-width:700px){.track-stage.circuit-carousel{height:clamp(250px,38vh,360px)!important;min-height:230px!important;padding:0 24px!important;}.circuit-arrow{width:34px!important;height:46px!important;font-size:34px!important;}.circuit-selector-footer{font-size:7px;}.bic-meta{font-size:8px!important;}}
 
+/* FORMU1A v4.2: active circuit selector receives taps */
+.menu-art { pointer-events: auto !important; }
+.circuit-arrow { pointer-events: auto !important; touch-action: manipulation; }
 </style>
 </head>
 <body>
@@ -720,6 +723,7 @@ menuItems.forEach(item=>{
  item.addEventListener('click',()=>selectMenuItem(item));
  item.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectMenuItem(item)} if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const idx=(Number(item.dataset.index)+(e.key==='ArrowRight'?1:3))%4;selectMenuItem(menuItems[idx]);menuItems[idx].focus();}});
 });
+if (document.getElementById('trackLine') && document.getElementById('movingDot') && document.getElementById('sectorSegments') && document.getElementById('sectorLabels')) {
 // FORMU1A v4.0: exact reference map with preserved buildings; lap progress follows the traced centerline.
 // Target lap = 1:34.416. The dot and clock share this elapsed-time source.
 // Sector split targets sum exactly to the lap target.
@@ -843,8 +847,12 @@ function animateTrack(now){
 buildSectorGraphics();
 for(let i=0;i<3;i++){sectorStarts[i]=lapStartTime;paintSector(i,null,null,i===0?'active':'pending');}
 requestAnimationFrame(animateTrack);
+}
 initRedSheet();
 })();
+</script>
+
+<script>
 // FORMU1A v4.1 circuit carousel: working arrows, keyboard, and touch swipe.
 
 (()=>{
@@ -867,7 +875,7 @@ initRedSheet();
  showCircuit(0);
 })();
 
-</script>
 
+</script>
 </body>
 </html>
