@@ -223,82 +223,40 @@ function startLoading(){
  }
  requestAnimationFrame(load);
 }
-async function startAudio(){
+function startAudio(){
+ // Use a real, short formula-car pass-by recording instead of synthesized tones.
+ // Calling play() directly from the Start tap gives the browser its required user gesture.
  if(audioStarted)return;
- const AC=window.AudioContext||window.webkitAudioContext;
- if(!AC){console.warn('Web Audio is unavailable in this browser.');return;}
- try{
-  if(!audioCtx)audioCtx=new AC();
-  // Call resume immediately from the user's tap so mobile browsers recognise the gesture.
-  if(audioCtx.state!=='running') await audioCtx.resume();
-  if(audioCtx.state!=='running'){
-   console.warn('Audio is still blocked. Tap the page once more to enable sound.');
-   return;
+ audioStarted=true;
+ const soundURL='https://cdn.budgetpixel.com/audio-library/sfx/roaring-fast-highpitched-sharp-powerful-1y5sd00.wav';
+ const rates=[0.82,0.94,1.04,1.13,1.22];
+ const offsets=[0,220,440,660,880];
+ const passes=[];
+ cars.forEach((car,i)=>{
+  const audio=new Audio(soundURL);
+  audio.preload='auto';
+  audio.volume=0.92;
+  audio.playbackRate=rates[i];
+  audio.preservesPitch=false;
+  passes.push(audio);
+  const playPass=()=>{
+   // Reset each pass so every car gets a clear, complete VROOOM.
+   try{audio.currentTime=0;}catch(e){}
+   audio.play().catch(err=>{
+    audioStarted=false;
+    console.warn('Race-car audio could not play. Check the browser/site sound permission and internet connection.',err);
+   });
+  };
+  if(i===0){
+   // First pass starts immediately inside the user's tap gesture.
+   playPass();
+  }else{
+   // Slightly stagger the remaining pass-bys for a layered racing feel.
+   setTimeout(playPass,offsets[i]);
   }
-  audioStarted=true;
-  const now=audioCtx.currentTime;
-  const elapsed=Math.max(0,(performance.now()-start)/1000);
-  const master=audioCtx.createGain();
-  master.gain.setValueAtTime(0.82,now);
-  master.connect(audioCtx.destination);
-  // A louder layered engine pass: low engine body, rising RPM harmonics, and tyre/air rush.
-  cars.forEach((car,i)=>{
-   const total=2.5/car.speed;
-   const passed=elapsed-car.delay;
-   if(passed>=total)return;
-   const wait=Math.max(0,car.delay-elapsed);
-   const phase=Math.max(0,passed)/total;
-   const duration=Math.max(.35,total-Math.max(0,passed));
-   const when=now+wait;
-   const multiplier=car.name==='F1'?1.55:car.name==='F2'?1.3:car.name==='F3'?1.12:car.name==='F4'?.98:.82;
-   const base=car.pitch*multiplier;
-   const engine=audioCtx.createGain();
-   const filter=audioCtx.createBiquadFilter();filter.type='lowpass';
-   filter.frequency.setValueAtTime(car.name==='KART'?2600:3600,when);
-   filter.frequency.exponentialRampToValueAtTime(car.name==='KART'?1100:1700,when+duration);
-   filter.Q.value=1.1;
-   const pan=audioCtx.createStereoPanner();
-   const panStart=-.8+i/(cars.length-1)*1.6;
-   pan.pan.setValueAtTime(panStart,when);
-   pan.pan.linearRampToValueAtTime(-panStart,when+duration);
-   const peakGain=car.name==='F1'?.28:car.name==='KART'?.24:.22;
-   engine.gain.setValueAtTime(.0001,when);
-   engine.gain.exponentialRampToValueAtTime(peakGain,when+Math.min(.22,duration*.25));
-   engine.gain.setValueAtTime(peakGain*.72,when+duration*.55);
-   engine.gain.exponentialRampToValueAtTime(.0001,when+duration);
-   filter.connect(engine);engine.connect(pan);pan.connect(master);
-   const rev=audioCtx.createOscillator();rev.type='sawtooth';
-   const harmonic=audioCtx.createOscillator();harmonic.type=car.name==='KART'?'square':'sawtooth';
-   const sub=audioCtx.createOscillator();sub.type='triangle';
-   const revStart=base*(1+phase*1.8);
-   const peak=base*(car.name==='F1'?5.4:car.name==='F2'?4.7:car.name==='F3'?4.1:car.name==='F4'?3.6:3.0);
-   rev.frequency.setValueAtTime(Math.max(35,revStart),when);
-   harmonic.frequency.setValueAtTime(Math.max(65,revStart*2.01),when);
-   sub.frequency.setValueAtTime(Math.max(28,revStart*.5),when);
-   const peakAt=when+Math.max(.15,duration*.42);
-   rev.frequency.exponentialRampToValueAtTime(peak,peakAt);
-   rev.frequency.exponentialRampToValueAtTime(Math.max(40,base*1.3),when+duration);
-   harmonic.frequency.exponentialRampToValueAtTime(peak*1.9,peakAt);
-   harmonic.frequency.exponentialRampToValueAtTime(Math.max(65,base*1.65),when+duration);
-   sub.frequency.exponentialRampToValueAtTime(Math.max(35,peak*.44),peakAt);
-   sub.frequency.exponentialRampToValueAtTime(Math.max(28,base*.58),when+duration);
-   const hGain=audioCtx.createGain();hGain.gain.value=car.name==='KART'?.24:.19;
-   const subGain=audioCtx.createGain();subGain.gain.value=.42;
-   rev.connect(filter);harmonic.connect(hGain);hGain.connect(filter);sub.connect(subGain);subGain.connect(filter);
-   rev.start(when);harmonic.start(when);sub.start(when);
-   rev.stop(when+duration+.04);harmonic.stop(when+duration+.04);sub.stop(when+duration+.04);
-   const length=Math.max(1,Math.ceil(audioCtx.sampleRate*duration));
-   const buffer=audioCtx.createBuffer(1,length,audioCtx.sampleRate),data=buffer.getChannelData(0);
-   for(let j=0;j<length;j++)data[j]=(Math.random()*2-1)*(.55+.45*Math.sin(Math.PI*j/length));
-   const noise=audioCtx.createBufferSource();noise.buffer=buffer;
-   const nf=audioCtx.createBiquadFilter();nf.type='bandpass';nf.frequency.value=car.name==='KART'?1700:2400;nf.Q.value=.7;
-   const ng=audioCtx.createGain();ng.gain.setValueAtTime(.0001,when);ng.gain.exponentialRampToValueAtTime(car.name==='F1'?.07:.055,when+Math.min(.22,duration*.25));ng.gain.exponentialRampToValueAtTime(.0001,when+duration);
-   noise.connect(nf);nf.connect(ng);ng.connect(pan);noise.start(when);noise.stop(when+duration+.03);
-  });
- }catch(e){
-  audioStarted=false;
-  console.error('Could not start FORMU1A engine audio:',e);
- }
+ });
+ // Keep references alive for the duration of the intro.
+ window.__formu1aPassAudio=passes;
 }
 let experienceStarted=false;
 function beginExperience(){
