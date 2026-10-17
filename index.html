@@ -418,6 +418,13 @@
 .circuit-dots i.active{background:#ed1c2e;box-shadow:0 0 8px #ed1c2e88;}
 @media(max-width:700px){.track-stage.circuit-carousel{height:clamp(250px,38vh,360px)!important;min-height:230px!important;padding:0 24px!important;}.circuit-arrow{width:34px!important;height:46px!important;font-size:34px!important;}.circuit-selector-footer{font-size:7px;}.bic-meta{font-size:8px!important;}}
 
+/* FORMU1A v4.3: force circuit artwork to render above legacy menu-art hiding rules */
+.track-stage.circuit-carousel { position:relative!important; display:flex!important; visibility:visible!important; opacity:1!important; }
+.circuit-slide { display:none!important; visibility:hidden!important; opacity:1!important; flex:1 1 auto!important; min-width:0!important; min-height:0!important; }
+.circuit-slide.active { display:flex!important; visibility:visible!important; opacity:1!important; }
+.circuit-slide svg { display:block!important; visibility:visible!important; opacity:1!important; width:100%!important; height:100%!important; min-height:0!important; flex:1 1 auto!important; overflow:visible!important; }
+.circuit-slide .circuit-outline { display:inline!important; visibility:visible!important; opacity:1!important; fill:none!important; stroke:#f5f5f5!important; stroke-width:7!important; stroke-linecap:round!important; stroke-linejoin:round!important; }
+.circuit-slide[data-circuit="0"] svg image { display:inline!important; visibility:visible!important; opacity:1!important; }
 /* FORMU1A v4.2: active circuit selector receives taps */
 .menu-art { pointer-events: auto !important; }
 .circuit-arrow { pointer-events: auto !important; touch-action: manipulation; }
