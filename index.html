@@ -448,6 +448,34 @@
 @media(max-height:700px){.menu-art{top:21%!important;height:76%!important}.track-stage.circuit-carousel{height:clamp(160px,27vh,235px)!important;min-height:160px!important}}
 
 </style>
+
+/* v4.6 decision-based race mode UI */
+.race-ui-overlay[hidden]{display:none!important}
+.race-ui-overlay{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:18px;color:#f5f5f5;font-family:inherit}
+.race-ui-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(9px)}
+.race-ui-panel{position:relative;z-index:1;width:min(680px,100%);max-height:min(84vh,800px);overflow:auto;background:linear-gradient(150deg,#17171b,#080809 72%);border:1px solid #ffffff24;border-radius:18px;padding:clamp(20px,4vw,32px);box-shadow:0 24px 90px #000b}
+.race-ui-close{position:absolute;right:14px;top:12px;width:38px;height:38px;border:1px solid #ffffff25;border-radius:50%;background:#ffffff08;color:#fff;font-size:27px;line-height:1;cursor:pointer}
+.race-ui-eyebrow{color:#ed1c2e;font-size:10px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;padding-right:38px}
+.race-ui-panel h2{font-size:clamp(24px,4vw,34px);line-height:1.1;margin:10px 38px 8px 0;font-weight:900;letter-spacing:-.025em}
+.race-ui-subtitle{margin:0 0 22px;color:#a7a7ad;font-size:13px;line-height:1.55;max-width:520px}
+.race-ui-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.race-ui-choice{display:block;text-align:left;width:100%;border:1px solid #ffffff20;border-radius:12px;background:linear-gradient(130deg,#202024,#101012);color:#f5f5f5;padding:15px;cursor:pointer;min-height:92px;transition:border-color .2s,background .2s,transform .2s}
+.race-ui-choice:hover,.race-ui-choice:focus-visible{border-color:#ed1c2e;outline:none;transform:translateY(-1px)}
+.race-ui-choice.selected{border-color:#ed1c2e;background:linear-gradient(130deg,#351017,#151012)}
+.race-ui-choice strong{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px}
+.race-ui-choice span{display:block;font-size:12px;line-height:1.45;color:#aaaab2}
+.race-ui-field{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+.race-ui-field label{font-size:10px;letter-spacing:.14em;font-weight:900;color:#a8a8af;text-transform:uppercase}
+.race-ui-select{width:100%;border:1px solid #ffffff24;border-radius:10px;background:#101012;color:#fff;padding:13px;font:inherit}
+.race-ui-primary,.race-ui-secondary{border-radius:999px;padding:13px 18px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:11px;cursor:pointer}
+.race-ui-primary{border:1px solid #ed1c2e;background:#ed1c2e;color:white}
+.race-ui-secondary{border:1px solid #ffffff25;background:transparent;color:#eee}
+.race-ui-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.race-ui-note{margin-top:15px;padding:12px 14px;border-left:3px solid #ed1c2e;background:#ffffff08;color:#bdbdc4;font-size:12px;line-height:1.5}
+.race-ui-pillrow{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.race-ui-pill{border:1px solid #ffffff24;border-radius:999px;padding:8px 11px;color:#c7c7ce;font-size:10px;font-weight:800;letter-spacing:.06em}
+@media(max-width:480px){.race-ui-overlay{padding:10px}.race-ui-panel{border-radius:14px;padding:22px 16px;max-height:88vh}.race-ui-grid{grid-template-columns:1fr;gap:8px}.race-ui-choice{min-height:0;padding:13px}.race-ui-panel h2{font-size:25px}.race-ui-subtitle{font-size:12px;margin-bottom:17px}}
+
 </head>
 <body>
 <iframe id="musicFallback" title="Invincible by DEAF KEV, NCS" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;width:1px;height:1px;left:-9999px;top:-9999px;border:0;opacity:0" src="https://www.youtube-nocookie.com/embed/J2X5mJ3HDYE?enablejsapi=1&autoplay=0&controls=0&loop=1&playlist=J2X5mJ3HDYE&playsinline=1"></iframe>
@@ -503,6 +531,16 @@
     <div class="menu-card" data-index="2" tabindex="0" role="button" aria-selected="false"><span class="menu-title">GARAGE</span></div>
     <div class="menu-card" data-index="3" tabindex="0" role="button" aria-selected="false"><span class="menu-title">ACHIEVEMENTS</span></div>
   </nav>
+  <section class="race-ui-overlay" id="raceUiOverlay" aria-hidden="true" hidden>
+    <div class="race-ui-backdrop" data-close-race-ui></div>
+    <div class="race-ui-panel" role="dialog" aria-modal="true" aria-labelledby="raceUiTitle">
+      <button class="race-ui-close" type="button" aria-label="Close panel" data-close-race-ui>×</button>
+      <div class="race-ui-eyebrow" id="raceUiEyebrow">FORMU1A · RACE SETUP</div>
+      <h2 id="raceUiTitle">Choose your race</h2>
+      <p class="race-ui-subtitle" id="raceUiSubtitle">You make the calls. Your driver and the race simulation handle the wheel.</p>
+      <div id="raceUiContent"></div>
+    </div>
+  </section>
 </main>
 <script>
 (()=>{
@@ -742,6 +780,43 @@ menuItems.forEach(item=>{
  item.addEventListener('click',()=>selectMenuItem(item));
  item.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectMenuItem(item)} if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const idx=(Number(item.dataset.index)+(e.key==='ArrowRight'?1:3))%4;selectMenuItem(menuItems[idx]);menuItems[idx].focus();}});
 });
+
+// v4.6: make the existing menu options open decision-based game setup panels.
+(()=>{
+ const overlay=document.getElementById('raceUiOverlay');
+ const title=document.getElementById('raceUiTitle'), eyebrow=document.getElementById('raceUiEyebrow'), subtitle=document.getElementById('raceUiSubtitle'), content=document.getElementById('raceUiContent');
+ if(!overlay||!content)return;
+ let chosenMode='quick', chosenDifficulty='medium';
+ const close=()=>{overlay.hidden=true;overlay.setAttribute('aria-hidden','true');};
+ overlay.querySelectorAll('[data-close-race-ui]').forEach(el=>el.addEventListener('click',close));
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)close();});
+ const card=(name,desc,action,selected=false)=>`<button type="button" class="race-ui-choice${selected?' selected':''}" data-action="${action}"><strong>${name}</strong><span>${desc}</span></button>`;
+ function open(){overlay.hidden=false;overlay.setAttribute('aria-hidden','false');}
+ function renderRaceModes(){
+   eyebrow.textContent='FORMU1A · RACE MODES';title.textContent='Choose your race';subtitle.textContent='Pick how much of the championship you want to take on. You make strategic calls; the simulation handles the car.';
+   content.innerHTML=`<div class="race-ui-grid">${card('Quick Race','One circuit. Set the grid and race distance, then get straight into the action.','quick')}${card('Single Grand Prix','A complete event with optional practice, qualifying, race and results.','grandprix')}${card('Career Mode','Build a season, progress through racing categories, sign contracts and chase the title.','career')}${card('Race Rules & Difficulty','Set opponent strength and simulation realism before you race.','difficulty')}</div><div class="race-ui-note">Race decisions include attack, defend, hold position, conserve tyres, pit strategy and responses to safety cars or changing weather.</div>`;
+   content.querySelector('[data-action="quick"]').addEventListener('click',()=>renderSetup('quick'));
+   content.querySelector('[data-action="grandprix"]').addEventListener('click',()=>renderSetup('grandprix'));
+   content.querySelector('[data-action="career"]').addEventListener('click',renderCareer);
+   content.querySelector('[data-action="difficulty"]').addEventListener('click',()=>renderSetup(chosenMode));
+ }
+ function renderSetup(mode){chosenMode=mode;
+   eyebrow.textContent=mode==='quick'?'FORMU1A · QUICK RACE':'FORMU1A · SINGLE GRAND PRIX';title.textContent=mode==='quick'?'Quick Race Setup':'Grand Prix Setup';subtitle.textContent='Choose the race conditions. Your driver runs the car; your decisions shape the result.';
+   const selectedCircuit=document.getElementById('circuitName')?.textContent||'BUDDH INTERNATIONAL CIRCUIT';
+   content.innerHTML=`<div class="race-ui-field"><label for="raceUiCircuit">Circuit</label><select class="race-ui-select" id="raceUiCircuit"><option>${selectedCircuit}</option><option>BUDDH INTERNATIONAL CIRCUIT</option><option>CIRCUIT DE MONACO</option><option>SILVERSTONE CIRCUIT</option><option>CIRCUIT DE SPA-FRANCORCHAMPS</option><option>AUTODROMO NAZIONALE MONZA</option></select></div><div class="race-ui-field"><label for="raceUiDifficulty">Opponent difficulty</label><select class="race-ui-select" id="raceUiDifficulty"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option><option value="expert">Expert</option><option value="realism">Realism · simulation rules</option></select></div><div class="race-ui-grid">${card('Short Race','Quick event with fewer laps.','short')}${card('Standard Race','A balanced race distance.','standard')}${mode==='grandprix'?card('Practice + Qualifying','Run the full weekend before the race.','weekend'):card('Qualifying','Set your starting position before the race.','qualifying')}</div><div class="race-ui-note" id="raceUiSummary">Setup preview only. The race simulation will be connected in the gameplay stage.</div><div class="race-ui-actions"><button class="race-ui-secondary" type="button" data-action="back">Back</button><button class="race-ui-primary" type="button" data-action="confirm">Confirm Setup</button></div>`;
+   const options=[...content.querySelectorAll('[data-action="short"],[data-action="standard"],[data-action="weekend"],[data-action="qualifying"]')];let selected='standard';
+   const update=()=>{options.forEach(b=>b.classList.toggle('selected',b.dataset.action===selected));const diff=document.getElementById('raceUiDifficulty').value;document.getElementById('raceUiSummary').textContent=`${mode==='quick'?'Quick Race':'Single Grand Prix'} · ${document.getElementById('raceUiCircuit').value} · ${diff.toUpperCase()} · ${selected.toUpperCase().replace('-',' ')}`;};
+   options.forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.action;update();}));
+   document.getElementById('raceUiCircuit').addEventListener('change',update);document.getElementById('raceUiDifficulty').addEventListener('change',update);
+   content.querySelector('[data-action="back"]').addEventListener('click',renderRaceModes);
+   content.querySelector('[data-action="confirm"]').addEventListener('click',()=>{const summary=document.getElementById('raceUiSummary');summary.textContent='Setup saved for this prototype. The next development stage connects this configuration to the race simulation.';summary.style.borderLeftColor='#e52535';});
+   update();
+ }
+ function renderCareer(){eyebrow.textContent='FORMU1A · CAREER';title.textContent='Build your career';subtitle.textContent='Start small, earn results, move up the ladder and fight for a championship seat.';content.innerHTML=`<div class="race-ui-grid">${card('Karting','Start at the beginning and build your reputation.','karting')}${card('Formula 4','Begin in single-seater racing with higher stakes.','f4')}${card('Continue Career','Return to an existing save when career saving is implemented.','continue')}</div><div class="race-ui-note">Career progression will share the same race-decision engine as Quick Race and Single Grand Prix.</div><div class="race-ui-actions"><button class="race-ui-secondary" type="button" data-action="back">Back</button><button class="race-ui-primary" type="button" data-action="career-confirm">Choose Starting Series</button></div>`;content.querySelector('[data-action="back"]').addEventListener('click',renderRaceModes);content.querySelector('[data-action="career-confirm"]').addEventListener('click',()=>{const note=content.querySelector('.race-ui-note');note.textContent='Starting series selected in the prototype. Career saves, contracts and progression will be wired into a later gameplay stage.';});}
+ function renderGarage(){eyebrow.textContent='FORMU1A · GARAGE';title.textContent='Team & car';subtitle.textContent='Garage options for the future playable build.';content.innerHTML=`<div class="race-ui-grid">${card('Car Setup','Balance performance, tyre wear and reliability.','setup')}${card('Team & Driver','Choose your team and driver.','team')}${card('Livery Editor','Customise colours and racing identity.','livery')}${card('Development','Invest in aero, chassis and powertrain.','development')}</div><div class="race-ui-note">Garage options are UI placeholders until team selection and car development are implemented.</div><div class="race-ui-actions"><button class="race-ui-primary" type="button" data-action="close">Close</button></div>`;content.querySelector('[data-action="close"]').addEventListener('click',close);}
+ function renderAchievements(){eyebrow.textContent='FORMU1A · RECORDS';title.textContent='Achievements';subtitle.textContent='Track milestones across races and career progression.';content.innerHTML=`<div class="race-ui-grid">${card('First Finish','Complete your first race.','first')}${card('Podium','Finish in the top three.','podium')}${card('Strategist','Make a successful pit strategy call.','strategy')}${card('Champion','Win a championship.','champion')}</div><div class="race-ui-note">Achievement tracking will activate once race results and career saves are connected.</div><div class="race-ui-actions"><button class="race-ui-primary" type="button" data-action="close">Close</button></div>`;content.querySelector('[data-action="close"]').addEventListener('click',close);}
+ menuItems.forEach((item,i)=>item.addEventListener('click',()=>{if(i===0){renderCareer();open();}else if(i===1){renderRaceModes();open();}else if(i===2){renderGarage();open();}else if(i===3){renderAchievements();open();}}));
+})();
 if (document.getElementById('trackLine') && document.getElementById('movingDot') && document.getElementById('sectorSegments') && document.getElementById('sectorLabels')) {
 // FORMU1A v4.0: exact reference map with preserved buildings; lap progress follows the traced centerline.
 // Target lap = 1:34.416. The dot and clock share this elapsed-time source.
