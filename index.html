@@ -57,10 +57,6 @@
 .start-gate-logo{font-size:clamp(34px,9vw,64px);font-weight:1000;letter-spacing:.045em;white-space:nowrap}
 .start-gate-logo span{color:var(--accent)}
 .start-gate-label{font-size:12px;font-weight:800;letter-spacing:.22em;color:#b7b7bd;margin-top:22px}.start-gate.loading .start-gate-label{display:none}
-.start-gate-progress{width:min(320px,78vw);margin-top:24px;opacity:0;visibility:hidden;transition:opacity .2s ease;flex:0 0 auto}.start-gate.loading .start-gate-progress{opacity:1;visibility:visible}
-.start-gate-progress-row{display:flex;justify-content:space-between;margin-bottom:9px;color:#92929b;font-size:10px;letter-spacing:.15em;text-transform:uppercase}
-.start-gate-track{height:3px;width:100%;background:#29292e;overflow:hidden}
-.start-gate-fill{height:100%;width:0;background:var(--accent);box-shadow:0 0 12px #ed1c2e88;transition:width .08s linear}
 @keyframes pulse{50%{opacity:.35;transform:scale(.8)}}
 
 /* FORMU1A v1.1: simplified split-screen menu inspired by the supplied reference */
@@ -485,7 +481,7 @@
 <iframe id="musicFallback" title="Invincible by DEAF KEV, NCS" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;width:1px;height:1px;left:-9999px;top:-9999px;border:0;opacity:0" src="https://www.youtube-nocookie.com/embed/J2X5mJ3HDYE?enablejsapi=1&autoplay=0&controls=0&loop=1&playlist=J2X5mJ3HDYE&playsinline=1"></iframe>
 <main class="stage" id="stage">
   <div class="start-gate" id="startGate" role="button" tabindex="0" aria-label="Tap to start FORMU1A with racing sound">
-    <div class="start-gate-inner"><div class="start-gate-logo">FORMU<span>1</span>A</div><div class="start-gate-label" id="startGateLabel">TAP TO START</div><div class="start-gate-progress" id="startGateProgress" aria-label="Loading progress"><div class="start-gate-progress-row"><span>INITIALIZING PADDOCK</span><span id="startGatePercent">0%</span></div><div class="start-gate-track"><div class="start-gate-fill" id="startGateFill"></div></div></div></div>
+    <div class="start-gate-inner"><div class="start-gate-logo">FORMU<span>1</span>A</div><div class="start-gate-label" id="startGateLabel">TAP TO START</div></div>
   </div>
   <canvas id="ripCanvas" aria-hidden="true"></canvas>
   <h1 class="logo" id="logo">FORMU<span class="one" id="one">1</span>A</h1>
@@ -763,32 +759,13 @@ function beginExperience(){
  experienceStarted=true;
  startMenuMusic();
  const gate=document.getElementById('startGate');
- const gateLabel=document.getElementById('startGateLabel');
- const gateFill=document.getElementById('startGateFill');
- const gatePercent=document.getElementById('startGatePercent');
- gate.classList.add('loading');
- gateLabel.textContent='';
- gateFill.style.width='0%';
- gatePercent.textContent='0%';
- const duration=3500;
- const loadStart=performance.now();
- function progress(now){
-  const p=Math.min(1,(now-loadStart)/duration);
-  const n=Math.round(p*100);
-  gateFill.style.width=n+'%';
-  gatePercent.textContent=n+'%';
-  if(p<1){requestAnimationFrame(progress);return;}
-  gatePercent.textContent='100%';
-  gateFill.style.width='100%';
-  gate.classList.add('hide');
-  setTimeout(()=>gate.remove(),400);
-  // Run the existing car intro after the 3.5-second loading bar completes.
-  start=performance.now();
-  initRedSheet();
-  startAudio();
-  raf=requestAnimationFrame(paint);
- }
- requestAnimationFrame(progress);
+ // Tapping the logo immediately starts the existing car-tearing intro.
+ gate.classList.add('hide');
+ setTimeout(()=>gate.remove(),400);
+ start=performance.now();
+ initRedSheet();
+ startAudio();
+ raf=requestAnimationFrame(paint);
 }
 const gate=document.getElementById('startGate');
 gate.addEventListener('pointerdown',beginExperience,{passive:true});
