@@ -473,6 +473,29 @@
 .race-ui-pill{border:1px solid #ffffff24;border-radius:999px;padding:8px 11px;color:#c7c7ce;font-size:10px;font-weight:800;letter-spacing:.06em}
 @media(max-width:480px){.race-ui-overlay{padding:10px}.race-ui-panel{border-radius:14px;padding:22px 16px;max-height:88vh}.race-ui-grid{grid-template-columns:1fr;gap:8px}.race-ui-choice{min-height:0;padding:13px}.race-ui-panel h2{font-size:25px}.race-ui-subtitle{font-size:12px;margin-bottom:17px}}
 
+
+/* v5.0 playable decision-based race simulation */
+.race-live-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin:14px 0}
+.race-live-stat{background:#ffffff08;border:1px solid #ffffff16;border-radius:11px;padding:10px 12px;min-width:88px;flex:1}
+.race-live-stat small{display:block;color:#aaa;font-size:9px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;margin-bottom:6px}
+.race-live-stat strong{font-size:20px;font-weight:900}
+.race-live-event{padding:13px 14px;background:#ffffff08;border-left:3px solid #ed1c2e;border-radius:0 10px 10px 0;color:#d8d8dd;font-size:12px;line-height:1.5;margin:12px 0}
+.race-live-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.race-live-choice{border:1px solid #ffffff22;background:linear-gradient(130deg,#202024,#101012);color:#fff;border-radius:11px;padding:12px;text-align:left;cursor:pointer;min-height:67px}
+.race-live-choice strong{display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px}
+.race-live-choice span{display:block;font-size:11px;color:#aaa;line-height:1.35}
+.race-live-choice.active{border-color:#ed1c2e;background:linear-gradient(130deg,#351017,#151012)}
+.race-live-table-wrap{max-height:250px;overflow:auto;border:1px solid #ffffff18;border-radius:10px;margin-top:12px}
+.race-live-table{width:100%;border-collapse:collapse;font-size:11px;font-variant-numeric:tabular-nums}
+.race-live-table th,.race-live-table td{padding:9px 8px;text-align:left;border-bottom:1px solid #ffffff12;white-space:nowrap}
+.race-live-table th{position:sticky;top:0;background:#18181b;color:#aaa;font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+.race-live-table tr.player{background:#351017}
+.race-live-table tr:last-child td{border-bottom:0}
+.race-live-footer{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.race-live-footer button{flex:1}
+.race-live-tag{display:inline-block;padding:5px 8px;border-radius:999px;border:1px solid #ffffff20;color:#ccc;font-size:9px;font-weight:900;letter-spacing:.08em}
+@media(max-width:480px){.race-live-stat{min-width:70px;padding:9px}.race-live-stat strong{font-size:17px}.race-live-choices{grid-template-columns:repeat(2,minmax(0,1fr))}.race-live-table{font-size:10px}.race-live-table th,.race-live-table td{padding:8px 6px}}
+
 </style>
 
 
@@ -804,6 +827,83 @@ menuItems.forEach(item=>{
    content.querySelector('[data-action="career"]').addEventListener('click',renderCareer);
    content.querySelector('[data-action="difficulty"]').addEventListener('click',()=>renderSetup(chosenMode));
  }
+ let activeRace=null;
+ const circuitStats={
+  'BUDDH INTERNATIONAL CIRCUIT':{km:5.137,turns:16,laps:60},
+  'CIRCUIT DE MONACO':{km:3.337,turns:19,laps:78},
+  'SILVERSTONE CIRCUIT':{km:5.891,turns:18,laps:52},
+  'CIRCUIT DE SPA-FRANCORCHAMPS':{km:7.004,turns:20,laps:44},
+  'AUTODROMO NAZIONALE MONZA':{km:5.793,turns:11,laps:53}
+ };
+ const driverNames=['You','Luca Moretti','Noah Bennett','Mateo Silva','Oliver Reed','Arjun Mehta','Theo Martin','Kai Nakamura','Ethan Brooks','Leo Fischer','Gabriel Costa','Milan Novak','Daniel Kim','Rafael Torres','Oscar Lind','Finn Walker','Alex Petrov','Samir Khan','Hugo Laurent','Enzo Ricci'];
+ const teamNames=['YOUR TEAM','Scuderia Rosso','Silver Arrow GP','Apex Motorsport','Northstar Racing','Vertex GP','Falcon Racing','Orion Motorsport','Velocity GP','Titan Racing'];
+ const difficultyFactor={easy:.35,medium:.65,hard:.86,expert:1,realism:.9};
+ const lapClock=seconds=>{const m=Math.floor(seconds/60),s=(seconds-m*60).toFixed(3).padStart(6,'0');return `${m}:${s}`;};
+ function beginRace(config){
+  const c=config.circuit,stats=circuitStats[c]||circuitStats['BUDDH INTERNATIONAL CIRCUIT'];
+  const laps=config.distance==='short'?5:config.distance==='standard'?10:Math.min(20,stats.laps);
+  const diff=config.difficulty||'medium';
+  const drivers=driverNames.map((name,i)=>({id:i,name,team:i===0?'YOUR TEAM':teamNames[(i% (teamNames.length-1))+1],skill:i===0?0.77:0.68+Math.random()*.28,car:i===0?0.78:0.69+Math.random()*.27,total:0,tyre:i===0?'MEDIUM':(['SOFT','MEDIUM','HARD'][Math.floor(Math.random()*3)]),wear:i===0?0.28:Math.random()*.22,pits:0,retired:false,incident:''}));
+  drivers.forEach(d=>{d.total=(d.id===0?0:Math.random()*2.4);});
+  drivers.sort((a,b)=>a.total-b.total);drivers.forEach((d,i)=>{d.grid=i+1;d.total=i*0.015;});
+  const player=drivers.find(d=>d.id===0);player.total=drivers.findIndex(d=>d.id===0)*0.02;
+  activeRace={mode:config.mode,circuit:c,stats,laps,lap:0,difficulty:diff,drivers,player,decision:'balanced',tyre:'MEDIUM',pace:'balanced',events:['Lights out soon. Choose your race approach, then advance each lap to see the simulation resolve.'],finished:false,started:Date.now(),format:config.format||'standard'};
+  renderLiveRace();
+ }
+ function raceStandings(){return [...activeRace.drivers].sort((a,b)=>a.retired-b.retired||a.total-b.total);}
+ function renderStandings(){const order=raceStandings(),leader=order[0];return `<div class="race-live-table-wrap"><table class="race-live-table"><thead><tr><th>Pos</th><th>Driver</th><th>Team</th><th>Gap</th><th>Tyre</th></tr></thead><tbody>${order.map((d,i)=>`<tr class="${d.id===0?'player':''}"><td>${d.retired?'RET':i+1}</td><td>${d.id===0?'<strong>YOU</strong>':d.name}</td><td>${d.team}</td><td>${i===0?'LEADER':d.retired?'—':`+${(d.total-leader.total).toFixed(1)}s`}</td><td>${d.tyre}${d.id===0?` · ${Math.round(d.wear*100)}%`:''}</td></tr>`).join('')}</tbody></table></div>`;}
+ function renderLiveRace(){
+  const r=activeRace;if(!r)return;const pos=raceStandings().findIndex(d=>d.id===0)+1;const player=r.player;
+  eyebrow.textContent=`FORMU1A · ${r.finished?'RACE RESULTS':'LIVE RACE'}`;title.textContent=r.finished?'Chequered flag':r.circuit;subtitle.textContent=r.finished?'Race complete. Your decisions shaped the result.':'You make the calls. The race simulation handles pace, overtakes, tyres and incidents.';
+  const currentEvent=r.events[r.events.length-1]||'Race ready.';
+  const actions=r.finished?`<div class="race-live-footer"><button class="race-ui-secondary" type="button" data-action="race-menu">Race Modes</button><button class="race-ui-primary" type="button" data-action="race-close">Return to Menu</button></div>`:`<div class="race-live-choices">${[['attack','ATTACK','Try to gain time; more tyre wear and risk.'],['defend','DEFEND','Protect position, lose a little pace.'],['balanced','BALANCED','Steady pace and normal wear.'],['conserve','CONSERVE','Save tyres, sacrifice some pace.'],['pit','PIT STOP','Change to fresh tyres; lose pit-lane time.']].map(([id,name,desc])=>`<button type="button" class="race-live-choice ${r.decision===id?'active':''}" data-decision="${id}"><strong>${name}</strong><span>${desc}</span></button>`).join('')}</div><div class="race-ui-field"><label for="raceTyre">Tyre compound for next stint</label><select id="raceTyre" class="race-ui-select"><option ${r.tyre==='SOFT'?'selected':''}>SOFT</option><option ${r.tyre==='MEDIUM'?'selected':''}>MEDIUM</option><option ${r.tyre==='HARD'?'selected':''}>HARD</option><option ${r.tyre==='INTERMEDIATE'?'selected':''}>INTERMEDIATE</option><option ${r.tyre==='WET'?'selected':''}>WET</option></select></div><div class="race-ui-field"><label for="racePace">Race pace</label><select id="racePace" class="race-ui-select"><option value="push" ${r.pace==='push'?'selected':''}>Push</option><option value="balanced" ${r.pace==='balanced'?'selected':''}>Balanced</option><option value="save" ${r.pace==='save'?'selected':''}>Save tyres & fuel</option></select></div><div class="race-live-footer"><button class="race-ui-primary" type="button" data-action="advance-lap">${r.lap===0?'Start Race':r.lap>=r.laps-1?'Finish Race':'Advance to Next Lap'} ›</button></div>`;
+  content.innerHTML=`<div class="race-live-top"><div class="race-live-stat"><small>Position</small><strong>P${pos}</strong></div><div class="race-live-stat"><small>Lap</small><strong>${r.finished?r.laps:r.lap+1}<span style="font-size:12px;color:#aaa">/${r.laps}</span></strong></div><div class="race-live-stat"><small>Tyre wear</small><strong>${Math.round(player.wear*100)}%</strong></div><div class="race-live-stat"><small>Difficulty</small><strong style="font-size:13px">${r.difficulty.toUpperCase()}</strong></div></div><div class="race-live-event"><strong style="color:#ed1c2e">RACE CONTROL</strong><br>${currentEvent}</div>${actions}<div class="race-live-table-wrap" style="margin-top:15px"><table class="race-live-table"><thead><tr><th colspan="5">LIVE CLASSIFICATION</th></tr></thead><tbody>${raceStandings().slice(0,10).map((d,i)=>`<tr class="${d.id===0?'player':''}"><td>${d.retired?'RET':i+1}</td><td>${d.id===0?'<strong>YOU</strong>':d.name}</td><td>${d.team}</td><td>${i===0?'LEADER':d.retired?'—':`+${(d.total-raceStandings()[0].total).toFixed(1)}s`}</td><td>${d.tyre}${d.id===0?` ${Math.round(d.wear*100)}%`:''}</td></tr>`).join('')}</tbody></table></div>`;
+  content.querySelectorAll('[data-decision]').forEach(b=>b.addEventListener('click',()=>{r.decision=b.dataset.decision;renderLiveRace();}));
+  const tyreEl=content.querySelector('#raceTyre');if(tyreEl)tyreEl.addEventListener('change',()=>{r.tyre=tyreEl.value;});
+  const paceEl=content.querySelector('#racePace');if(paceEl)paceEl.addEventListener('change',()=>{r.pace=paceEl.value;});
+  content.querySelector('[data-action="advance-lap"]')?.addEventListener('click',advanceRaceLap);
+  content.querySelector('[data-action="race-menu"]')?.addEventListener('click',renderRaceModes);
+  content.querySelector('[data-action="race-close"]')?.addEventListener('click',close);
+ }
+ function advanceRaceLap(){
+  const r=activeRace;if(!r||r.finished)return;
+  const player=r.player,lapNo=r.lap+1;let events=[];
+  if(r.lap===0)events.push('Lights out! The field launches from the grid.');
+  const circuitFactor=r.stats.km/5.2;
+  for(const d of r.drivers){if(d.retired)continue;
+   let base=92*circuitFactor + (1-d.skill)*5.5+(1-d.car)*4.2;
+   let strategy='balanced';
+   if(d.id===0)strategy=r.decision;
+   else {const roll=Math.random();strategy=roll<.16?'attack':roll<.27?'conserve':'balanced';}
+   const paceMod=r.difficulty==='easy'?.9:r.difficulty==='medium'?.96:r.difficulty==='hard'?1.015:r.difficulty==='expert'?1.035:1.01;
+   let delta=(Math.random()-.5)*1.5;
+   if(strategy==='attack')delta-=1.05+(d.skill*.35);
+   if(strategy==='defend')delta+=.35;
+   if(strategy==='conserve')delta+=1.05;
+   if(d.id===0){if(r.pace==='push')delta-=.75;if(r.pace==='save')delta+=.65;if(r.decision==='pit'){delta+=22;d.pits++;d.wear=.02;d.tyre=r.tyre;events.push(`Pit stop completed: fresh ${d.tyre} tyres fitted. Lost about 22 seconds in the pit lane.`);}}
+   else {base+=(paceMod-1)*3.2;}
+   const compound=d.id===0?d.tyre:d.tyre;
+   if(compound==='SOFT')base-=.7;else if(compound==='HARD')base+=.65;else if(compound==='INTERMEDIATE'||compound==='WET')base+=.8;
+   base+=delta;
+   const wearRate=strategy==='attack'?.075:strategy==='conserve'?.035:.052;
+   d.wear=Math.min(.99,d.wear+wearRate*(r.difficulty==='realism'?1.12:1));
+   if(d.wear>.8)base+=(d.wear-.8)*8;
+   if(r.difficulty==='realism'&&Math.random()<.012){if(Math.random()<.45){d.retired=true;d.incident='Mechanical failure';events.push(`${d.name} retires with a mechanical failure!`);}else{base+=7;events.push(`${d.name} has a lock-up and loses time.`);}}
+   if(d.id!==0&&Math.random()<.035){base+=1.6;}
+   d.total+=Math.max(base,45);
+  }
+  r.lap++;
+  const order=raceStandings(),pos=order.findIndex(d=>d.id===0)+1,leader=order[0],ahead=order[pos-2];
+  if(r.decision==='attack'&&ahead&&!ahead.retired&&player.total<ahead.total+2.4&&Math.random()<.52){events.push(`Attack successful! You gained ground and are now P${pos}.`);}else if(r.decision==='attack'&&Math.random()<.32){events.push('You tried to force the move, but the rival held the line. Tyres took extra wear.');}
+  if(r.decision==='defend')events.push(`You defend your position. Currently P${pos}.`);
+  if(r.decision==='conserve')events.push(`You manage tyre life and bring the wear to ${Math.round(player.wear*100)}%.`);
+  if(r.difficulty==='realism'&&Math.random()<.06)events.push('Race control reports debris. The field may bunch up under a safety car in a future lap.');
+  if(!events.length)events.push(`Lap ${r.lap} complete. You are P${pos}, ${pos===1?'leading the race':`+${(player.total-leader.total).toFixed(1)}s behind the leader`}.`);
+  r.events.push(events.join(' '));if(r.events.length>5)r.events.shift();
+  if(r.lap>=r.laps){r.finished=true;r.decision='balanced';const finalPos=raceStandings().findIndex(d=>d.id===0)+1;r.events.push(`Chequered flag! You finish P${finalPos} of ${r.drivers.filter(d=>!d.retired).length} classified drivers.`);}
+  else {r.decision='balanced';}
+  renderLiveRace();
+ }
  function renderSetup(mode){chosenMode=mode;
    eyebrow.textContent=mode==='quick'?'FORMU1A · QUICK RACE':'FORMU1A · SINGLE GRAND PRIX';title.textContent=mode==='quick'?'Quick Race Setup':'Grand Prix Setup';subtitle.textContent='Choose the race conditions. Your driver runs the car; your decisions shape the result.';
    const selectedCircuit=document.getElementById('circuitName')?.textContent||'BUDDH INTERNATIONAL CIRCUIT';
@@ -813,7 +913,7 @@ menuItems.forEach(item=>{
    options.forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.action;update();}));
    document.getElementById('raceUiCircuit').addEventListener('change',update);document.getElementById('raceUiDifficulty').addEventListener('change',update);
    content.querySelector('[data-action="back"]').addEventListener('click',renderRaceModes);
-   content.querySelector('[data-action="confirm"]').addEventListener('click',()=>{const summary=document.getElementById('raceUiSummary');summary.textContent='Setup saved for this prototype. The next development stage connects this configuration to the race simulation.';summary.style.borderLeftColor='#e52535';});
+   content.querySelector('[data-action="confirm"]').addEventListener('click',()=>{beginRace({mode,circuit:document.getElementById('raceUiCircuit').value,difficulty:document.getElementById('raceUiDifficulty').value,distance:selected,format:selected});});
    update();
  }
  function renderCareer(){eyebrow.textContent='FORMU1A · CAREER';title.textContent='Build your career';subtitle.textContent='Start small, earn results, move up the ladder and fight for a championship seat.';content.innerHTML=`<div class="race-ui-grid">${card('Karting','Start at the beginning and build your reputation.','karting')}${card('Formula 4','Begin in single-seater racing with higher stakes.','f4')}${card('Continue Career','Return to an existing save when career saving is implemented.','continue')}</div><div class="race-ui-note">Career progression will share the same race-decision engine as Quick Race and Single Grand Prix.</div><div class="race-ui-actions"><button class="race-ui-secondary" type="button" data-action="back">Back</button><button class="race-ui-primary" type="button" data-action="career-confirm">Choose Starting Series</button></div>`;content.querySelector('[data-action="back"]').addEventListener('click',renderRaceModes);content.querySelector('[data-action="career-confirm"]').addEventListener('click',()=>{const note=content.querySelector('.race-ui-note');note.textContent='Starting series selected in the prototype. Career saves, contracts and progression will be wired into a later gameplay stage.';});}
