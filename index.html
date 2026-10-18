@@ -53,12 +53,11 @@
 
 .start-gate{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;background:#050505;color:#f5f5f5;cursor:pointer;text-align:center;padding:28px;transition:opacity .35s ease}
 .start-gate.hide{opacity:0;pointer-events:none}
-.start-gate-inner{display:flex;flex-direction:column;align-items:center;gap:18px;width:min(420px,84vw)}
+.start-gate-inner{display:flex;flex-direction:column;align-items:center;gap:0;width:min(420px,84vw)}
 .start-gate-logo{font-size:clamp(34px,9vw,64px);font-weight:1000;letter-spacing:.045em;white-space:nowrap}
 .start-gate-logo span{color:var(--accent)}
-.start-gate-label{font-size:12px;font-weight:800;letter-spacing:.22em;color:#b7b7bd}
-.start-gate-progress{width:min(320px,78vw);margin-top:4px;opacity:0;visibility:hidden;transition:opacity .25s}
-.start-gate.loading .start-gate-progress{opacity:1;visibility:visible}
+.start-gate-label{font-size:12px;font-weight:800;letter-spacing:.22em;color:#b7b7bd;margin-top:22px}.start-gate.loading .start-gate-label{display:none}
+.start-gate-progress{width:min(320px,78vw);margin-top:24px;opacity:0;visibility:hidden;transition:opacity .2s ease;flex:0 0 auto}.start-gate.loading .start-gate-progress{opacity:1;visibility:visible}
 .start-gate-progress-row{display:flex;justify-content:space-between;margin-bottom:9px;color:#92929b;font-size:10px;letter-spacing:.15em;text-transform:uppercase}
 .start-gate-track{height:3px;width:100%;background:#29292e;overflow:hidden}
 .start-gate-fill{height:100%;width:0;background:var(--accent);box-shadow:0 0 12px #ed1c2e88;transition:width .08s linear}
@@ -768,8 +767,10 @@ function beginExperience(){
  const gateFill=document.getElementById('startGateFill');
  const gatePercent=document.getElementById('startGatePercent');
  gate.classList.add('loading');
- gateLabel.textContent='LOADING';
- const duration=reduce?500:3500;
+ gateLabel.textContent='';
+ gateFill.style.width='0%';
+ gatePercent.textContent='0%';
+ const duration=3500;
  const loadStart=performance.now();
  function progress(now){
   const p=Math.min(1,(now-loadStart)/duration);
