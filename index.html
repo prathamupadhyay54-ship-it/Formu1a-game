@@ -430,6 +430,7 @@
 .circuit-arrow { pointer-events: auto !important; touch-action: manipulation; }
 
 /* FORMU1A v4.4 — Grand Prix Hero Cards */
+.bic-kicker,.circuit-selector-footer{display:none!important;}
 .menu-art{top:22%!important;bottom:auto!important;height:75%!important;gap:10px!important;overflow:visible!important;}
 .bic-heading{order:2!important;gap:5px!important;margin:0!important;}
 .bic-kicker{font-size:9px!important;letter-spacing:.25em!important;}
@@ -468,7 +469,6 @@
   <div class="car-callout" id="carCallout" aria-hidden="true">AERODYNAMICS · CHASSIS · POWERTRAIN</div>
   <section class="menu-art" id="menuArt" aria-label="Circuit and race timing">
     <div class="bic-heading">
-      <span class="bic-kicker">FORMU1A · CIRCUIT SELECT</span>
       <strong id="circuitName">BUDDH INTERNATIONAL CIRCUIT</strong>
       <span class="bic-meta"><span id="circuitLocation">GREATER NOIDA, INDIA</span><i></i><span id="circuitLength">5.137 KM</span><i></i><span id="circuitTurns">16 TURNS</span></span>
     </div>
@@ -496,7 +496,6 @@
       </div>
       <button class="circuit-arrow arrow-right" id="circuitNext" type="button" aria-label="Next circuit">›</button>
     </div>
-    <div class="circuit-selector-footer"><span id="circuitCounter">01 / 05</span><div class="circuit-dots" id="circuitDots"><i class="active"></i><i></i><i></i><i></i><i></i></div><span>USE ‹ › TO SWITCH</span></div>
   </section>
   <nav class="menu" id="menu" aria-label="Main menu" style="--active-index:0">
     <div class="menu-card active" data-index="0" tabindex="0" role="button" aria-selected="true"><span class="menu-title">CAREER</span></div>
@@ -885,7 +884,7 @@ initRedSheet();
  ];
  let index=0;
  const slides=[...document.querySelectorAll('.circuit-slide')],dots=[...document.querySelectorAll('#circuitDots i')];
- function showCircuit(next){index=(next+circuits.length)%circuits.length;slides.forEach((el,i)=>{el.classList.toggle('active',i===index);el.setAttribute('aria-hidden',String(i!==index));});dots.forEach((el,i)=>el.classList.toggle('active',i===index));const c=circuits[index];document.getElementById('circuitName').textContent=c.name;document.getElementById('circuitLocation').textContent=c.location;document.getElementById('circuitLength').textContent=c.length;document.getElementById('circuitTurns').textContent=c.turns;const lapsEl=document.getElementById('circuitLaps');if(lapsEl)lapsEl.textContent=c.laps;document.getElementById('circuitCounter').textContent=`${String(index+1).padStart(2,'0')} / 05`;}
+ function showCircuit(next){index=(next+circuits.length)%circuits.length;slides.forEach((el,i)=>{el.classList.toggle('active',i===index);el.setAttribute('aria-hidden',String(i!==index));});dots.forEach((el,i)=>el.classList.toggle('active',i===index));const c=circuits[index];document.getElementById('circuitName').textContent=c.name;document.getElementById('circuitLocation').textContent=c.location;document.getElementById('circuitLength').textContent=c.length;document.getElementById('circuitTurns').textContent=c.turns;const lapsEl=document.getElementById('circuitLaps');if(lapsEl)lapsEl.textContent=c.laps;const counter=document.getElementById('circuitCounter');if(counter)counter.textContent=`${String(index+1).padStart(2,'0')} / 05`;}
  document.getElementById('circuitPrev').addEventListener('click',()=>showCircuit(index-1));
  document.getElementById('circuitNext').addEventListener('click',()=>showCircuit(index+1));
  document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')showCircuit(index-1);if(e.key==='ArrowRight')showCircuit(index+1);});
